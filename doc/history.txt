@@ -1,0 +1,35 @@
+GitHubLink history
+==================
+
+(+) Added
+(*) Changed
+(-) Removed
+(x) Error / bug (fix)
+
+For more information about issues or new feature requests, please visit:
+
+Project website: https://github.com/GeertvanHorrik/GitHubLink
+
+**********************************************************
+
+==================
+Version 1.0.0
+==================
+
+Release date:
+=============
+2014/xx/xx
+
+Added/fixed:
+============
+xxx
+
+Roadmap:
+========
+See https://github.com/GeertvanHorrik/GitHubLink
+
+Known issues:
+=============
+See https://github.com/GeertvanHorrik/GitHubLink
+
+**********************************************************
