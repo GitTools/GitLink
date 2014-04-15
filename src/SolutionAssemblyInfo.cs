@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SolutionAssemblyInfo.cs" company="Catel development team">
-//   Copyright (c) 2008 - 2014 Catel development team. All rights reserved.
+// <copyright file="SolutionAssemblyInfo.cs" company="CatenaLogic">
+//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -37,5 +37,6 @@ using System.Resources;
 
 // CLS compliant
 #if !NETFX_CORE && !XAMARIN
+
 [assembly: CLSCompliant(true)]
 #endif
