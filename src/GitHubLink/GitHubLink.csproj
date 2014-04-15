@@ -24,7 +24,8 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>..\..\output\debug\GitHubLink\GitHubLink.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,7 +36,8 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>..\..\output\release\GitHubLink\GitHubLink.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Catel.Core">
@@ -62,14 +64,28 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>Properties\SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ArgumentParser.cs" />
+    <Compile Include="Extensions\ExtensionMethods.cs" />
+    <Compile Include="GitHubLinkEnvironment.cs" />
+    <Compile Include="Git\GitDirFinder.cs" />
+    <Compile Include="Git\GitPreparer.cs" />
+    <Compile Include="Helpers\DeleteHelper.cs" />
+    <Compile Include="Helpers\GitHelper.cs" />
+    <Compile Include="HelpWriter.cs" />
+    <Compile Include="Linker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Context.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Fody.targets" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FodyWeavers.xml" />
+    <EmbeddedResource Include="costura32\git2-06d772d.dll" />
+    <EmbeddedResource Include="costura64\git2-06d772d.dll" />
+    <Content Include="FodyWeavers.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
