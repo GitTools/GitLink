@@ -9,8 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A6694C2C-1A8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{16B74389-D647-4CF8-90D3-38E5D5256BC5}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\lib\repositories.config = ..\..\lib\repositories.config
-		..\..\lib\RestorePackages.bat = ..\..\lib\RestorePackages.bat
+		..\lib\repositories.config = ..\lib\repositories.config
+		..\lib\RestorePackages.bat = ..\lib\RestorePackages.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deployment", "deployment", "{99836492-466A-44E3-A92B-72CE3744F61C}"
@@ -19,12 +19,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{F3BABD63
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{88214CBE-4B92-4E22-8854-CC21543EE703}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\doc\history.txt = ..\..\doc\history.txt
+		..\doc\history.txt = ..\doc\history.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{4FBE79F3-A1F1-4107-AA8C-DCB241880EDE}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\tools\NuGet\NuGet.exe = ..\..\tools\NuGet\NuGet.exe
+		..\tools\NuGet\NuGet.exe = ..\tools\NuGet\NuGet.exe
 	EndProjectSection
 EndProject
 Global
