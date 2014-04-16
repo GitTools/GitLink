@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace GitHubLink.Helpers
+namespace GitHubLink
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +12,6 @@ namespace GitHubLink.Helpers
     using System.IO;
     using Catel;
     using Catel.Logging;
-    using SourceLink;
 
     public static class PdbStrHelper
     {

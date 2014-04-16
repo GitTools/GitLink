@@ -7,6 +7,7 @@
 namespace GitHubLink
 {
     using System;
+    using System.Linq;
     using Catel.Logging;
     using GitHubLink.Logging;
 
@@ -25,6 +26,9 @@ namespace GitHubLink
             try
             {
                 HelpWriter.WriteAppHeader(s => Log.Write(LogEvent.Info, s));
+
+                Log.Info("Arguments: {0}", string.Join(" ", args));
+                Log.Info(string.Empty);
 
                 var context = ArgumentParser.ParseArguments(args);
                 if (context.IsHelp)

@@ -69,7 +69,13 @@ namespace GitHubLink
                     continue;
                 }
 
-                if (IsSwitch("url", name))
+                if (IsSwitch("c", name))
+                {
+                    context.ConfigurationName = value;
+                    continue;
+                }
+
+                if (IsSwitch("u", name))
                 {
                     context.TargetUrl = value;
                     continue;

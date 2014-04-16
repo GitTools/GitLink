@@ -6,7 +6,6 @@
 
 namespace GitHubLink.Test
 {
-    using System;
     using Catel.Test;
     using GitHubLink;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,7 +24,7 @@ namespace GitHubLink.Test
         [TestMethod]
         public void CorrectlyParsesSolutionDirectory()
         {
-            var context = ArgumentParser.ParseArguments("solutionDirectory");
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/GeertvanHorrik/GitHubLink");
 
             Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
         }
@@ -50,11 +49,21 @@ namespace GitHubLink.Test
         [TestMethod]
         public void CorrectlyParsesUrlAndBranchName()
         {
-            var context = ArgumentParser.ParseArguments("solutionDirectory -url http://github.com/GeertvanHorrik/GitHubLink -b somebranch");
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/GeertvanHorrik/GitHubLink -b somebranch");
 
             Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
             Assert.AreEqual("http://github.com/GeertvanHorrik/GitHubLink", context.TargetUrl);
             Assert.AreEqual("somebranch", context.TargetBranch);
+        }
+
+        [TestMethod]
+        public void CorrectlyParsesUrlAndConfiguration()
+        {
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/GeertvanHorrik/GitHubLink -c someConfiguration");
+
+            Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
+            Assert.AreEqual("http://github.com/GeertvanHorrik/GitHubLink", context.TargetUrl);
+            Assert.AreEqual("someConfiguration", context.ConfigurationName);
         }
 
         [TestMethod]

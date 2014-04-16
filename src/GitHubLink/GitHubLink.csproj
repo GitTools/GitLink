@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <FodyPath>..\..\lib\Fody.1.14.0</FodyPath>
+    <NuGetPackageImportStamp>50d7f892</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -81,6 +81,7 @@
     <Compile Include="Helpers\DeleteHelper.cs" />
     <Compile Include="Helpers\GitHelper.cs" />
     <Compile Include="Helpers\PdbStrHelper.cs" />
+    <Compile Include="Helpers\ProjectHelper.cs" />
     <Compile Include="HelpWriter.cs" />
     <Compile Include="Linker.cs" />
     <Compile Include="Logging\OutputLogListener.cs" />
@@ -89,7 +90,6 @@
     <Compile Include="Context.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Fody.targets" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -109,7 +109,13 @@ xcopy /s /y /d "C:\Source\GitHubLink\lib\LibGit2Sharp.0.17.0.0\lib\net35\NativeB
 if not exist "$(TargetDir)NativeBinaries\amd64" md "$(TargetDir)NativeBinaries\amd64"
 xcopy /s /y /d "C:\Source\GitHubLink\lib\LibGit2Sharp.0.17.0.0\lib\net35\NativeBinaries\amd64\*.*" "$(TargetDir)NativeBinaries\amd64"</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="Fody.targets" />
+  <Import Project="..\..\lib\Fody.1.23.2\build\Fody.targets" Condition="Exists('..\..\lib\Fody.1.23.2\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\lib\Fody.1.23.2\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\lib\Fody.1.23.2\build\Fody.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

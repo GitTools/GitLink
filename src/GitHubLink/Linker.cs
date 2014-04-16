@@ -8,14 +8,12 @@ namespace GitHubLink
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using Catel;
     using Catel.Logging;
     using GitHubLink.Git;
-    using GitHubLink.Helpers;
-    using Microsoft.Build.Evaluation;
-    using SourceLink;
 
     /// <summary>
     /// Class Linker.
@@ -27,6 +25,9 @@ namespace GitHubLink
         public static int Link(Context context)
         {
             int? exitCode = null;
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
 
             context.ValidateContext();
 
@@ -58,7 +59,10 @@ namespace GitHubLink
                 {
                     try
                     {
-                        LinkProject(context, projectFile);
+                        if (!LinkProject(context, projectFile))
+                        {
+                            failedProjects.Add(projectFile);
+                        }
                     }
                     catch (Exception)
                     {
@@ -71,12 +75,13 @@ namespace GitHubLink
 
                 if (failedProjects.Count > 0)
                 {
+                    Log.Info(string.Empty);
                     Log.Info("The following projects have failed:");
                     Log.Indent();
 
                     foreach (var failedProject in failedProjects)
                     {
-                        Log.Info("* ", failedProject);
+                        Log.Info("* {0}", Path.GetFileName(failedProject));
                     }
 
                     Log.Unindent();
@@ -97,6 +102,11 @@ namespace GitHubLink
                 DeleteHelper.DeleteGitRepository(context.TempDirectory);
             }
 
+            stopWatch.Stop();
+
+            Log.Info(string.Empty);
+            Log.Info("Completed in '{0}'", stopWatch.Elapsed);
+
             return exitCode ?? -1;
         }
 
@@ -111,7 +121,7 @@ namespace GitHubLink
 
             try
             {
-                var project = new Project(projectFile);
+                var project = ProjectHelper.LoadProject(projectFile, context.ConfigurationName);
                 string projectName = project.GetProjectName();
 
                 var compilables = project.GetCompilableItems().Select(x => x.GetFullFileName());
