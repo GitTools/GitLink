@@ -50,10 +50,10 @@ namespace GitHubLink.Test
         [TestMethod]
         public void CorrectlyParsesUrlAndBranchName()
         {
-            var context = ArgumentParser.ParseArguments("solutionDirectory -url http://github.com/Particular/GitVersion.git -b somebranch");
+            var context = ArgumentParser.ParseArguments("solutionDirectory -url http://github.com/GeertvanHorrik/GitHubLink -b somebranch");
 
             Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
-            Assert.AreEqual("http://github.com/Particular/GitVersion.git", context.TargetUrl);
+            Assert.AreEqual("http://github.com/GeertvanHorrik/GitHubLink", context.TargetUrl);
             Assert.AreEqual("somebranch", context.TargetBranch);
         }
 
