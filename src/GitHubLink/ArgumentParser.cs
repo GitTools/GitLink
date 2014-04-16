@@ -37,7 +37,7 @@ namespace GitHubLink
 
             if (commandLineArguments.Count == 0)
             {
-                Log.ErrorAndThrowException<InvalidOperationException>("Invalid number of arguments");
+                Log.ErrorAndThrowException<GitHubLinkException>("Invalid number of arguments");
             }
 
             var firstArgument = commandLineArguments.First();
@@ -49,7 +49,7 @@ namespace GitHubLink
 
             if (commandLineArguments.Count < 3)
             {
-                Log.ErrorAndThrowException<InvalidOperationException>("Invalid number of arguments");
+                Log.ErrorAndThrowException<GitHubLinkException>("Invalid number of arguments");
             }
 
             context.SolutionDirectory = firstArgument;
@@ -63,6 +63,12 @@ namespace GitHubLink
                 var name = namedArguments[index];
                 var value = namedArguments[index + 1];
 
+                if (IsSwitch("l", name))
+                {
+                    context.LogFile = value;
+                    continue;
+                }
+
                 if (IsSwitch("url", name))
                 {
                     context.TargetUrl = value;
@@ -75,7 +81,7 @@ namespace GitHubLink
                     continue;
                 }
 
-                Log.ErrorAndThrowException<Exception>("Could not parse command line parameter '{0}'.", name);
+                Log.ErrorAndThrowException<GitHubLinkException>("Could not parse command line parameter '{0}'.", name);
             }
 
             return context;
@@ -100,7 +106,7 @@ namespace GitHubLink
         {
             if (namedArguments.Count.IsOdd())
             {
-                Log.ErrorAndThrowException<Exception>("Could not parse arguments: '{0}'.", string.Join(" ", commandLineArguments));
+                Log.ErrorAndThrowException<GitHubLinkException>("Could not parse arguments: '{0}'.", string.Join(" ", commandLineArguments));
             }
         }
 

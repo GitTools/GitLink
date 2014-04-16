@@ -4,11 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace GitHubLink.Console.Logging
+namespace GitHubLink.Logging
 {
     using Catel.Logging;
 
-    public class OutputLogListener : Catel.Logging.ConsoleLogListener
+    public class OutputLogListener : ConsoleLogListener
     {
         public OutputLogListener()
         {

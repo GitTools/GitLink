@@ -4,11 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace GitHubLink.Console
+namespace GitHubLink
 {
     using System;
     using Catel.Logging;
-    using GitHubLink.Console.Logging;
+    using GitHubLink.Logging;
 
     internal class Program
     {

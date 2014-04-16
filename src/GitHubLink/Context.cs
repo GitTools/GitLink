@@ -21,6 +21,7 @@ namespace GitHubLink
         }
 
         public bool IsHelp { get; set; }
+        public string LogFile { get; set; }
 
         public string SolutionDirectory { get; set; }
         public string TempDirectory { get; set; }
@@ -32,12 +33,12 @@ namespace GitHubLink
         {
             if (string.IsNullOrEmpty(SolutionDirectory))
             {
-                Log.ErrorAndThrowException<Exception>("Solution directory is missing");
+                Log.ErrorAndThrowException<GitHubLinkException>("Solution directory is missing");
             }
 
             if (string.IsNullOrEmpty(TargetUrl))
             {
-                Log.ErrorAndThrowException<Exception>("Target url is missing");
+                Log.ErrorAndThrowException<GitHubLinkException>("Target url is missing");
             }
         }
     }

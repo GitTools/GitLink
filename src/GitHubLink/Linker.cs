@@ -7,10 +7,14 @@
 namespace GitHubLink
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using Catel;
     using Catel.Logging;
     using GitHubLink.Git;
+    using GitHubLink.Helpers;
+    using Microsoft.Build.Evaluation;
     using SourceLink;
 
     /// <summary>
@@ -26,6 +30,19 @@ namespace GitHubLink
 
             context.ValidateContext();
 
+            if (!string.IsNullOrEmpty(context.LogFile))
+            {
+                var fileLogListener = new FileLogListener(context.LogFile, 25 * 1024);
+                fileLogListener.IgnoreCatelLogging = true;
+                LogManager.AddListener(fileLogListener);
+            }
+
+            if (!PdbStrHelper.IsPdbStrAvailable())
+            {
+                Log.Error("PdbStr is not found on the computer, please install 'Debugging Tools for Windows'");
+                return -1;
+            }
+
             try
             {
                 var gitPreparer = new GitPreparer(context);
@@ -33,57 +50,119 @@ namespace GitHubLink
 
                 var projectFiles = Directory.GetFiles(context.SolutionDirectory, "*.csproj", SearchOption.AllDirectories);
 
-                int successCount = 0;
-                int failedCount = 0;
-                Log.Info("Found '{0}' project(s)", projectFiles.Count());
+                int projectCount = projectFiles.Count();
+                var failedProjects = new List<string>();
+                Log.Info("Found '{0}' project(s)", projectCount);
 
                 foreach (var projectFile in projectFiles)
                 {
-                    Log.Info("Handling project '{0}'", projectFile);
-
-                    Log.Indent();
-
                     try
                     {
-                        var project = VsBuild.Project.LoadRelease.Static(projectFile);
-                        var files = project.Compiles; // -- "/**/*AssemblyInfo*.cs" 
-                        //proj.CreateSrcSrv (sprintf "%s/%s/{0}/%%var2%%" gitRaw gitName) repo.Revision (repo.Paths files)
+                        LinkProject(context, projectFile);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        Log.Warning(ex, "An error occurred while processing project '{0}'", projectFile);
+                        failedProjects.Add(projectFile);
+                    }
+                }
+
+                Log.Info("All projects are done. {0} of {1} succeeded", projectCount - failedProjects.Count,
+                    projectCount);
+
+                if (failedProjects.Count > 0)
+                {
+                    Log.Info("The following projects have failed:");
+                    Log.Indent();
+
+                    foreach (var failedProject in failedProjects)
+                    {
+                        Log.Info("* ", failedProject);
                     }
 
                     Log.Unindent();
-
-                    //VsProj.LoadRelease()
-
-                    //            SourceLink.
-
-                    //                    let proj = VsProj.LoadRelease projectFile
-                    //logfn "source linking %s" proj.OutputFilePdb
-                    //let files = proj.Compiles -- "/**/*AssemblyInfo*.cs" 
-                    ////repo.VerifyChecksums files
-                    //proj.VerifyPdbChecksums files
-                    //proj.CreateSrcSrv (sprintf "%s/%s/{0}/%%var2%%" gitRaw gitName) repo.Revision (repo.Paths files)
-                    //Pdbstr.exec proj.OutputFilePdb proj.OutputFilePdbSrcSrv
                 }
-
-                // TODO: CAll SourceLink
-                //SourceLink.
+            }
+            catch (GitHubLinkException ex)
+            {
+                Log.Error(ex, "An error occurred");
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Log.Error(ex, "An unexpected error occurred");
             }
             finally
             {
                 Log.Debug("Clearing temporary directory '{0}'", context.TempDirectory);
 
-                Directory.Delete(context.TempDirectory);
+                DeleteHelper.DeleteGitRepository(context.TempDirectory);
             }
 
             return exitCode ?? -1;
+        }
+
+        public static bool LinkProject(Context context, string projectFile)
+        {
+            Argument.IsNotNull(() => context);
+            Argument.IsNotNullOrWhitespace(() => projectFile);
+
+            Log.Info("Handling project '{0}'", projectFile);
+
+            Log.Indent();
+
+            try
+            {
+                var project = new Project(projectFile);
+                string projectName = project.GetProjectName();
+
+                var compilables = project.GetCompilableItems().Select(x => x.GetFullFileName());
+
+                var projectPdbFile = project.GetOutputPdbFile();
+                var projectStcSrvFile = project.GetOutputSrcSrvFile();
+                if (!File.Exists(projectPdbFile))
+                {
+                    Log.Warning("No pdb file found for '{0}', is project built in release mode with pdb files enabled?", projectName);
+                    Log.Unindent();
+                    return false;
+                }
+
+                // Note: verify doesn't work yet, maybe implement later
+                Log.Warning("Pdb verification not yet implemented, cannot garantuee that pdb-files are up-to-date");
+                //var missingFiles = project.VerifyPdbFiles(compilables);
+                //foreach (var missingFile in missingFiles)
+                //{
+                //    Log.Warning("Missing file '{0}' or checksum '{1}' did not match", missingFile.Key, missingFile.Value);
+                //}
+
+                var rawUrl = string.Format("{0}/{{0}}/%%var2%%", context.TargetUrl.GetGitHubRawUrl());
+                var revision = context.TempDirectory.GetLatestCommitShaOfCurrentBranch();
+
+                var paths = new Dictionary<string, string>();
+                foreach (var compilable in compilables)
+                {
+                    var relativePathForUrl = compilable.Replace(context.SolutionDirectory, string.Empty).Replace("\\", "/");
+                    while (relativePathForUrl.StartsWith("/"))
+                    {
+                        relativePathForUrl = relativePathForUrl.Substring(1, relativePathForUrl.Length - 1);
+                    }
+
+                    paths.Add(compilable, relativePathForUrl);
+                }
+
+                project.CreateSrcSrv(rawUrl, revision, paths);
+
+                Log.Debug("Created source server link file, updating pdb file '{0}'", projectPdbFile);
+
+                PdbStrHelper.Execute(projectPdbFile, projectStcSrvFile);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "An error occurred while processing project '{0}'", projectFile);
+                throw;
+            }
+
+            Log.Unindent();
+
+            return true;
         }
     }
 }

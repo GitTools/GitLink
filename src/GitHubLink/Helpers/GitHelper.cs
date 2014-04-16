@@ -58,7 +58,7 @@ namespace GitHubLink
 
             if (refs.Count == 0)
             {
-                Log.ErrorAndThrowException<Exception>(
+                Log.ErrorAndThrowException<GitHubLinkException>(
                     "Couldn't find any remote tips from remote '{0}' pointing at the commit '{1}'.", remote.Url,
                     headTipSha);
             }
@@ -66,7 +66,7 @@ namespace GitHubLink
             if (refs.Count > 1)
             {
                 var names = string.Join(", ", refs.Select(r => r.CanonicalName));
-                Log.ErrorAndThrowException<Exception>(
+                Log.ErrorAndThrowException<GitHubLinkException>(
                     "Found more than one remote tip from remote '{0}' pointing at the commit '{1}'. Unable to determine which one to use ({2}).",
                     remote.Url, headTipSha, names);
             }
@@ -131,7 +131,7 @@ namespace GitHubLink
                 return remote;
             }
 
-            Log.ErrorAndThrowException<Exception>(
+            Log.ErrorAndThrowException<GitHubLinkException>(
                 "{0} remote(s) have been detected. When being run on a TeamCity agent, the Git repository is expected to bear one (and no more than one) remote.",
                 howMany);
 
