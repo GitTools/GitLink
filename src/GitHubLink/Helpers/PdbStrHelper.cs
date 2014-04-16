@@ -70,12 +70,12 @@ namespace GitHubLink
             var pdbStrFileName = GetPdbStrFileName();
             var processStartInfo = new ProcessStartInfo(pdbStrFileName)
             {
-                Arguments = string.Format("\"{0}\" \"{1}\"", projectPdbFile, pdbStrFile),
+                Arguments = string.Format("-w -s:srcsrv -p:\"{0}\" -i:\"{1}\"", projectPdbFile, pdbStrFile),
                 CreateNoWindow = true,
                 UseShellExecute = false
             };
 
-            var process = new System.Diagnostics.Process();
+            var process = new Process();
             process.StartInfo = processStartInfo;
             process.Start();
             process.WaitForExit();

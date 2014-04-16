@@ -126,8 +126,8 @@ namespace GitHubLink
 
                 var compilables = project.GetCompilableItems().Select(x => x.GetFullFileName());
 
-                var projectPdbFile = project.GetOutputPdbFile();
-                var projectStcSrvFile = project.GetOutputSrcSrvFile();
+                var projectPdbFile = Path.GetFullPath(project.GetOutputPdbFile());
+                var projectStcSrvFile = Path.GetFullPath(project.GetOutputSrcSrvFile());
                 if (!File.Exists(projectPdbFile))
                 {
                     Log.Warning("No pdb file found for '{0}', is project built in release mode with pdb files enabled?", projectName);

@@ -52,4 +52,8 @@ When you need to log the information to a file, use the following command line:
 
 # How does it work #
 
-[TODO]
+The SrcSrv tool (Srcsrv.dll) enables a client to retrieve the exact version of the source files that were used to build an application. Because the source code for a module can change between versions and over the course of years, it is important to look at the source code as it existed when the version of the module in question was built.
+
+For more information, see the [official documentation of SrcSrv](http://msdn.microsoft.com/en-us/library/windows/hardware/ff558791(v=vs.85).aspx).
+
+GitHubLink creates a source index file and updates the PDB file so it will retrieve the files from the GitHub file handler.

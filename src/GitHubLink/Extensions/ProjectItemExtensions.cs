@@ -24,7 +24,7 @@ namespace GitHubLink
             Argument.IsNotNull(() => projectItem);
 
             var filePath = Path.Combine(projectItem.Project.DirectoryPath, projectItem.GetRelativeFileName());
-            var fullFile = Path.GetFullPath(filePath, System.Environment.CurrentDirectory);
+            var fullFile = System.IO.Path.GetFullPath(filePath);
             return fullFile;
         }
     }

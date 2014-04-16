@@ -7,7 +7,6 @@
 namespace GitHubLink
 {
     using System;
-    using System.Linq;
     using Catel.Logging;
     using GitHubLink.Logging;
 
