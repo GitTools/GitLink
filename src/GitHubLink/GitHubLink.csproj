@@ -42,6 +42,9 @@
   <PropertyGroup>
     <StartupObject>GitHubLink.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Icons\Logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Catel.Core">
       <HintPath>..\..\lib\Catel.Core.3.9.0.1404150943-beta\lib\net45\Catel.Core.dll</HintPath>
@@ -93,6 +96,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Icons\Logo.ico" />
     <EmbeddedResource Include="costura32\git2-06d772d.dll" />
     <EmbeddedResource Include="costura64\git2-06d772d.dll" />
     <Content Include="FodyWeavers.xml">

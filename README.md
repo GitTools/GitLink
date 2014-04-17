@@ -1,6 +1,8 @@
 GitHubLink
 ==========
 
+![GitHubLink](design/logo/logo_64.png)
+
 GitHubLink let's users step through your code hosted on GitHub! **This makes symbol servers obsolete** which saves you both time with uploading source files with symbols and the user no longer has to specify custom symbol servers (such as symbolsource.org).
 
  
@@ -9,6 +11,10 @@ The idea is based on the [SourceLink project](https://github.com/ctaggart/Source
 The advantage of GitHubLink is that it is fully customized for GitHub. It also works with GitHub urls so it **does not require a local git repository to work**. This makes it perfectly usable in continuous integration servers such as [Continua CI](http://www.finalbuilder.com/Continua-CI "Continua CI").
 
 Updating all the pdb files is very fast. A solution with over 85 projects will be handled in less than 30 seconds.
+
+When using GitHubLink, the user no longer has to specify symbol servers. He/she only has to enable the support for source servers in Visual Studio as shown in the image below:
+
+![Enabling source server support](doc/images/visualstudio_enablesourceserversupport.png)  
 
 # Using GitHubLink #
 
@@ -57,3 +63,7 @@ The SrcSrv tool (Srcsrv.dll) enables a client to retrieve the exact version of t
 For more information, see the [official documentation of SrcSrv](http://msdn.microsoft.com/en-us/library/windows/hardware/ff558791(v=vs.85).aspx).
 
 GitHubLink creates a source index file and updates the PDB file so it will retrieve the files from the GitHub file handler.
+
+# Icon #
+
+Link by Dominic Whittle from The Noun Project
