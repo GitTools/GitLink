@@ -39,7 +39,13 @@ namespace GitHubLink
                 return null;
             }
 
-            return splittedUrl[1];
+            var projectName = splittedUrl[1];
+            if (projectName.EndsWith(".git"))
+            {
+                projectName = projectName.Substring(0, projectName.Length - ".git".Length);
+            }
+
+            return projectName;
         }
 
         public static string GetGitHubProjectUrl(this string url)

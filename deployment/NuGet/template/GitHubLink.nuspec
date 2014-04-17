@@ -10,6 +10,7 @@
 	  GitHubLink let's users step through your code hosted on GitHub! This makes symbol servers obsolete which saves you both time 
       with uploading source files with symbols and the user no longer has to specify custom symbol servers (such as symbolsource.org).
 	</description>
+    
 	<summary>
 	</summary>
 	
@@ -18,7 +19,6 @@
 	<language>en-US</language>
 	<projectUrl>https://github.com/GeertvanHorrik/GitHubLink/</projectUrl>	
 	<licenseUrl>https://github.com/GeertvanHorrik/GitHubLink/blob/develop/LICENSE</licenseUrl>
-	<!--<iconUrl>file://content/icon.png</iconUrl>-->
-	<iconUrl>http://www.catenalogic.com/catel.png</iconUrl>
+	<iconUrl>https://raw.githubusercontent.com/GeertvanHorrik/GitHubLink/develop/design/logo/logo_64.png</iconUrl>
   </metadata>
 </package>

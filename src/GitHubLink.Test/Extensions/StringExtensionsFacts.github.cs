@@ -6,8 +6,6 @@
 
 namespace GitHubLink.Test.Extensions
 {
-    using System;
-    using GitHubLink;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     public class StringExtensionsFacts
@@ -43,6 +41,14 @@ namespace GitHubLink.Test.Extensions
             public void ReturnsValidUrl()
             {
                 var company = GitHubLink.StringExtensions.GetGitHubProjectUrl("https://github.com/GeertvanHorrik/GitHubLink");
+
+                Assert.AreEqual("https://github.com/GeertvanHorrik/GitHubLink", company);
+            }
+
+            [TestMethod]
+            public void ReturnsValidUrlWhenGitIsAppended()
+            {
+                var company = GitHubLink.StringExtensions.GetGitHubProjectUrl("https://github.com/GeertvanHorrik/GitHubLink.git");
 
                 Assert.AreEqual("https://github.com/GeertvanHorrik/GitHubLink", company);
             }
