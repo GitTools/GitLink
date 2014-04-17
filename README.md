@@ -5,6 +5,7 @@ GitHubLink
 
 GitHubLink let's users step through your code hosted on GitHub! **This makes symbol servers obsolete** which saves you both time with uploading source files with symbols and the user no longer has to specify custom symbol servers (such as symbolsource.org).
 
+![Stepping through external source code](doc/images/GitHubLink_example.gif)  
  
 The idea is based on the [SourceLink project](https://github.com/ctaggart/SourceLink "SourceLink project"). However it requires FAKE and no everyone likes to write code in F#. GitHubLink is available as console application and can be references as assembly as well to be used in other .NET assemblies.
 
