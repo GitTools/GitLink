@@ -13,7 +13,7 @@ Project website: https://github.com/GeertvanHorrik/GitHubLink
 **********************************************************
 
 ==================
-Version 1.0.0
+Version 1.1.0
 ==================
 
 Release date:
@@ -22,7 +22,30 @@ Release date:
 
 Added/fixed:
 ============
-xxx
+xx
+
+Roadmap:
+========
+See https://github.com/GeertvanHorrik/GitHubLink
+
+Known issues:
+=============
+See https://github.com/GeertvanHorrik/GitHubLink
+
+**********************************************************
+
+
+==================
+Version 1.0.0
+==================
+
+Release date:
+=============
+2014/04/17
+
+Added/fixed:
+============
+First initial release
 
 Roadmap:
 ========
