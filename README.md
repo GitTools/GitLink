@@ -7,7 +7,7 @@ GitHubLink let's users step through your code hosted on GitHub! **This makes sym
 
 ![Stepping through external source code](doc/images/GitHubLink_example.gif)  
  
-The idea is based on the [SourceLink project](https://github.com/ctaggart/SourceLink "SourceLink project"). However it requires FAKE and no everyone likes to write code in F#. GitHubLink is available as console application and can be references as assembly as well to be used in other .NET assemblies.
+The idea is based on the [SourceLink project](https://github.com/ctaggart/SourceLink "SourceLink project"). However it requires FAKE and not everyone likes to write code in F#. GitHubLink is available as console application and can be references as assembly as well to be used in other .NET assemblies.
 
 The advantage of GitHubLink is that it is fully customized for GitHub. It also works with GitHub urls so it **does not require a local git repository to work**. This makes it perfectly usable in continuous integration servers such as [Continua CI](http://www.finalbuilder.com/Continua-CI "Continua CI").
 
