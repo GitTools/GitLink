@@ -33,6 +33,45 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{D435DFD9-F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubLink.Test", "GitHubLink.Test\GitHubLink.Test.csproj", "{ED2B9579-59D2-40F2-BC5E-F4DC3DAB9A56}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{2A773B1D-106C-4583-8021-9AC0BB3E5408}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "design", "design", "{0A177E6C-1C04-416D-9473-82EE9A9ACFB4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FinalBuilder", "FinalBuilder", "{8EABCB0D-E792-4700-BDF9-E488CF2AB4A2}"
+	ProjectSection(SolutionItems) = preProject
+		..\deployment\FinalBuilder\GitHubLink.CreatePackages.fbp7 = ..\deployment\FinalBuilder\GitHubLink.CreatePackages.fbp7
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chocolatey", "Chocolatey", "{9765817D-03DD-4879-8A43-CB3086B6743F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "template", "template", "{BEEC31FD-7021-47BA-AB54-A5B4C7C23F7E}"
+	ProjectSection(SolutionItems) = preProject
+		..\deployment\Chocolatey\template\GitHubLink.nuspec = ..\deployment\Chocolatey\template\GitHubLink.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "template", "template", "{75559B70-907C-4375-A44B-8195B5027B3C}"
+	ProjectSection(SolutionItems) = preProject
+		..\deployment\NuGet\template\GitHubLink.nuspec = ..\deployment\NuGet\template\GitHubLink.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{5BC2D5A6-10B0-425B-BAB3-5AB3DFDC24B2}"
+	ProjectSection(SolutionItems) = preProject
+		..\deployment\Chocolatey\template\tools\chocolateyInstall.ps1 = ..\deployment\Chocolatey\template\tools\chocolateyInstall.ps1
+		..\deployment\Chocolatey\template\tools\chocolateyUninstall.ps1 = ..\deployment\Chocolatey\template\tools\chocolateyUninstall.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "logo", "logo", "{CADD04D7-0CC0-48BB-B3EC-F82E34895982}"
+	ProjectSection(SolutionItems) = preProject
+		..\design\logo\logo.ico = ..\design\logo\logo.ico
+		..\design\logo\logo_1024.png = ..\design\logo\logo_1024.png
+		..\design\logo\logo_128.png = ..\design\logo\logo_128.png
+		..\design\logo\logo_16.png = ..\design\logo\logo_16.png
+		..\design\logo\logo_256.png = ..\design\logo\logo_256.png
+		..\design\logo\logo_32.png = ..\design\logo\logo_32.png
+		..\design\logo\logo_512.png = ..\design\logo\logo_512.png
+		..\design\logo\logo_64.png = ..\design\logo\logo_64.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,5 +96,12 @@ Global
 		{A5FCE4FA-083A-4814-B38C-2AED9C37647F} = {A6694C2C-1A8A-49F0-B404-1BBB4D081808}
 		{D435DFD9-F741-4FCA-A65A-28B7D251983D} = {A6694C2C-1A8A-49F0-B404-1BBB4D081808}
 		{ED2B9579-59D2-40F2-BC5E-F4DC3DAB9A56} = {D435DFD9-F741-4FCA-A65A-28B7D251983D}
+		{2A773B1D-106C-4583-8021-9AC0BB3E5408} = {99836492-466A-44E3-A92B-72CE3744F61C}
+		{8EABCB0D-E792-4700-BDF9-E488CF2AB4A2} = {99836492-466A-44E3-A92B-72CE3744F61C}
+		{9765817D-03DD-4879-8A43-CB3086B6743F} = {99836492-466A-44E3-A92B-72CE3744F61C}
+		{BEEC31FD-7021-47BA-AB54-A5B4C7C23F7E} = {9765817D-03DD-4879-8A43-CB3086B6743F}
+		{75559B70-907C-4375-A44B-8195B5027B3C} = {2A773B1D-106C-4583-8021-9AC0BB3E5408}
+		{5BC2D5A6-10B0-425B-BAB3-5AB3DFDC24B2} = {BEEC31FD-7021-47BA-AB54-A5B4C7C23F7E}
+		{CADD04D7-0CC0-48BB-B3EC-F82E34895982} = {0A177E6C-1C04-416D-9473-82EE9A9ACFB4}
 	EndGlobalSection
 EndGlobal
