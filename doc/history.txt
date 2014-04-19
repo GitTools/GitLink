@@ -13,7 +13,7 @@ Project website: https://github.com/GeertvanHorrik/GitHubLink
 **********************************************************
 
 ==================
-Version 1.1.0
+Version 1.2.0
 ==================
 
 Release date:
@@ -22,7 +22,34 @@ Release date:
 
 Added/fixed:
 ============
-xx
+(*) #7 Show relative paths to make to file names easier to read
+(x) #5 When an error occurs, the console application will no longer wait for a key input press to prevent
+    it from blocking a build
+
+Roadmap:
+========
+See https://github.com/GeertvanHorrik/GitHubLink
+
+Known issues:
+=============
+See https://github.com/GeertvanHorrik/GitHubLink
+
+**********************************************************
+
+
+==================
+Version 1.1.0
+==================
+
+Release date:
+=============
+2014/04/19
+
+Added/fixed:
+============
+(+) #1 Created Chocolatey package for easier deployment
+(+) #2 Added support for VB projects
+(+) #3 Created NuGet package for deployment when being referenced from code
 
 Roadmap:
 ========

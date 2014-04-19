@@ -83,7 +83,7 @@ namespace GitHubLink
 
                     foreach (var failedProject in failedProjects)
                     {
-                        Log.Info("* {0}", Path.GetFileName(failedProject));
+                        Log.Info("* {0}", context.GetRelativePath(failedProject));
                     }
 
                     Log.Unindent();
@@ -112,19 +112,21 @@ namespace GitHubLink
             return exitCode ?? -1;
         }
 
-        public static bool LinkProject(Context context, string projectFile)
+        private static bool LinkProject(Context context, string projectFile)
         {
             Argument.IsNotNull(() => context);
             Argument.IsNotNullOrWhitespace(() => projectFile);
 
-            Log.Info("Handling project '{0}'", projectFile);
-
-            Log.Indent();
+            string projectName = context.GetRelativePath(projectFile);
 
             try
             {
                 var project = ProjectHelper.LoadProject(projectFile, context.ConfigurationName);
-                string projectName = project.GetProjectName();
+                projectName = project.GetProjectName();
+
+                Log.Info("Handling project '{0}'", projectName);
+
+                Log.Indent();
 
                 var compilables = project.GetCompilableItems().Select(x => x.GetFullFileName());
 
@@ -132,8 +134,7 @@ namespace GitHubLink
                 var projectStcSrvFile = Path.GetFullPath(project.GetOutputSrcSrvFile());
                 if (!File.Exists(projectPdbFile))
                 {
-                    Log.Warning("No pdb file found for '{0}', is project built in release mode with pdb files enabled?", projectName);
-                    Log.Unindent();
+                    Log.Warning("No pdb file found for '{0}', is project built in '{1}' mode with pdb files enabled?", projectName, context.ConfigurationName);
                     return false;
                 }
 
@@ -151,7 +152,8 @@ namespace GitHubLink
                 var paths = new Dictionary<string, string>();
                 foreach (var compilable in compilables)
                 {
-                    var relativePathForUrl = compilable.Replace(context.SolutionDirectory, string.Empty).Replace("\\", "/");
+                    var relativePathForUrl = compilable.Replace(context.SolutionDirectory, string.Empty)
+                        .Replace("\\", "/");
                     while (relativePathForUrl.StartsWith("/"))
                     {
                         relativePathForUrl = relativePathForUrl.Substring(1, relativePathForUrl.Length - 1);
@@ -162,17 +164,20 @@ namespace GitHubLink
 
                 project.CreateSrcSrv(rawUrl, revision, paths);
 
-                Log.Debug("Created source server link file, updating pdb file '{0}'", projectPdbFile);
+                Log.Debug("Created source server link file, updating pdb file '{0}'", context.GetRelativePath(projectPdbFile));
 
                 PdbStrHelper.Execute(projectPdbFile, projectStcSrvFile);
             }
             catch (Exception ex)
             {
-                Log.Warning(ex, "An error occurred while processing project '{0}'", projectFile);
+                Log.Warning(ex, "An error occurred while processing project '{0}'", projectName);
                 throw;
             }
-
-            Log.Unindent();
+            finally
+            {
+                Log.Unindent();
+                Log.Info(string.Empty);
+            }
 
             return true;
         }

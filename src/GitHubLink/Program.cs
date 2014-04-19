@@ -18,6 +18,10 @@ namespace GitHubLink
 
         private static int Main(string[] args)
         {
+#if DEBUG
+            LogManager.AddDebugListener(true);
+#endif
+
             var consoleLogListener = new OutputLogListener();
 
             LogManager.AddListener(consoleLogListener);
@@ -49,7 +53,6 @@ namespace GitHubLink
             }
             catch (Exception)
             {
-                WaitForKeyPress();
                 return -1;
             }
         }

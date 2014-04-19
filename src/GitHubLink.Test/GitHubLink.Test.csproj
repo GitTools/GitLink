@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="ArgumentParserFacts.cs" />
     <Compile Include="ContextFacts.cs" />
+    <Compile Include="Extensions\ContextExtensionsFacts.cs" />
     <Compile Include="Extensions\StringExtensionsFacts.github.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
