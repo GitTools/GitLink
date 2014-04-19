@@ -18,11 +18,13 @@ Version 1.1.0
 
 Release date:
 =============
-2014/xx/xx
+2014/04/19
 
 Added/fixed:
 ============
-xx
+(+) #1 Created Chocolatey package for easier deployment
+(+) #2 Added support for VB projects
+(+) #3 Created NuGet package for deployment when being referenced from code
 
 Roadmap:
 ========
