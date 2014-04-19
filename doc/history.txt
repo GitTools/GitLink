@@ -13,6 +13,30 @@ Project website: https://github.com/GeertvanHorrik/GitHubLink
 **********************************************************
 
 ==================
+Version 1.2.0
+==================
+
+Release date:
+=============
+2014/xx/xx
+
+Added/fixed:
+============
+(x) #5 When an error occurs, the console application will no longer wait for a key input press to prevent
+    it from blocking a build
+
+Roadmap:
+========
+See https://github.com/GeertvanHorrik/GitHubLink
+
+Known issues:
+=============
+See https://github.com/GeertvanHorrik/GitHubLink
+
+**********************************************************
+
+
+==================
 Version 1.1.0
 ==================
 

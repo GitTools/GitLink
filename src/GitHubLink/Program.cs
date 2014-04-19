@@ -49,7 +49,6 @@ namespace GitHubLink
             }
             catch (Exception)
             {
-                WaitForKeyPress();
                 return -1;
             }
         }
