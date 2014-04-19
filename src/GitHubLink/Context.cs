@@ -12,13 +12,18 @@ namespace GitHubLink
 
     public class Context
     {
-        private static ILog Log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
+        private readonly Lazy<string> _tempDirectory = new Lazy<string>(() =>
+        {
+            var tempDirectory = Path.Combine(Path.GetTempPath(), "SourceLink", Guid.NewGuid().ToString());
+            Directory.CreateDirectory(tempDirectory);
+
+            return tempDirectory;
+        }); 
 
         public Context()
         {
-            TempDirectory = Path.Combine(Path.GetTempPath(), "SourceLink", Guid.NewGuid().ToString());
-            Directory.CreateDirectory(TempDirectory);
-
             ConfigurationName = "Release";
         }
 
@@ -27,7 +32,7 @@ namespace GitHubLink
 
         public string SolutionDirectory { get; set; }
         public string ConfigurationName { get; set; }
-        public string TempDirectory { get; private set; }
+        public string TempDirectory { get { return _tempDirectory.Value; } }
 
         public string TargetUrl { get; set; }
         public string TargetBranch { get; set; }
