@@ -49,7 +49,9 @@ namespace GitHubLink
                 var gitPreparer = new GitPreparer(context);
                 gitPreparer.Prepare();
 
-                var projectFiles = Directory.GetFiles(context.SolutionDirectory, "*.csproj", SearchOption.AllDirectories);
+                var projectFiles = new List<string>();
+                projectFiles.AddRange(Directory.GetFiles(context.SolutionDirectory, "*.csproj", SearchOption.AllDirectories));
+                projectFiles.AddRange(Directory.GetFiles(context.SolutionDirectory, "*.vbproj", SearchOption.AllDirectories));
 
                 int projectCount = projectFiles.Count();
                 var failedProjects = new List<string>();

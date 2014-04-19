@@ -27,7 +27,7 @@ namespace GitHubLink
 
         public string SolutionDirectory { get; set; }
         public string ConfigurationName { get; set; }
-        public string TempDirectory { get; set; }
+        public string TempDirectory { get; private set; }
 
         public string TargetUrl { get; set; }
         public string TargetBranch { get; set; }
