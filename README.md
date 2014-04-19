@@ -3,13 +3,16 @@ GitHubLink
 
 ![GitHubLink](design/logo/logo_64.png)
 
-GitHubLink let's users step through your code hosted on GitHub! **This makes symbol servers obsolete** which saves you both time with uploading source files with symbols and the user no longer has to specify custom symbol servers (such as symbolsource.org).
+GitHubLink let's users step through your code hosted on GitHub! **Help making .NET open source projects more accessible by enabling this for your .NET projects, it's just a single additional step in your build**. See the list of [projects using GitHubLink](#ProjectsUsingGitHubLink).
+
+GitHubLink makes symbol servers obsolete which saves you both time with uploading source files with symbols and the user no longer has to specify custom symbol servers (such as symbolsource.org).
 
 ![Stepping through external source code](doc/images/GitHubLink_example.gif)  
- 
-The idea is based on the [SourceLink project](https://github.com/ctaggart/SourceLink "SourceLink project"). However it requires FAKE and not everyone likes to write code in F#. GitHubLink is available as console application and can be references as assembly as well to be used in other .NET assemblies.
 
-The advantage of GitHubLink is that it is fully customized for GitHub. It also works with GitHub urls so it **does not require a local git repository to work**. This makes it perfectly usable in continuous integration servers such as [Continua CI](http://www.finalbuilder.com/Continua-CI "Continua CI").
+
+The idea is based on the <a href="https://github.com/ctaggart/SourceLink"  target="_blank">SourceLink project</a>. However it requires FAKE and not everyone likes to write code in F#. GitHubLink is available as console application and can be references as assembly as well to be used in other .NET assemblies.
+
+The advantage of GitHubLink is that it is fully customized for GitHub. It also works with GitHub urls so it **does not require a local git repository to work**. This makes it perfectly usable in continuous integration servers such as <a href="http://www.finalbuilder.com/Continua-CI" target="_blank">Continua CI</a>.
 
 Updating all the pdb files is very fast. A solution with over 85 projects will be handled in less than 30 seconds.
 
@@ -92,13 +95,13 @@ The releases will be available as separate executable download on the [releases 
 
 ## Get it via Chocolatey ##
 
-If you want to install the tool on your (build) computer, the package is available via [Chocolatey](https://chocolatey.org/). To install, use the following command:
+If you want to install the tool on your (build) computer, the package is available via <a href="https://chocolatey.org/" target="_blank">Chocolatey</a>. To install, use the following command:
 
     cinst GitHubLink
 
 ## Get it via NuGet ##
 
-If you want to reference the assembly to use it in code, the recommended way to get it is via [NuGet](http://www.nuget.org/). 
+If you want to reference the assembly to use it in code, the recommended way to get it is via <a href="http://www.nuget.org/" target="_blank">NuGet</a>. 
 
 **Note that getting GitHubLink via NuGet will add it as a reference to the project**
 
@@ -106,9 +109,22 @@ If you want to reference the assembly to use it in code, the recommended way to 
 
 The SrcSrv tool (Srcsrv.dll) enables a client to retrieve the exact version of the source files that were used to build an application. Because the source code for a module can change between versions and over the course of years, it is important to look at the source code as it existed when the version of the module in question was built.
 
-For more information, see the [official documentation of SrcSrv](http://msdn.microsoft.com/en-us/library/windows/hardware/ff558791(v=vs.85).aspx).
+For more information, see the <a href="http://msdn.microsoft.com/en-us/library/windows/hardware/ff558791(v=vs.85).aspx" target="_blank">official documentation of SrcSrv</a>.
 
 GitHubLink creates a source index file and updates the PDB file so it will retrieve the files from the GitHub file handler.
+
+<a name="ProjectsUsingGitHubLink"></a>
+# Projects using GitHubLink #
+
+Below is a list of projects already using GitHubLink.
+
+- <a href="http://www.catelproject.com" target="_blank">Catel</a>
+- <a href="https://github.com/GeertvanHorrik/GitHubLink" target="_blank">GitHubLink</a>
+
+Are you using GitHubLink in your projects? Let us know and we will add your project to the list.
+
+*Note that you can also create a pull request on this document and add it yourself.* 
+ 
 
 # Icon #
 
