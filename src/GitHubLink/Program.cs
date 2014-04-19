@@ -37,7 +37,7 @@ namespace GitHubLink
                 if (context.IsHelp)
                 {
                     HelpWriter.WriteHelp(s => Log.Write(LogEvent.Info, s));
-                    
+
                     WaitForKeyPress();
 
                     return 0;
@@ -54,6 +54,11 @@ namespace GitHubLink
             catch (Exception)
             {
                 return -1;
+            }
+            finally
+            {
+                // Required to make console white again, see https://catelproject.atlassian.net/browse/CTL-418
+                Log.Info("Exiting");
             }
         }
 
