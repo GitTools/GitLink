@@ -17,9 +17,9 @@ When using GitHubLink, the user no longer has to specify symbol servers. He/she 
 
 ![Enabling source server support](doc/images/visualstudio_enablesourceserversupport.png)  
 
-# Using GitHubLink #
+# Using GitHubLink as command line tool #
 
-Using GitHubLink is very simple:
+Using GitHubLink via the command line is very simple:
 
 1. Build the software (in release mode with pdb files enabled)
 2. Run the console application with the right command line parameters
@@ -56,6 +56,31 @@ When you need to log the information to a file, use the following command line:
 
     GitHubLink.exe c:\source\catel -u https://github.com/catel/catel -b develop -l GitHubLinkLog.log
 
+
+# Using GitHubLink in code #
+
+GitHubLink is built with 2 usages in mind: command line and code reference. Though most people will use the command line version, it is possible to reference the executable and use the logic in code.
+
+The command line implementation uses the same available API. 
+
+## Creating a context ##
+
+To link files to a GitHub project, a context must be created. The command line version does this by using the *ArgumentParser* class. It is also possible to create a context from scratch as shown in the example below:
+
+    var context = new GitHubLink.Context();
+    context.SolutionDirectory = @"c:\source\catel";
+    context.TargetUrl = "https://github.com/catel/catel";
+    context.TargetBranch = "develop";
+
+It is possible to create a context based on command line arguments:
+
+    var context = ArgumentParser.Parse(@"c:\source\catel -u https://github.com/catel/catel -b develop");
+
+## Linking a context ##
+
+Once a context is created, the *Linker* class can be used to actually link the files:
+
+    Linker.Link(context);
 
 # How does it work #
 
