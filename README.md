@@ -82,6 +82,26 @@ Once a context is created, the *Linker* class can be used to actually link the f
 
     Linker.Link(context);
 
+# How to get GitHubLink #
+
+There are three general ways to get GitHubLink:.
+
+## Get it from GitHub ##
+
+The releases will be available as separate executable download on the [releases tab](https://github.com/GeertvanHorrik/GitHubLink/releases) of the project.
+
+## Get it via Chocolatey ##
+
+If you want to install the tool on your (build) computer, the package is available via [Chocolatey](https://chocolatey.org/). To install, use the following command:
+
+    cinst GitHubLink
+
+## Get it via NuGet ##
+
+If you want to reference the assembly to use it in code, the recommended way to get it is via [NuGet](http://www.nuget.org/). 
+
+**Note that getting GitHubLink via NuGet will add it as a reference to the project**
+
 # How does it work #
 
 The SrcSrv tool (Srcsrv.dll) enables a client to retrieve the exact version of the source files that were used to build an application. Because the source code for a module can change between versions and over the course of years, it is important to look at the source code as it existed when the version of the module in question was built.
