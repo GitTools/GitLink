@@ -22,6 +22,7 @@ Release date:
 
 Added/fixed:
 ============
+(*) #7 Show relative paths to make to file names easier to read
 (x) #5 When an error occurs, the console application will no longer wait for a key input press to prevent
     it from blocking a build
 

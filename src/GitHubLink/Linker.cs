@@ -83,7 +83,7 @@ namespace GitHubLink
 
                     foreach (var failedProject in failedProjects)
                     {
-                        Log.Info("* {0}", Path.GetFileName(failedProject));
+                        Log.Info("* {0}", context.GetRelativePath(failedProject));
                     }
 
                     Log.Unindent();
@@ -117,7 +117,7 @@ namespace GitHubLink
             Argument.IsNotNull(() => context);
             Argument.IsNotNullOrWhitespace(() => projectFile);
 
-            string projectName = projectFile;
+            string projectName = context.GetRelativePath(projectFile);
 
             try
             {
@@ -164,7 +164,7 @@ namespace GitHubLink
 
                 project.CreateSrcSrv(rawUrl, revision, paths);
 
-                Log.Debug("Created source server link file, updating pdb file '{0}'", projectPdbFile);
+                Log.Debug("Created source server link file, updating pdb file '{0}'", context.GetRelativePath(projectPdbFile));
 
                 PdbStrHelper.Execute(projectPdbFile, projectStcSrvFile);
             }
