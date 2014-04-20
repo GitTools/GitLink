@@ -22,7 +22,7 @@ Release date:
 
 Added/fixed:
 ============
-xxx
+(x) #8 Console stays red after an error occurs
 
 **********************************************************
 

@@ -55,11 +55,6 @@ namespace GitHubLink
             {
                 return -1;
             }
-            finally
-            {
-                // Required to make console white again, see https://catelproject.atlassian.net/browse/CTL-418
-                Log.Info("Exiting");
-            }
         }
 
         #endregion
