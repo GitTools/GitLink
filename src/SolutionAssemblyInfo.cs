@@ -34,5 +34,5 @@ using System.Resources;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.2.0")]
-[assembly: AssemblyInformationalVersion("1.2.0, manual released in Visual Studio")]
+[assembly: AssemblyInformationalVersion("1.2.0, manually released in Visual Studio")]
 [assembly: CLSCompliant(false)]

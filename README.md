@@ -10,7 +10,7 @@ GitHubLink makes symbol servers obsolete which saves you both time with uploadin
 ![Stepping through external source code](doc/images/GitHubLink_example.gif)  
 
 
-The idea is based on the <a href="https://github.com/ctaggart/SourceLink"  target="_blank">SourceLink project</a>. However it requires FAKE and not everyone likes to write code in F#. GitHubLink is available as console application and can be references as assembly as well to be used in other .NET assemblies.
+This application is based on the <a href="https://github.com/ctaggart/SourceLink"  target="_blank">SourceLink project</a>. SourceLink requires FAKE to run and not everyone likes to write code in F#. GitHubLink is a wrapper around SourceLink specifically written to be easily used from any build system (locally or a build server) and in any .NET language. It also provides new features such as standard integration with GitHub and the possibility to use remote repositories. GitHubLink is available as console application and can be referenced as assembly to be used in other .NET assemblies.
 
 The advantage of GitHubLink is that it is fully customized for GitHub. It also works with GitHub urls so it **does not require a local git repository to work**. This makes it perfectly usable in continuous integration servers such as <a href="http://www.finalbuilder.com/Continua-CI" target="_blank">Continua CI</a>.
 

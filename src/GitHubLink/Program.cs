@@ -22,7 +22,6 @@ namespace GitHubLink
 #endif
 
             var consoleLogListener = new OutputLogListener();
-
             LogManager.AddListener(consoleLogListener);
 
             try
