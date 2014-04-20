@@ -1,8 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SolutionAssemblyInfo.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 #pragma warning disable 1699    // 1699 = Use command line option '/keyfile' or appropriate project settings instead of 'AssemblyKeyFile'
 
@@ -34,5 +35,4 @@ using System.Resources;
 
 [assembly: AssemblyVersion("1.2.0")]
 [assembly: AssemblyInformationalVersion("1.2.0, manual released in Visual Studio")]
-
 [assembly: CLSCompliant(false)]

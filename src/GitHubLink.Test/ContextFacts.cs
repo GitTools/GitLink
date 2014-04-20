@@ -1,12 +1,12 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ContextFacts.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+
 namespace GitHubLink.Test
 {
-    using Catel;
     using Catel.Test;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

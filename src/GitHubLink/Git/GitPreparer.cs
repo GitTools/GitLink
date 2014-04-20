@@ -1,8 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GitPreparer.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink.Git
 {
@@ -13,15 +14,9 @@ namespace GitHubLink.Git
 
     public class GitPreparer
     {
-        #region Constants
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-        #endregion
 
-        #region Fields
         private readonly Context _context;
-        #endregion
-
-        #region Constructors
 
         public GitPreparer(Context context)
         {
@@ -29,10 +24,6 @@ namespace GitHubLink.Git
 
             _context = context;
         }
-
-        #endregion
-
-        #region Methods
 
         public string Prepare()
         {
@@ -85,7 +76,5 @@ namespace GitHubLink.Git
 
             return gitDirectory;
         }
-
-        #endregion
     }
 }

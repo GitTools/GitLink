@@ -1,8 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ContextExtensionsFacts.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink.Test.Extensions
 {
@@ -10,8 +11,6 @@ namespace GitHubLink.Test.Extensions
 
     public class ContextExtensionsFacts
     {
-        #region Nested type: TheGetRelativePathMethod
-
         [TestClass]
         public class TheGetRelativePathMethod
         {
@@ -41,7 +40,5 @@ namespace GitHubLink.Test.Extensions
                 Assert.AreEqual(@"..\catel\src\subdir1\somefile.cs", relativePath);
             }
         }
-
-        #endregion
     }
 }

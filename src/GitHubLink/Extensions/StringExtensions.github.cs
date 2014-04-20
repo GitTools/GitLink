@@ -1,8 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StringExtensions.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+// <copyright file="StringExtensions.github.cs" company="CatenaLogic">
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink
 {
@@ -11,14 +12,11 @@ namespace GitHubLink
 
     public static partial class StringExtensions
     {
-        private const string GitHubUrl = "https://github.com";
-        private const string GitHubRawUrl = "https://raw.github.com";
-
         public static string GetGitHubCompanyName(this string url)
         {
             Argument.IsNotNullOrWhitespace(() => url);
 
-            url = url.Replace(GitHubUrl, string.Empty);
+            url = url.Replace(GitHubLinkEnvironment.GitHubUrl, string.Empty);
             var splittedUrl = url.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             if (splittedUrl.Length != 2)
             {
@@ -32,8 +30,8 @@ namespace GitHubLink
         {
             Argument.IsNotNullOrWhitespace(() => url);
 
-            url = url.Replace(GitHubUrl, string.Empty);
-            var splittedUrl = url.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
+            url = url.Replace(GitHubLinkEnvironment.GitHubUrl, string.Empty);
+            var splittedUrl = url.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             if (splittedUrl.Length != 2)
             {
                 return null;
@@ -64,7 +62,7 @@ namespace GitHubLink
 
             var company = GetGitHubCompanyName(url);
 
-            return string.Format("{0}/{1}", GitHubUrl, company);
+            return string.Format("{0}/{1}", GitHubLinkEnvironment.GitHubUrl, company);
         }
 
         public static string GetGitHubRawUrl(this string url)
@@ -74,7 +72,7 @@ namespace GitHubLink
             var company = GetGitHubCompanyName(url);
             var project = GetGitHubProjectName(url);
 
-            return string.Format("{0}/{1}/{2}", GitHubRawUrl, company, project);
+            return string.Format("{0}/{1}/{2}", GitHubLinkEnvironment.GitHubRawUrl, company, project);
         }
     }
 }

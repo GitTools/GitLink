@@ -1,8 +1,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IntExtensions.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink
 {
@@ -10,7 +11,7 @@ namespace GitHubLink
     {
         public static bool IsOdd(this int number)
         {
-            return number %2 != 0;
+            return number % 2 != 0;
         }
     }
 }

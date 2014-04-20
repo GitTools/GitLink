@@ -1,8 +1,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GitHelper.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink
 {
@@ -13,13 +14,7 @@ namespace GitHubLink
 
     public static class GitHelper
     {
-        #region Constants
-
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-
-        #endregion
-
-        #region Methods
 
         public static void NormalizeGitDirectory(string gitDirectory)
         {
@@ -58,17 +53,13 @@ namespace GitHubLink
 
             if (refs.Count == 0)
             {
-                Log.ErrorAndThrowException<GitHubLinkException>(
-                    "Couldn't find any remote tips from remote '{0}' pointing at the commit '{1}'.", remote.Url,
-                    headTipSha);
+                Log.ErrorAndThrowException<GitHubLinkException>("Couldn't find any remote tips from remote '{0}' pointing at the commit '{1}'.", remote.Url, headTipSha);
             }
 
             if (refs.Count > 1)
             {
                 var names = string.Join(", ", refs.Select(r => r.CanonicalName));
-                Log.ErrorAndThrowException<GitHubLinkException>(
-                    "Found more than one remote tip from remote '{0}' pointing at the commit '{1}'. Unable to determine which one to use ({2}).",
-                    remote.Url, headTipSha, names);
+                Log.ErrorAndThrowException<GitHubLinkException>("Found more than one remote tip from remote '{0}' pointing at the commit '{1}'. Unable to determine which one to use ({2}).", remote.Url, headTipSha, names);
             }
 
             var canonicalName = refs[0].CanonicalName;
@@ -76,9 +67,7 @@ namespace GitHubLink
 
             if (!canonicalName.StartsWith("refs/pull/"))
             {
-                Log.ErrorAndThrowException<Exception>(
-                    "Remote tip '{0}' from remote '{1}' doesn't look like a valid pull request.", canonicalName,
-                    remote.Url);
+                Log.ErrorAndThrowException<Exception>("Remote tip '{0}' from remote '{1}' doesn't look like a valid pull request.", canonicalName, remote.Url);
             }
 
             var fakeBranchName = canonicalName.Replace("refs/pull/", "refs/heads/pull/");
@@ -99,8 +88,7 @@ namespace GitHubLink
                 var localCanonicalName = "refs/heads/" + remoteTrackingReference.CanonicalName.Substring(prefix.Length);
                 if (repo.Refs.Any(x => x.CanonicalName == localCanonicalName))
                 {
-                    Log.Info("Skipping local branch creation since it already exists '{0}'.",
-                        remoteTrackingReference.CanonicalName);
+                    Log.Info("Skipping local branch creation since it already exists '{0}'.", remoteTrackingReference.CanonicalName);
                     continue;
                 }
 
@@ -113,8 +101,7 @@ namespace GitHubLink
                 }
                 else
                 {
-                    repo.Refs.Add(localCanonicalName,
-                        new ObjectId(symbolicReference.ResolveToDirectReference().TargetIdentifier), true);
+                    repo.Refs.Add(localCanonicalName, new ObjectId(symbolicReference.ResolveToDirectReference().TargetIdentifier), true);
                 }
             }
         }
@@ -131,13 +118,9 @@ namespace GitHubLink
                 return remote;
             }
 
-            Log.ErrorAndThrowException<GitHubLinkException>(
-                "{0} remote(s) have been detected. When being run on a TeamCity agent, the Git repository is expected to bear one (and no more than one) remote.",
-                howMany);
+            Log.ErrorAndThrowException<GitHubLinkException>("{0} remote(s) have been detected. When being run on a TeamCity agent, the Git repository is expected to bear one (and no more than one) remote.", howMany);
 
             return null;
         }
-
-        #endregion
     }
 }

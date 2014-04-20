@@ -1,12 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ContextExtensions.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink
 {
     using Catel;
+    using Catel.IO;
 
     public static class ContextExtensions
     {
@@ -15,7 +17,7 @@ namespace GitHubLink
             Argument.IsNotNull(() => context);
             Argument.IsNotNull(() => fullPath);
 
-            return Catel.IO.Path.GetRelativePath(fullPath, context.SolutionDirectory);
+            return Path.GetRelativePath(fullPath, context.SolutionDirectory);
         }
     }
 }

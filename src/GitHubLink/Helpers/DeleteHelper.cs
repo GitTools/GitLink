@@ -1,8 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DeleteHelper.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink
 {
@@ -10,8 +11,6 @@ namespace GitHubLink
 
     public static class DeleteHelper
     {
-        #region Methods
-
         public static void DeleteGitRepository(string directory)
         {
             if (string.IsNullOrEmpty(directory))
@@ -31,7 +30,5 @@ namespace GitHubLink
 
             Directory.Delete(directory, true);
         }
-
-        #endregion
     }
 }
