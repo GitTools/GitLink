@@ -1,8 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GitHubLinkException.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink
 {
@@ -10,13 +11,9 @@ namespace GitHubLink
 
     public class GitHubLinkException : Exception
     {
-        #region Constructors
-
         public GitHubLinkException(string message)
             : base(message)
         {
         }
-
-        #endregion
     }
 }

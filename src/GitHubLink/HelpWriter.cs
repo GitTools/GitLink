@@ -1,8 +1,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HelpWriter.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink
 {
@@ -11,11 +12,9 @@ namespace GitHubLink
 
     public static class HelpWriter
     {
-        #region Methods
-
         public static void WriteAppHeader(Action<string> writer)
         {
-            var assembly = typeof(HelpWriter).Assembly;
+            var assembly = typeof (HelpWriter).Assembly;
 
             writer(string.Format("{0} v{1}", assembly.Title(), assembly.Version()));
             writer("===================");
@@ -38,7 +37,5 @@ GitHubLink [solutionPath] -url [urlToRepository]
 ";
             writer(message);
         }
-
-        #endregion
     }
 }

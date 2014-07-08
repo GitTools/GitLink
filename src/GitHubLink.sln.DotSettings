@@ -1,9 +1,12 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/CodeEditing/GenerateMemberBody/CopyXmlDocumentation/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/AnalysisEnabled/@EntryValue">SOLUTION</s:String>
 	
 	<s:String x:Key="/Default/CodeStyle/CodeCleanup/Profiles/=Code_0020cleanup/@EntryIndexedValue">&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;Profile name="Code cleanup"&gt;&lt;CSArrangeThisQualifier&gt;True&lt;/CSArrangeThisQualifier&gt;&lt;CSMakeFieldReadonly&gt;True&lt;/CSMakeFieldReadonly&gt;&lt;CSUpdateFileHeader&gt;True&lt;/CSUpdateFileHeader&gt;&lt;CSOptimizeUsings&gt;&lt;OptimizeUsings&gt;True&lt;/OptimizeUsings&gt;&lt;EmbraceInRegion&gt;False&lt;/EmbraceInRegion&gt;&lt;RegionName&gt;&lt;/RegionName&gt;&lt;/CSOptimizeUsings&gt;&lt;CSReformatCode&gt;True&lt;/CSReformatCode&gt;&lt;CSReorderTypeMembers&gt;True&lt;/CSReorderTypeMembers&gt;&lt;AspOptimizeRegisterDirectives&gt;True&lt;/AspOptimizeRegisterDirectives&gt;&lt;HtmlReformatCode&gt;True&lt;/HtmlReformatCode&gt;&lt;CSharpFormatDocComments&gt;False&lt;/CSharpFormatDocComments&gt;&lt;/Profile&gt;</s:String>
 	
 	<s:String x:Key="/Default/CodeStyle/CodeCleanup/SilentCleanupProfile/@EntryValue">Code cleanup</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_LINQ_QUERY/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTILINE_CALLS_CHAIN/@EntryValue">True</s:Boolean>
 	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/BLANK_LINES_AFTER_START_COMMENT/@EntryValue">2</s:Int64>
 	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/BLANK_LINES_AROUND_NAMESPACE/@EntryValue">1</s:Int64>
 	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/BLANK_LINES_INSIDE_REGION/@EntryValue">0</s:Int64>
@@ -15,6 +18,8 @@
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/FORCE_WHILE_BRACES_STYLE/@EntryValue">ALWAYS_ADD</s:String>
 	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/KEEP_BLANK_LINES_IN_CODE/@EntryValue">1</s:Int64>
 	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/KEEP_BLANK_LINES_IN_DECLARATIONS/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_AROUND_MULTIPLICATIVE_OP/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_WITHIN_SINGLE_LINE_ARRAY_INITIALIZER_BRACES/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_LINES/@EntryValue">False</s:Boolean>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/XmlDocFormatter/IndentTagContent/@EntryValue">DoNotTouch</s:String>
 
@@ -139,7 +144,6 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
       &lt;Sort&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
-      &lt;Group Region="Delegates"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
     &#xD;
     &lt;!--public enum--&gt;&#xD;
@@ -154,7 +158,6 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
       &lt;Group&gt;&#xD;
-        &lt;Name Region="${Name} enum"/&gt;&#xD;
       &lt;/Group&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
@@ -172,7 +175,6 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
       &lt;Sort&gt;&#xD;
         &lt;Kind Order="constant field"/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
-      &lt;Group Region="Constants" /&gt;&#xD;
     &lt;/Entry&gt;&#xD;
     &#xD;
     &lt;!--instance fields--&gt;&#xD;
@@ -189,7 +191,6 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
         &lt;Readonly/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
-      &lt;Group Region="Fields" /&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!--Constructors. Place static one first--&gt;&#xD;
@@ -200,7 +201,6 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
       &lt;Sort&gt;&#xD;
         &lt;Static/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
-      &lt;Group Region="Constructors" /&gt;&#xD;
     &lt;/Entry&gt;&#xD;
     &#xD;
     &lt;!--properties, indexers--&gt;&#xD;
@@ -211,7 +211,6 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
           &lt;Kind Is="indexer"/&gt;&#xD;
         &lt;/Or&gt;&#xD;
       &lt;/Match&gt;&#xD;
-      &lt;Group Region="Properties" /&gt;&#xD;
     &lt;/Entry&gt;&#xD;
     &#xD;
     &lt;!--interface implementations--&gt;&#xD;
@@ -226,7 +225,6 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
         &lt;ImplementsInterface Immediate="true"/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
       &lt;Group&gt;&#xD;
-        &lt;ImplementsInterface Immediate="true" Region="${ImplementsInterface} Members"/&gt;&#xD;
       &lt;/Group&gt;&#xD;
     &lt;/Entry&gt;&#xD;
     &#xD;
@@ -235,7 +233,6 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
       &lt;Match&gt;&#xD;
         &lt;Kind Is="method"/&gt;&#xD;
       &lt;/Match&gt;&#xD;
-      &lt;Group Region="Methods" /&gt;&#xD;
     &lt;/Entry&gt;&#xD;
     &#xD;
     &lt;!--all other members--&gt;&#xD;
@@ -250,7 +247,6 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
       &lt;Group&gt;&#xD;
-        &lt;Name Region="Nested type: ${Name}"/&gt;&#xD;
       &lt;/Group&gt;&#xD;
     &lt;/Entry&gt;&#xD;
   &lt;/Pattern&gt;&#xD;
@@ -261,7 +257,7 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
 	<s:Boolean x:Key="/Default/CodeStyle/CSharpUsing/AddImportsToDeepestScope/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/CodeStyle/FileHeader/FileHeaderText/@EntryValue">--------------------------------------------------------------------------------------------------------------------&#xD;
 &lt;copyright file="$FILENAME$" company="CatenaLogic"&gt;&#xD;
-  Copyright (c) 2008 - $CURRENT_YEAR$ CatenaLogic. All rights reserved.&#xD;
+  Copyright (c) 2014 - $CURRENT_YEAR$ CatenaLogic. All rights reserved.&#xD;
 &lt;/copyright&gt;&#xD;
 --------------------------------------------------------------------------------------------------------------------</s:String>
 	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002EMigrateBlankLinesAroundFieldToBlankLinesAroundProperty/@EntryIndexedValue">True</s:Boolean>

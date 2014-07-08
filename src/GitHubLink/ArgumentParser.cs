@@ -1,8 +1,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ArgumentParser.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink
 {
@@ -13,17 +14,11 @@ namespace GitHubLink
 
     public static class ArgumentParser
     {
-        #region Constants
-
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-
-        #endregion
-
-        #region Methods
 
         public static Context ParseArguments(string commandLineArguments)
         {
-            return ParseArguments(commandLineArguments.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries).ToList());
+            return ParseArguments(commandLineArguments.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList());
         }
 
         public static Context ParseArguments(params string[] commandLineArguments)
@@ -123,7 +118,5 @@ namespace GitHubLink
                    IsSwitch("help", singleArgument) ||
                    IsSwitch("?", singleArgument);
         }
-
-        #endregion
     }
 }

@@ -1,20 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ArgumentParserFacts.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink.Test
 {
     using Catel.Test;
-    using GitHubLink;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class ArgumentParserFacts
     {
-        #region Methods
-
         [TestMethod]
         public void ThrowsExceptionForEmptyParameters()
         {
@@ -77,7 +75,5 @@ namespace GitHubLink.Test
         {
             ExceptionTester.CallMethodAndExpectException<GitHubLinkException>(() => ArgumentParser.ParseArguments("solutionDirectory -x logFilePath"));
         }
-
-        #endregion
     }
 }

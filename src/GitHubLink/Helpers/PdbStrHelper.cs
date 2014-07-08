@@ -1,8 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PdbStrHelper.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink
 {
@@ -17,19 +18,13 @@ namespace GitHubLink
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        #region Constants
-
         private static readonly List<String> PossibleLocations;
-
-        #endregion
-
-        #region Constructors
 
         static PdbStrHelper()
         {
             // TODO: Read from registry in the future?
 
-            PossibleLocations = new List<string>(new []
+            PossibleLocations = new List<string>(new[]
             {
                 @"C:\Program Files (x86)\Windows Kits\8.1\Debuggers\x64\srcsrv\pdbstr.exe", // 6.3.9600.16384
                 @"C:\Program Files\Microsoft Team Foundation Server 12.0\Tools\pdbstr.exe", // 6.3.9600.16384
@@ -38,10 +33,6 @@ namespace GitHubLink
                 @"C:\Program Files\Debugging Tools for Windows (x64)\srcsrv\pdbstr.exe"
             });
         }
-
-        #endregion
-
-        #region Methods
 
         public static bool IsPdbStrAvailable()
         {
@@ -86,7 +77,5 @@ namespace GitHubLink
                 Log.ErrorAndThrowException<GitHubLinkException>("PdbStr exited with unexpected error code '{0}'", processExitCode);
             }
         }
-
-        #endregion
     }
 }

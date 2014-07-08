@@ -1,8 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SourceLinkEnvironment.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+// <copyright file="Context.cs" company="CatenaLogic">
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink
 {
@@ -20,7 +21,7 @@ namespace GitHubLink
             Directory.CreateDirectory(tempDirectory);
 
             return tempDirectory;
-        }); 
+        });
 
         public Context()
         {
@@ -32,7 +33,11 @@ namespace GitHubLink
 
         public string SolutionDirectory { get; set; }
         public string ConfigurationName { get; set; }
-        public string TempDirectory { get { return _tempDirectory.Value; } }
+
+        public string TempDirectory
+        {
+            get { return _tempDirectory.Value; }
+        }
 
         public string TargetUrl { get; set; }
         public string TargetBranch { get; set; }

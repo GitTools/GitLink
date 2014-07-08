@@ -1,8 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Linker.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink
 {
@@ -13,7 +14,7 @@ namespace GitHubLink
     using System.Linq;
     using Catel;
     using Catel.Logging;
-    using GitHubLink.Git;
+    using Git;
 
     /// <summary>
     /// Class Linker.
@@ -88,6 +89,8 @@ namespace GitHubLink
 
                     Log.Unindent();
                 }
+
+                exitCode = (failedProjects.Count == 0) ? 0 : -1;
             }
             catch (GitHubLinkException ex)
             {
@@ -153,7 +156,7 @@ namespace GitHubLink
                 foreach (var compilable in compilables)
                 {
                     var relativePathForUrl = compilable.Replace(context.SolutionDirectory, string.Empty)
-                        .Replace("\\", "/");
+                                                       .Replace("\\", "/");
                     while (relativePathForUrl.StartsWith("/"))
                     {
                         relativePathForUrl = relativePathForUrl.Substring(1, relativePathForUrl.Length - 1);

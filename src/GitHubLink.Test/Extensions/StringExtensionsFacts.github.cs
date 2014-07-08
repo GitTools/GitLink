@@ -1,8 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StringExtensions.cs" company="CatenaLogic">
-//   Copyright (c) 2012 - 2014 CatenaLogic. All rights reserved.
+// <copyright file="StringExtensionsFacts.github.cs" company="CatenaLogic">
+//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitHubLink.Test.Extensions
 {
@@ -19,6 +20,18 @@ namespace GitHubLink.Test.Extensions
                 var company = StringExtensions.GetGitHubCompanyName("https://github.com/GeertvanHorrik/GitHubLink");
 
                 Assert.AreEqual("GeertvanHorrik", company);
+            }
+        }
+
+        [TestClass]
+        public class TheGetGitHubCompanyUrlMethod
+        {
+            [TestMethod]
+            public void ReturnsValidUrl()
+            {
+                var company = StringExtensions.GetGitHubCompanyUrl("https://github.com/GeertvanHorrik/GitHubLink");
+
+                Assert.AreEqual("https://github.com/GeertvanHorrik", company);
             }
         }
 
@@ -51,18 +64,6 @@ namespace GitHubLink.Test.Extensions
                 var company = StringExtensions.GetGitHubProjectUrl("https://github.com/GeertvanHorrik/GitHubLink.git");
 
                 Assert.AreEqual("https://github.com/GeertvanHorrik/GitHubLink", company);
-            }
-        }
-
-        [TestClass]
-        public class TheGetGitHubCompanyUrlMethod
-        {
-            [TestMethod]
-            public void ReturnsValidUrl()
-            {
-                var company = StringExtensions.GetGitHubCompanyUrl("https://github.com/GeertvanHorrik/GitHubLink");
-
-                Assert.AreEqual("https://github.com/GeertvanHorrik", company);
             }
         }
 
