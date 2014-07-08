@@ -49,8 +49,10 @@ namespace GitHubLink
 
                 return result;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Error(ex, "An unexpected error occurred");
+
                 return -1;
             }
         }
@@ -59,6 +61,7 @@ namespace GitHubLink
         {
             Log.Info(string.Empty);
             Log.Info("Press any key to continue");
+
             Console.ReadKey();
         }
     }

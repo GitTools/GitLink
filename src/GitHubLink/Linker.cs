@@ -89,6 +89,8 @@ namespace GitHubLink
 
                     Log.Unindent();
                 }
+
+                exitCode = (failedProjects.Count == 0) ? 0 : -1;
             }
             catch (GitHubLinkException ex)
             {
