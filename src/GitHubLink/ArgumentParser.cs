@@ -82,6 +82,10 @@ namespace GitHubLink
                     continue;
                 }
 
+                if (IsSwitch("g", name)){
+                    context.CloneSolutionDir = bool.Parse(value);
+                    continue;
+                }
                 Log.ErrorAndThrowException<GitHubLinkException>("Could not parse command line parameter '{0}'.", name);
             }
 

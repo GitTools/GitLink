@@ -41,6 +41,7 @@ namespace GitHubLink
 
         public string TargetUrl { get; set; }
         public string TargetBranch { get; set; }
+        public bool CloneSolutionDir { get; internal set; }
 
         public void ValidateContext()
         {
