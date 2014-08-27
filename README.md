@@ -3,7 +3,7 @@ GitHubLink
 
 ![GitHubLink](design/logo/logo_64.png)
 
-GitHubLink let's users step through your code hosted on GitHub! **Help making .NET open source projects more accessible by enabling this for your .NET projects, it's just a single additional step in your build**. See the list of [projects using GitHubLink](#ProjectsUsingGitHubLink).
+GitHubLink let's users step through your code hosted on GitHub! **Help making .NET open source projects more accessible by enabling this for your .NET projects, it's just a single additional step in your build**. See the list of [projects using GitHubLink](#projects-using-githublink).
 
 GitHubLink makes symbol servers obsolete which saves you both time with uploading source files with symbols and the user no longer has to specify custom symbol servers (such as symbolsource.org).
 
@@ -70,14 +70,18 @@ The command line implementation uses the same available API.
 
 To link files to a GitHub project, a context must be created. The command line version does this by using the *ArgumentParser* class. It is also possible to create a context from scratch as shown in the example below:
 
-    var context = new GitHubLink.Context();
-    context.SolutionDirectory = @"c:\source\catel";
-    context.TargetUrl = "https://github.com/catel/catel";
-    context.TargetBranch = "develop";
+```csharp
+var context = new GitHubLink.Context();
+context.SolutionDirectory = @"c:\source\catel";
+context.TargetUrl = "https://github.com/catel/catel";
+context.TargetBranch = "develop";
+```
 
 It is possible to create a context based on command line arguments:
 
-    var context = ArgumentParser.Parse(@"c:\source\catel -u https://github.com/catel/catel -b develop");
+```csharp
+var context = ArgumentParser.Parse(@"c:\source\catel -u https://github.com/catel/catel -b develop");
+```
 
 ## Linking a context ##
 
@@ -113,7 +117,7 @@ For more information, see the <a href="http://msdn.microsoft.com/en-us/library/w
 
 GitHubLink creates a source index file and updates the PDB file so it will retrieve the files from the GitHub file handler.
 
-<a name="ProjectsUsingGitHubLink"></a>
+<a name="projects-using-githublink"></a>
 # Projects using GitHubLink #
 
 Below is a list of projects already using GitHubLink (alphabetically ordered).
