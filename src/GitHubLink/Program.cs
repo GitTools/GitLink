@@ -53,6 +53,10 @@ namespace GitHubLink
             {
                 Log.Error(ex, "An unexpected error occurred");
 
+#if DEBUG
+                WaitForKeyPress();
+#endif
+
                 return -1;
             }
         }

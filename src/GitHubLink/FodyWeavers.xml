@@ -1,4 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Weavers>
-  <Costura />
+  <Costura>
+    <IncludeAssemblies>
+      Catel.Core
+      FSharp.Core
+      LibGit2Sharp
+      SourceLink
+    </IncludeAssemblies>
+  </Costura>
 </Weavers>
