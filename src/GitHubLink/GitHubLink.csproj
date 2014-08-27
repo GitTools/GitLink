@@ -50,7 +50,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Catel.Core.3.9.0.1404200146-beta\lib\net45\Catel.Core.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Core, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="FSharp.Core, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="LibGit2Sharp">
       <HintPath>..\..\lib\LibGit2Sharp.0.17.0.0\lib\net35\LibGit2Sharp.dll</HintPath>
       <Private>True</Private>

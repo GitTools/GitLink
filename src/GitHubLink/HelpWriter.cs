@@ -30,10 +30,11 @@ Note that the solution must be built because this application will update existi
 
 GitHubLink [solutionPath] -url [urlToRepository]
 
-    solutionPath     The directory containing the solution with the pdb files.
-    -url [url]       Url to remote git repository.
-    -b [branch]      Name of the branch to use on the remote repository.
-    -l [file]        
+    solutionPath       The directory containing the solution with the pdb files.
+    -url [url]         Url to remote git repository.
+    -c [config]        Name of the configuration, default value is 'Release'.
+    -b [branch]        Name of the branch to use on the remote repository.
+    -l [file]          The log file to write to.
 ";
             writer(message);
         }

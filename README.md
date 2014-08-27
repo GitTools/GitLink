@@ -116,10 +116,12 @@ GitHubLink creates a source index file and updates the PDB file so it will retri
 <a name="ProjectsUsingGitHubLink"></a>
 # Projects using GitHubLink #
 
-Below is a list of projects already using GitHubLink.
+Below is a list of projects already using GitHubLink (alphabetically ordered).
 
 - <a href="http://www.catelproject.com" target="_blank">Catel</a>
+- <a href="http://www.expandframework.com/" target="_blank">eXpand</a>
 - <a href="https://github.com/GeertvanHorrik/GitHubLink" target="_blank">GitHubLink</a>
+- <a href="https://github.com/orcomp/orchestra" target="_blank">Orchestra</a>
 
 Are you using GitHubLink in your projects? Let us know and we will add your project to the list.
 
