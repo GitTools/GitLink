@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>50d7f892</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>9be2d35b</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,22 +48,32 @@
   <ItemGroup>
     <Reference Include="Catel.Core, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Catel.Core.3.9.0.1404200146-beta\lib\net45\Catel.Core.dll</HintPath>
+      <HintPath>..\..\lib\Catel.Core.4.0.0-unstable0461\lib\net45\Catel.Core.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Core, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
-    <Reference Include="LibGit2Sharp">
-      <HintPath>..\..\lib\LibGit2Sharp.0.17.0.0\lib\net35\LibGit2Sharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="LibGit2Sharp, Version=0.18.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\LibGit2Sharp.0.18.1.0\lib\net40\LibGit2Sharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>..\..\lib\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions">
+      <HintPath>..\..\lib\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop">
+      <HintPath>..\..\lib\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+    </Reference>
     <Reference Include="SourceLink">
       <HintPath>..\..\lib\SourceLink.0.3.5-a1402171459-a1cba03d\lib\net45\SourceLink.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -112,12 +122,25 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
   </PropertyGroup>
-  <Import Project="..\..\lib\Fody.1.23.2\build\Fody.targets" Condition="Exists('..\..\lib\Fody.1.23.2\build\Fody.targets')" />
+  <Import Project="..\..\lib\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\lib\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\..\lib\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\lib\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+if not exist "$(TargetDir)NativeBinaries" md "$(TargetDir)NativeBinaries"
+if not exist "$(TargetDir)NativeBinaries\x86" md "$(TargetDir)NativeBinaries\x86"
+xcopy /s /y /d "C:\Source\GitHubLink\lib\LibGit2Sharp.0.18.1.0\lib\net40\NativeBinaries\x86\*.*" "$(TargetDir)NativeBinaries\x86"
+if not exist "$(TargetDir)NativeBinaries\amd64" md "$(TargetDir)NativeBinaries\amd64"
+xcopy /s /y /d "C:\Source\GitHubLink\lib\LibGit2Sharp.0.18.1.0\lib\net40\NativeBinaries\amd64\*.*" "$(TargetDir)NativeBinaries\amd64"</PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="..\..\lib\Fody.1.25.0\build\Fody.targets" Condition="Exists('..\..\lib\Fody.1.25.0\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\lib\Fody.1.23.2\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\lib\Fody.1.23.2\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\..\lib\Fody.1.25.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\lib\Fody.1.25.0\build\Fody.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
