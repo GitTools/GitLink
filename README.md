@@ -126,6 +126,7 @@ Below is a list of projects already using GitHubLink (alphabetically ordered).
 - <a href="http://www.expandframework.com/" target="_blank">eXpand</a>
 - <a href="https://github.com/GeertvanHorrik/GitHubLink" target="_blank">GitHubLink</a>
 - <a href="https://github.com/orcomp/orchestra" target="_blank">Orchestra</a>
+- <a href="http://romanticweb.net" target="_blank">Romantic Web</a>
 
 Are you using GitHubLink in your projects? Let us know and we will add your project to the list.
 
