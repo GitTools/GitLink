@@ -54,8 +54,9 @@ namespace GitHubLink.Git
                 Checkout = false,
                 IsBare = true
             };
-
-            Repository.Clone(_context.TargetUrl, gitDirectory, cloneOptions);
+            
+            var sourceUrl = _context.CloneSolutionDir?_context.SolutionDirectory: _context.TargetUrl;
+            Repository.Clone(sourceUrl, gitDirectory, cloneOptions);
 
             if (!string.IsNullOrWhiteSpace(_context.TargetBranch))
             {
