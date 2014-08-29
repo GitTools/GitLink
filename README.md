@@ -125,7 +125,11 @@ Below is a list of projects already using GitHubLink (alphabetically ordered).
 - <a href="http://www.catelproject.com" target="_blank">Catel</a>
 - <a href="http://www.expandframework.com/" target="_blank">eXpand</a>
 - <a href="https://github.com/GeertvanHorrik/GitHubLink" target="_blank">GitHubLink</a>
-- <a href="https://github.com/orcomp/orchestra" target="_blank">Orchestra</a>
+- <a href="https://github.com/orcomp/Orc.CsvHelper" target="_blank">Orc.CsvHelper</a>
+- <a href="https://github.com/orcomp/Orc.FilterBuilder" target="_blank">Orc.FilterBuilder</a>
+- <a href="https://github.com/orcomp/Orc.ProjectManagement" target="_blank">Orc.ProjectManagement</a>
+- <a href="https://github.com/orcomp/Orc.Sort" target="_blank">Orc.Sort</a>
+- <a href="https://github.com/orcomp/Orchestra" target="_blank">Orchestra</a>
 - <a href="http://romanticweb.net" target="_blank">Romantic Web</a>
 
 Are you using GitHubLink in your projects? Let us know and we will add your project to the list.
