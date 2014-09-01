@@ -11,8 +11,8 @@ GitLink uses the following remote repositories to test whether it works with act
 
 Below is a table with the expected remote repositories and the expected locations on disk:
 
-BitBucket => C:\Source\GitLinkTestRepro_BitBucket
-GitHub => C:\Source\GitLinkTestRepro_GitHub
+* BitBucket => C:\Source\GitLinkTestRepro_BitBucket
+* GitHub => C:\Source\GitLinkTestRepro_GitHub
 
 ## Running the explicit integration tests
 
