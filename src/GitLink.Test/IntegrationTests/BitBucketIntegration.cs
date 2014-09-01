@@ -10,11 +10,11 @@ namespace GitLink.Test.IntegrationTests
     using NUnit.Framework;
 
     [TestFixture, Explicit]
-    public class GitHubIntegration : IntegrationTestBase
+    public class BitBucketIntegration : IntegrationTestBase
     {
-        public const string ProviderName = "GitHub";
-        public const string Url = "https://github.com/CatenaLogic/GitLinkTestRepro";
-        public const string Directory = @"C:\Source\GitLinkTestRepro_GitHub";
+        public const string ProviderName = "BitBucket";
+        public const string Url = "https://bitbucket.org/CatenaLogic/GitLinkTestRepro";
+        public const string Directory = @"C:\Source\GitLinkTestRepro_BitBucket";
 
         [Test]
         public void CorrectlyUpdatesPdbFiles()

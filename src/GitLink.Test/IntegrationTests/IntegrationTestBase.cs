@@ -10,6 +10,7 @@ namespace GitLink.Test.IntegrationTests
     using System;
     using System.Diagnostics;
     using System.IO;
+    using ApprovalTests;
     using Catel.Logging;
     using Microsoft.Win32;
 
@@ -36,7 +37,7 @@ namespace GitLink.Test.IntegrationTests
 
             var msBuildDirectory = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0", "MSBuildToolsPath", string.Empty);
             var msBuildFileName = Path.Combine(msBuildDirectory, "msbuild.exe");
-            var solutionFileName = Path.Combine(directory, "MyClassLibrary\\MyClassLibrary.sln");
+            var solutionFileName = Path.Combine(directory, "MyClassLibrary.sln");
             var arguments = string.Format("{0} /p:Configuration={1}", solutionFileName, configurationName);
 
             var processStartInfo = new ProcessStartInfo(msBuildFileName, arguments);
@@ -60,6 +61,47 @@ namespace GitLink.Test.IntegrationTests
             };
 
             return Linker.Link(context);
+        }
+
+        protected void VerifyUpdatedPdbs(string directory, string configurationName, string providerName)
+        {
+            var outputDirectoryBase = Path.Combine(directory, "MyClassLibrary", "bin", configurationName);
+            var pdbFileName = Path.Combine(outputDirectoryBase, "MyClassLibrary.pdb");
+            var pdbSrcSrvFileName = string.Format("{0}.srcsrv", pdbFileName);
+
+            // Required for Approvals
+            var pdbSrcSrvTxtFileName = string.Format("{0}.txt", pdbSrcSrvFileName);
+            File.Copy(pdbSrcSrvFileName, pdbSrcSrvTxtFileName, true);
+
+            Approvals.VerifyFile(pdbSrcSrvTxtFileName);
+
+            var containsVariables = false;
+            var containsControl = false;
+            var containsServer = false;
+
+            var pdbContents = File.ReadAllLines(pdbFileName);
+            foreach (var pdbContent in pdbContents)
+            {
+                if (pdbContent.Contains("SRCSRV: variables"))
+                {
+                    containsVariables = true;
+                }
+
+                if (pdbContent.Contains("SRCSRVVERCTRL="))
+                {
+                    containsControl = true;
+                }
+
+                if (pdbContent.Contains("SRCSRVTRG="))
+                {
+                    containsServer = true;
+                }
+            }
+
+            if (!containsVariables || !containsControl || !containsServer)
+            {
+                throw new Exception("Generated pdb file is invalid");
+            }
         }
     }
 }

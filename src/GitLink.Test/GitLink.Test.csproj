@@ -35,6 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ApprovalTests">
+      <HintPath>..\..\lib\ApprovalTests.3.0.7\lib\net40\ApprovalTests.dll</HintPath>
+    </Reference>
+    <Reference Include="ApprovalUtilities">
+      <HintPath>..\..\lib\ApprovalUtilities.3.0.7\lib\net35\ApprovalUtilities.dll</HintPath>
+    </Reference>
     <Reference Include="Catel.Core, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Catel.Core.4.0.0-unstable0462\lib\net45\Catel.Core.dll</HintPath>
@@ -63,10 +69,12 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ApprovalTestsConfig.cs" />
     <Compile Include="ArgumentParserFacts.cs" />
     <Compile Include="ContextFacts.cs" />
     <Compile Include="Extensions\ContextExtensionsFacts.cs" />
     <Compile Include="Extensions\StringExtensionsFacts.github.cs" />
+    <Compile Include="IntegrationTests\BitBucketIntegration.cs" />
     <Compile Include="IntegrationTests\GitHubIntegration.cs" />
     <Compile Include="IntegrationTests\IntegrationTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,6 +88,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="IntegrationTests\BitBucketIntegration.CorrectlyUpdatesPdbFiles.approved.txt" />
+    <Content Include="IntegrationTests\GitHubIntegration.CorrectlyUpdatesPdbFiles.approved.txt" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
