@@ -1,2 +1,2 @@
-Generate-BinFile "ghl" "$packageFolder\Tools\GitHubLink.exe"
-Write-ChocolateySuccess "GitHubLink"
+Generate-BinFile "ghl" "$packageFolder\Tools\GitLink.exe"
+Write-ChocolateySuccess "GitLink"

@@ -1,3 +1,3 @@
-Remove-BinFile "ghl" "$packageFolder\Tools\GitHubLink.exe"
-Remove-BinFile "GitHubLink" "$packageFolder\Tools\GitHubLink.exe"
-Write-ChocolateySuccess "GitHubLink"
+Remove-BinFile "ghl" "$packageFolder\Tools\GitLink.exe"
+Remove-BinFile "GitLink" "$packageFolder\Tools\GitLink.exe"
+Write-ChocolateySuccess "GitLink"
