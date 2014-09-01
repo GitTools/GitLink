@@ -19,17 +19,18 @@ namespace GitLink
 
         public static Context ParseArguments(string commandLineArguments)
         {
-            return ParseArguments(commandLineArguments.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList());
+            return ParseArguments(commandLineArguments.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList(),
+                new ProviderManager());
         }
 
         public static Context ParseArguments(params string[] commandLineArguments)
         {
-            return ParseArguments(commandLineArguments.ToList());
+            return ParseArguments(commandLineArguments.ToList(), new ProviderManager());
         }
 
-        public static Context ParseArguments(List<string> commandLineArguments)
+        public static Context ParseArguments(List<string> commandLineArguments, IProviderManager providerManager)
         {
-            var context = new Context();
+            var context = new Context(providerManager);
 
             if (commandLineArguments.Count == 0)
             {
@@ -88,7 +89,7 @@ namespace GitLink
 
             if (!string.IsNullOrEmpty(context.TargetUrl))
             {
-                context.Provider = ProviderManager.GetProvider(context.TargetUrl);
+                context.Provider = providerManager.GetProvider(context.TargetUrl);
             }
 
             return context;

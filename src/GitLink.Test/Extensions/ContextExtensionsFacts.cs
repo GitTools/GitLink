@@ -7,6 +7,7 @@
 
 namespace GitLink.Test.Extensions
 {
+    using GitLink.Providers;
     using NUnit.Framework;
 
     public class ContextExtensionsFacts
@@ -17,7 +18,7 @@ namespace GitLink.Test.Extensions
             [TestCase]
             public void ReturnsRelativePathWithDirectoryDownwards()
             {
-                var context = new Context
+                var context = new Context(new ProviderManager())
                 {
                     SolutionDirectory = @"c:\source\GitLink"
                 };
@@ -30,7 +31,7 @@ namespace GitLink.Test.Extensions
             [TestCase]
             public void ReturnsRelativePathWithDirectoryUpwards()
             {
-                var context = new Context
+                var context = new Context(new ProviderManager())
                 {
                     SolutionDirectory = @"c:\source\GitLink"
                 };

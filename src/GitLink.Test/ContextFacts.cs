@@ -19,7 +19,7 @@ namespace GitLink.Test
             [TestCase]
             public void SetsRightDefaultValues()
             {
-                var context = new Context();
+                var context = new Context(new ProviderManager());
 
                 Assert.AreEqual("Release", context.ConfigurationName);
                 Assert.IsFalse(context.IsHelp);
@@ -32,7 +32,7 @@ namespace GitLink.Test
             [TestCase]
             public void ThrowsExceptionForMissingSolutionDirectory()
             {
-                var context = new Context();
+                var context = new Context(new ProviderManager());
 
                 ExceptionTester.CallMethodAndExpectException<GitLinkException>(() => context.ValidateContext());
             }
@@ -40,7 +40,7 @@ namespace GitLink.Test
             [TestCase]
             public void ThrowsExceptionForMissingConfigurationName()
             {
-                var context = new Context
+                var context = new Context(new ProviderManager())
                 {
                     SolutionDirectory = @"c:\source\GitLink",
                     ConfigurationName = string.Empty
@@ -52,7 +52,7 @@ namespace GitLink.Test
             [TestCase]
             public void ThrowsExceptionForMissingTargetUrl()
             {
-                var context = new Context
+                var context = new Context(new ProviderManager())
                 {
                     SolutionDirectory = @"c:\source\GitLink",
                 };
@@ -63,11 +63,10 @@ namespace GitLink.Test
             [TestCase]
             public void SucceedsForValidContext()
             {
-                var context = new Context
+                var context = new Context(new ProviderManager())
                 {
                     SolutionDirectory = @"c:\source\GitLink",
                     TargetUrl = "https://github.com/CatenaLogic/GitLink",
-                    Provider = ProviderManager.GetProvider("https://github.com/CatenaLogic/GitLink")
                 };
 
                 // should not throw
