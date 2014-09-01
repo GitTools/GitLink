@@ -9,6 +9,7 @@ namespace GitLink
 {
     using System;
     using System.IO;
+    using Catel;
     using Catel.Logging;
     using Providers;
 
@@ -29,7 +30,10 @@ namespace GitLink
 
         public Context(IProviderManager providerManager)
         {
+            Argument.IsNotNull(() => providerManager);
+
             _providerManager = providerManager;
+
             ConfigurationName = "Release";
         }
 

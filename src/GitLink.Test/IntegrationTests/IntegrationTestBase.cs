@@ -12,6 +12,7 @@ namespace GitLink.Test.IntegrationTests
     using System.IO;
     using ApprovalTests;
     using Catel.Logging;
+    using Catel.Reflection;
     using GitLink.Providers;
     using Microsoft.Win32;
 
@@ -68,15 +69,15 @@ namespace GitLink.Test.IntegrationTests
         {
             var outputDirectoryBase = Path.Combine(directory, "output", configurationName);
 
-            VerifyUpdatedPdb(outputDirectoryBase, "CPlusPlusTestLibrary", true);
-            VerifyUpdatedPdb(outputDirectoryBase, "CSharpTestLibrary");
+            VerifyUpdatedPdb(outputDirectoryBase, "CSharpTestLibrary", true);
+            VerifyUpdatedPdb(outputDirectoryBase, "CPlusPlusTestLibrary");
             VerifyUpdatedPdb(outputDirectoryBase, "FSharpTestLibrary");
             VerifyUpdatedPdb(outputDirectoryBase, "VisualBasicTestLibrary");
         }
 
         private void VerifyUpdatedPdb(string outputDirectoryBase, string name, bool verifySrcSrv = false)
         {
-            var pdbFileName = Path.Combine(outputDirectoryBase, name, "{0}.pdb");
+            var pdbFileName = Path.Combine(outputDirectoryBase, name, string.Format("{0}.pdb", name));
 
             if (verifySrcSrv)
             {

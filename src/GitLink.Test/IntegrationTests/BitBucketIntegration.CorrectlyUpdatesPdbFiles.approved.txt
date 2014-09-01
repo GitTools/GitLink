@@ -1,9 +1,9 @@
-﻿SRCSRV: ini ------------------------------------------------
+SRCSRV: ini ------------------------------------------------
 VERSION=2
 SRCSRV: variables ------------------------------------------
 SRCSRVVERCTRL=https
-SRCSRVTRG=https://raw.bitbucket.com/CatenaLogic/GitLinkTestRepro/93a6d3edcbbf86e8f6d3ba3bd2789fd40c8c923c/%var2%
+SRCSRVTRG=https://bitbucket.org/CatenaLogic/GitLinkTestRepro/raw/af48c72ad1dd98204ee9b409ca0ba9f34cf8e52e/%var2%
 SRCSRV: source files ---------------------------------------
-C:\Source\GitLinkTestRepro_GitHub\MyClassLibrary\MyClass.cs*MyClassLibrary/MyClass.cs
-C:\Source\GitLinkTestRepro_GitHub\MyClassLibrary\Properties\AssemblyInfo.cs*MyClassLibrary/Properties/AssemblyInfo.cs
+C:\Source\GitLinkTestRepro_BitBucket\src\CSharpTestLibrary\Class1.cs*src/CSharpTestLibrary/Class1.cs
+C:\Source\GitLinkTestRepro_BitBucket\src\CSharpTestLibrary\Properties\AssemblyInfo.cs*src/CSharpTestLibrary/Properties/AssemblyInfo.cs
 SRCSRV: end ------------------------------------------------
