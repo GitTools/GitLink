@@ -5,6 +5,14 @@ GitLink
 
 GitLink let's users step through your code hosted on GitHub! **Help make .NET open source projects more accessible by enabling this for your .NET projects, it's just a single additional step in your build**. See the list of [projects using GitLink](#projects-using-gitlink).
 
+-- 
+
+**Important note** 
+
+*GitLink* was formerly named *GitHubLink*. By adding support to more Git hosting services the name seemed not covering the whole package. Note that the old GitHubLink packages on NuGet and Chocolatey will no long be updated / maintained.
+
+-- 
+
 GitLink makes symbol servers obsolete which saves you both time with uploading source files with symbols and the user no longer has to specify custom symbol servers (such as symbolsource.org).
 
 ![Stepping through external source code](doc/images/GitLink_example.gif)  
