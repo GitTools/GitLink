@@ -21,7 +21,8 @@ namespace GitLink.Test.Providers
             [TestCase("", null)]
             public void ReturnsRightProvider(string url, Type expectedType)
             {
-                var provider = ProviderManager.GetProvider(url);
+                var providerManager = new ProviderManager();
+                var provider = providerManager.GetProvider(url);
 
                 if (expectedType == null)
                 {

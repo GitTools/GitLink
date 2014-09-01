@@ -12,7 +12,6 @@ namespace GitLink.Test.IntegrationTests
     [TestFixture, Explicit]
     public class GitHubIntegration : IntegrationTestBase
     {
-        public const string ProviderName = "GitHub";
         public const string Url = "https://github.com/CatenaLogic/GitLinkTestRepro";
         public const string Directory = @"C:\Source\GitLinkTestRepro_GitHub";
 
@@ -26,7 +25,7 @@ namespace GitLink.Test.IntegrationTests
 
             Assert.AreEqual(0, result);
 
-            VerifyUpdatedPdbs(directory, configurationName, ProviderName);
+            VerifyUpdatedPdbs(directory, configurationName);
         }
     }
 }

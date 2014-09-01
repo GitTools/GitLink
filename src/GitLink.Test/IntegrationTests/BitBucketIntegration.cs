@@ -12,7 +12,6 @@ namespace GitLink.Test.IntegrationTests
     [TestFixture, Explicit]
     public class BitBucketIntegration : IntegrationTestBase
     {
-        public const string ProviderName = "BitBucket";
         public const string Url = "https://bitbucket.org/CatenaLogic/GitLinkTestRepro";
         public const string Directory = @"C:\Source\GitLinkTestRepro_BitBucket";
 
@@ -26,7 +25,7 @@ namespace GitLink.Test.IntegrationTests
 
             Assert.AreEqual(0, result);
 
-            VerifyUpdatedPdbs(directory, configurationName, ProviderName);
+            VerifyUpdatedPdbs(directory, configurationName);
         }
     }
 }

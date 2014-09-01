@@ -105,6 +105,8 @@
     <Compile Include="Context.cs" />
     <Compile Include="Providers\BitBucketProvider.cs" />
     <Compile Include="Providers\GitHubProvider.cs" />
+    <Compile Include="Providers\Interfaces\IProviderManager.cs" />
+    <Compile Include="Providers\Interfaces\IProvider.cs" />
     <Compile Include="Providers\ProviderBase.cs" />
     <Compile Include="Providers\ProviderManager.cs" />
   </ItemGroup>
