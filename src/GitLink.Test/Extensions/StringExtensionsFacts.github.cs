@@ -17,9 +17,9 @@ namespace GitLink.Test.Extensions
             [TestMethod]
             public void ReturnsValidCompany()
             {
-                var company = StringExtensions.GetGitHubCompanyName("https://github.com/GeertvanHorrik/GitLink");
+                var company = StringExtensions.GetGitHubCompanyName("https://github.com/CatenaLogic/GitLink");
 
-                Assert.AreEqual("GeertvanHorrik", company);
+                Assert.AreEqual("CatenaLogic", company);
             }
         }
 
@@ -29,9 +29,9 @@ namespace GitLink.Test.Extensions
             [TestMethod]
             public void ReturnsValidUrl()
             {
-                var company = StringExtensions.GetGitHubCompanyUrl("https://github.com/GeertvanHorrik/GitLink");
+                var company = StringExtensions.GetGitHubCompanyUrl("https://github.com/CatenaLogic/GitLink");
 
-                Assert.AreEqual("https://github.com/GeertvanHorrik", company);
+                Assert.AreEqual("https://github.com/CatenaLogic", company);
             }
         }
 
@@ -41,7 +41,7 @@ namespace GitLink.Test.Extensions
             [TestMethod]
             public void ReturnsValidProject()
             {
-                var project = StringExtensions.GetGitHubProjectName("https://github.com/GeertvanHorrik/GitLink");
+                var project = StringExtensions.GetGitHubProjectName("https://github.com/CatenaLogic/GitLink");
 
                 Assert.AreEqual("GitLink", project);
             }
@@ -53,17 +53,17 @@ namespace GitLink.Test.Extensions
             [TestMethod]
             public void ReturnsValidUrl()
             {
-                var company = StringExtensions.GetGitHubProjectUrl("https://github.com/GeertvanHorrik/GitLink");
+                var company = StringExtensions.GetGitHubProjectUrl("https://github.com/CatenaLogic/GitLink");
 
-                Assert.AreEqual("https://github.com/GeertvanHorrik/GitLink", company);
+                Assert.AreEqual("https://github.com/CatenaLogic/GitLink", company);
             }
 
             [TestMethod]
             public void ReturnsValidUrlWhenGitIsAppended()
             {
-                var company = StringExtensions.GetGitHubProjectUrl("https://github.com/GeertvanHorrik/GitLink.git");
+                var company = StringExtensions.GetGitHubProjectUrl("https://github.com/CatenaLogic/GitLink.git");
 
-                Assert.AreEqual("https://github.com/GeertvanHorrik/GitLink", company);
+                Assert.AreEqual("https://github.com/CatenaLogic/GitLink", company);
             }
         }
 
@@ -73,9 +73,9 @@ namespace GitLink.Test.Extensions
             [TestMethod]
             public void ReturnsValidUrl()
             {
-                var company = StringExtensions.GetGitHubRawUrl("https://github.com/GeertvanHorrik/GitLink");
+                var company = StringExtensions.GetGitHubRawUrl("https://github.com/CatenaLogic/GitLink");
 
-                Assert.AreEqual("https://raw.github.com/GeertvanHorrik/GitLink", company);
+                Assert.AreEqual("https://raw.github.com/CatenaLogic/GitLink", company);
             }
         }
     }

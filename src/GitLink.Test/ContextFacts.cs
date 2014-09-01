@@ -65,7 +65,7 @@ namespace GitLink.Test
                 var context = new Context
                 {
                     SolutionDirectory = @"c:\source\GitLink",
-                    TargetUrl = "https://github.com/geertvanhorrik/GitLink"
+                    TargetUrl = "https://github.com/CatenaLogic/GitLink"
                 };
 
                 // should not throw

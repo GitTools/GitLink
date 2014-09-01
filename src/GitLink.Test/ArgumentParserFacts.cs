@@ -22,7 +22,7 @@ namespace GitLink.Test
         [TestMethod]
         public void CorrectlyParsesSolutionDirectory()
         {
-            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/GeertvanHorrik/GitLink");
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink");
 
             Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
         }
@@ -47,20 +47,20 @@ namespace GitLink.Test
         [TestMethod]
         public void CorrectlyParsesUrlAndBranchName()
         {
-            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/GeertvanHorrik/GitLink -b somebranch");
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -b somebranch");
 
             Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
-            Assert.AreEqual("http://github.com/GeertvanHorrik/GitLink", context.TargetUrl);
+            Assert.AreEqual("http://github.com/CatenaLogic/GitLink", context.TargetUrl);
             Assert.AreEqual("somebranch", context.TargetBranch);
         }
 
         [TestMethod]
         public void CorrectlyParsesUrlAndConfiguration()
         {
-            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/GeertvanHorrik/GitLink -c someConfiguration");
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -c someConfiguration");
 
             Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
-            Assert.AreEqual("http://github.com/GeertvanHorrik/GitLink", context.TargetUrl);
+            Assert.AreEqual("http://github.com/CatenaLogic/GitLink", context.TargetUrl);
             Assert.AreEqual("someConfiguration", context.ConfigurationName);
         }
 
