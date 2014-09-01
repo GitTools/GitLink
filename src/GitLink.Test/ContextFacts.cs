@@ -8,6 +8,7 @@
 namespace GitLink.Test
 {
     using Catel.Test;
+    using GitLink.Providers;
     using NUnit.Framework;
 
     public class ContextFacts
@@ -65,7 +66,8 @@ namespace GitLink.Test
                 var context = new Context
                 {
                     SolutionDirectory = @"c:\source\GitLink",
-                    TargetUrl = "https://github.com/CatenaLogic/GitLink"
+                    TargetUrl = "https://github.com/CatenaLogic/GitLink",
+                    Provider = ProviderManager.GetProvider("https://github.com/CatenaLogic/GitLink")
                 };
 
                 // should not throw

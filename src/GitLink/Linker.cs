@@ -149,8 +149,8 @@ namespace GitLink
                 //    Log.Warning("Missing file '{0}' or checksum '{1}' did not match", missingFile.Key, missingFile.Value);
                 //}
 
-                var rawUrl = string.Format("{0}/{{0}}/%var2%", context.TargetUrl.GetGitHubRawUrl());
-                var revision = context.TempDirectory.GetLatestCommitShaOfCurrentBranch();
+                var rawUrl = string.Format("{0}/{{0}}/%var2%", context.Provider.RawGitUrl);
+                var revision = context.Provider.GetLatestCommitShaOfCurrentBranch(context.TempDirectory);
 
                 var paths = new Dictionary<string, string>();
                 foreach (var compilable in compilables)

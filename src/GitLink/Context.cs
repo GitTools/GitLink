@@ -9,7 +9,9 @@ namespace GitLink
 {
     using System;
     using System.IO;
+    using Catel;
     using Catel.Logging;
+    using Providers;
 
     public class Context
     {
@@ -34,6 +36,8 @@ namespace GitLink
         public string SolutionDirectory { get; set; }
         public string ConfigurationName { get; set; }
 
+        public ProviderBase Provider { get; set; }
+
         public string TempDirectory
         {
             get { return _tempDirectory.Value; }
@@ -57,6 +61,11 @@ namespace GitLink
             if (string.IsNullOrEmpty(TargetUrl))
             {
                 Log.ErrorAndThrowException<GitLinkException>("Target url is missing");
+            }
+
+            if (Provider == null)
+            {
+                Log.ErrorAndThrowException<GitLinkException>("Cannot determine git provider");
             }
         }
     }

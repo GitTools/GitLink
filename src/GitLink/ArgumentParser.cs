@@ -11,6 +11,7 @@ namespace GitLink
     using System.Collections.Generic;
     using System.Linq;
     using Catel.Logging;
+    using GitLink.Providers;
 
     public static class ArgumentParser
     {
@@ -83,6 +84,11 @@ namespace GitLink
                 }
 
                 Log.ErrorAndThrowException<GitLinkException>("Could not parse command line parameter '{0}'.", name);
+            }
+
+            if (!string.IsNullOrEmpty(context.TargetUrl))
+            {
+                context.Provider = ProviderManager.GetProvider(context.TargetUrl);
             }
 
             return context;

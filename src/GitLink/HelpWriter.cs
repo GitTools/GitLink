@@ -34,7 +34,7 @@ GitLink [solutionPath] -u [urlToRepository]
     -u [url]           Url to remote git repository.
     -c [config]        Name of the configuration, default value is 'Release'.
     -b [branch]        Name of the branch to use on the remote repository.
-    -l [file]          The log file to write to.
+    -l [file]          The log file to write to.m
 ";
             writer(message);
         }
