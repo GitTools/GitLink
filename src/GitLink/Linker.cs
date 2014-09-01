@@ -15,6 +15,7 @@ namespace GitLink
     using Catel;
     using Catel.Logging;
     using Git;
+    using Microsoft.Build.Evaluation;
 
     /// <summary>
     /// Class Linker.
@@ -50,31 +51,34 @@ namespace GitLink
                 var gitPreparer = new GitPreparer(context);
                 gitPreparer.Prepare();
 
-                var projectFiles = new List<string>();
-                projectFiles.AddRange(Directory.GetFiles(context.SolutionDirectory, "*.csproj", SearchOption.AllDirectories));
-                projectFiles.AddRange(Directory.GetFiles(context.SolutionDirectory, "*.vbproj", SearchOption.AllDirectories));
+                var projects = new List<Project>();
+                var solutionFiles = Directory.GetFiles(context.SolutionDirectory, "*.sln", SearchOption.AllDirectories);
+                foreach (var solutionFile in solutionFiles)
+                {
+                    var solutionProjects = ProjectHelper.GetProjects(solutionFile, context.ConfigurationName);
+                    projects.AddRange(solutionProjects);
+                }
 
-                int projectCount = projectFiles.Count();
-                var failedProjects = new List<string>();
+                var projectCount = projects.Count();
+                var failedProjects = new List<Project>();
                 Log.Info("Found '{0}' project(s)", projectCount);
 
-                foreach (var projectFile in projectFiles)
+                foreach (var project in projects)
                 {
                     try
                     {
-                        if (!LinkProject(context, projectFile))
+                        if (!LinkProject(context, project))
                         {
-                            failedProjects.Add(projectFile);
+                            failedProjects.Add(project);
                         }
                     }
                     catch (Exception)
                     {
-                        failedProjects.Add(projectFile);
+                        failedProjects.Add(project);
                     }
                 }
 
-                Log.Info("All projects are done. {0} of {1} succeeded", projectCount - failedProjects.Count,
-                    projectCount);
+                Log.Info("All projects are done. {0} of {1} succeeded", projectCount - failedProjects.Count, projectCount);
 
                 if (failedProjects.Count > 0)
                 {
@@ -84,7 +88,7 @@ namespace GitLink
 
                     foreach (var failedProject in failedProjects)
                     {
-                        Log.Info("* {0}", context.GetRelativePath(failedProject));
+                        Log.Info("* {0}", context.GetRelativePath(failedProject.GetProjectName()));
                     }
 
                     Log.Unindent();
@@ -115,17 +119,14 @@ namespace GitLink
             return exitCode ?? -1;
         }
 
-        private static bool LinkProject(Context context, string projectFile)
+        private static bool LinkProject(Context context, Project project)
         {
             Argument.IsNotNull(() => context);
-            Argument.IsNotNullOrWhitespace(() => projectFile);
-
-            string projectName = context.GetRelativePath(projectFile);
+            Argument.IsNotNull(() => project);
 
             try
             {
-                var project = ProjectHelper.LoadProject(projectFile, context.ConfigurationName);
-                projectName = project.GetProjectName();
+                var projectName = project.GetProjectName();
 
                 Log.Info("Handling project '{0}'", projectName);
 
@@ -173,7 +174,7 @@ namespace GitLink
             }
             catch (Exception ex)
             {
-                Log.Warning(ex, "An error occurred while processing project '{0}'", projectName);
+                Log.Warning(ex, "An error occurred while processing project '{0}'", project.GetProjectName());
                 throw;
             }
             finally

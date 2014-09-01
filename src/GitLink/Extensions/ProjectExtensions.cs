@@ -61,7 +61,7 @@ namespace GitLink
         {
             Argument.IsNotNull(() => project);
 
-            return project.Items.Where(x => string.Equals(x.ItemType, "Compile"));
+            return project.Items.Where(x => string.Equals(x.ItemType, "Compile") || string.Equals(x.ItemType, "ClCompile") || string.Equals(x.ItemType, "ClInclude"));
         }
 
         public static Dictionary<string, string> VerifyPdbFiles(this Project project, IEnumerable<string> files)
