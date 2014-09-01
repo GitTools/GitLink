@@ -101,7 +101,7 @@ The releases will be available as separate executable download on the [releases 
 
 If you want to install the tool on your (build) computer, the package is available via <a href="https://chocolatey.org/" target="_blank">Chocolatey</a>. To install, use the following command:
 
-    cinst GitLink
+    choco install GitLink
 
 ## Get it via NuGet ##
 
