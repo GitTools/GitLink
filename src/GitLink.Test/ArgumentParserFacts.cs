@@ -8,18 +8,18 @@
 namespace GitLink.Test
 {
     using Catel.Test;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class ArgumentParserFacts
     {
-        [TestMethod]
+        [TestCase]
         public void ThrowsExceptionForEmptyParameters()
         {
             ExceptionTester.CallMethodAndExpectException<GitLinkException>(() => ArgumentParser.ParseArguments(string.Empty));
         }
 
-        [TestMethod]
+        [TestCase]
         public void CorrectlyParsesSolutionDirectory()
         {
             var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink");
@@ -27,7 +27,7 @@ namespace GitLink.Test
             Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
         }
 
-        [TestMethod]
+        [TestCase]
         public void CorrectlyParsesLogFilePath()
         {
             var context = ArgumentParser.ParseArguments("solutionDirectory -l logFilePath");
@@ -36,7 +36,7 @@ namespace GitLink.Test
             Assert.AreEqual("logFilePath", context.LogFile);
         }
 
-        [TestMethod]
+        [TestCase]
         public void CorrectlyParsesHelp()
         {
             var context = ArgumentParser.ParseArguments("-h");
@@ -44,7 +44,7 @@ namespace GitLink.Test
             Assert.IsTrue(context.IsHelp);
         }
 
-        [TestMethod]
+        [TestCase]
         public void CorrectlyParsesUrlAndBranchName()
         {
             var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -b somebranch");
@@ -54,7 +54,7 @@ namespace GitLink.Test
             Assert.AreEqual("somebranch", context.TargetBranch);
         }
 
-        [TestMethod]
+        [TestCase]
         public void CorrectlyParsesUrlAndConfiguration()
         {
             var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -c someConfiguration");
@@ -64,13 +64,13 @@ namespace GitLink.Test
             Assert.AreEqual("someConfiguration", context.ConfigurationName);
         }
 
-        [TestMethod]
+        [TestCase]
         public void ThrowsExceptionForInvalidNumberOfArguments()
         {
             ExceptionTester.CallMethodAndExpectException<GitLinkException>(() => ArgumentParser.ParseArguments("solutionDirectory -l logFilePath extraArg"));
         }
 
-        [TestMethod]
+        [TestCase]
         public void ThrowsExceptionForUnknownArgument()
         {
             ExceptionTester.CallMethodAndExpectException<GitLinkException>(() => ArgumentParser.ParseArguments("solutionDirectory -x logFilePath"));

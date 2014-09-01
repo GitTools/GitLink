@@ -7,14 +7,14 @@
 
 namespace GitLink.Test.Extensions
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     public class ContextExtensionsFacts
     {
-        [TestClass]
+        [TestFixture]
         public class TheGetRelativePathMethod
         {
-            [TestMethod]
+            [TestCase]
             public void ReturnsRelativePathWithDirectoryDownwards()
             {
                 var context = new Context
@@ -27,7 +27,7 @@ namespace GitLink.Test.Extensions
                 Assert.AreEqual(@"src\subdir1\somefile.cs", relativePath);
             }
 
-            [TestMethod]
+            [TestCase]
             public void ReturnsRelativePathWithDirectoryUpwards()
             {
                 var context = new Context

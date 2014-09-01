@@ -4,17 +4,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace GitLink.Test.Extensions
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     public class StringExtensionsFacts
     {
-        [TestClass]
+        [TestFixture]
         public class TheGetGitHubCompanyNameMethod
         {
-            [TestMethod]
+            [TestCase]
             public void ReturnsValidCompany()
             {
                 var company = StringExtensions.GetGitHubCompanyName("https://github.com/CatenaLogic/GitLink");
@@ -23,10 +22,10 @@ namespace GitLink.Test.Extensions
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class TheGetGitHubCompanyUrlMethod
         {
-            [TestMethod]
+            [TestCase]
             public void ReturnsValidUrl()
             {
                 var company = StringExtensions.GetGitHubCompanyUrl("https://github.com/CatenaLogic/GitLink");
@@ -35,10 +34,10 @@ namespace GitLink.Test.Extensions
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class TheGetGitHubProjectNameMethod
         {
-            [TestMethod]
+            [TestCase]
             public void ReturnsValidProject()
             {
                 var project = StringExtensions.GetGitHubProjectName("https://github.com/CatenaLogic/GitLink");
@@ -47,10 +46,10 @@ namespace GitLink.Test.Extensions
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class TheGetGitHubProjectUrlMethod
         {
-            [TestMethod]
+            [TestCase]
             public void ReturnsValidUrl()
             {
                 var company = StringExtensions.GetGitHubProjectUrl("https://github.com/CatenaLogic/GitLink");
@@ -58,7 +57,7 @@ namespace GitLink.Test.Extensions
                 Assert.AreEqual("https://github.com/CatenaLogic/GitLink", company);
             }
 
-            [TestMethod]
+            [TestCase]
             public void ReturnsValidUrlWhenGitIsAppended()
             {
                 var company = StringExtensions.GetGitHubProjectUrl("https://github.com/CatenaLogic/GitLink.git");
@@ -67,10 +66,10 @@ namespace GitLink.Test.Extensions
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class TheGetGitHubRawUrlMethod
         {
-            [TestMethod]
+            [TestCase]
             public void ReturnsValidUrl()
             {
                 var company = StringExtensions.GetGitHubRawUrl("https://github.com/CatenaLogic/GitLink");

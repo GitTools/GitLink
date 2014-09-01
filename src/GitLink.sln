@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitLink", "GitLink\GitLink.csproj", "{D68ADD77-913F-46D2-9A4F-5CC71C4718D8}"
 EndProject
@@ -15,16 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{16B74389-D64
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deployment", "deployment", "{99836492-466A-44E3-A92B-72CE3744F61C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{F3BABD63-7726-4219-BF31-13CF05EE3BD7}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{88214CBE-4B92-4E22-8854-CC21543EE703}"
 	ProjectSection(SolutionItems) = preProject
 		..\doc\history.txt = ..\doc\history.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{4FBE79F3-A1F1-4107-AA8C-DCB241880EDE}"
-	ProjectSection(SolutionItems) = preProject
-		..\tools\NuGet\NuGet.exe = ..\tools\NuGet\NuGet.exe
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A5FCE4FA-083A-4814-B38C-2AED9C37647F}"
@@ -92,7 +85,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D68ADD77-913F-46D2-9A4F-5CC71C4718D8} = {A5FCE4FA-083A-4814-B38C-2AED9C37647F}
-		{4FBE79F3-A1F1-4107-AA8C-DCB241880EDE} = {F3BABD63-7726-4219-BF31-13CF05EE3BD7}
 		{A5FCE4FA-083A-4814-B38C-2AED9C37647F} = {A6694C2C-1A8A-49F0-B404-1BBB4D081808}
 		{D435DFD9-F741-4FCA-A65A-28B7D251983D} = {A6694C2C-1A8A-49F0-B404-1BBB4D081808}
 		{ED2B9579-59D2-40F2-BC5E-F4DC3DAB9A56} = {D435DFD9-F741-4FCA-A65A-28B7D251983D}

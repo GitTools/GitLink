@@ -111,9 +111,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="costura32\git2-69db893.dll" />
+    <EmbeddedResource Include="costura64\git2-69db893.dll" />
     <Content Include="Resources\Icons\Logo.ico" />
-    <EmbeddedResource Include="costura32\git2-06d772d.dll" />
-    <EmbeddedResource Include="costura64\git2-06d772d.dll" />
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </Content>

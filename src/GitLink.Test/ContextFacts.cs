@@ -8,14 +8,14 @@
 namespace GitLink.Test
 {
     using Catel.Test;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     public class ContextFacts
     {
-        [TestClass]
+        [TestFixture]
         public class TheDefaultValues
         {
-            [TestMethod]
+            [TestCase]
             public void SetsRightDefaultValues()
             {
                 var context = new Context();
@@ -25,10 +25,10 @@ namespace GitLink.Test
             }
         }
 
-        [TestClass]
+        [TestFixture]
         public class TheValidateContextMethod
         {
-            [TestMethod]
+            [TestCase]
             public void ThrowsExceptionForMissingSolutionDirectory()
             {
                 var context = new Context();
@@ -36,7 +36,7 @@ namespace GitLink.Test
                 ExceptionTester.CallMethodAndExpectException<GitLinkException>(() => context.ValidateContext());
             }
 
-            [TestMethod]
+            [TestCase]
             public void ThrowsExceptionForMissingConfigurationName()
             {
                 var context = new Context
@@ -48,7 +48,7 @@ namespace GitLink.Test
                 ExceptionTester.CallMethodAndExpectException<GitLinkException>(() => context.ValidateContext());
             }
 
-            [TestMethod]
+            [TestCase]
             public void ThrowsExceptionForMissingTargetUrl()
             {
                 var context = new Context
@@ -59,7 +59,7 @@ namespace GitLink.Test
                 ExceptionTester.CallMethodAndExpectException<GitLinkException>(() => context.ValidateContext());
             }
 
-            [TestMethod]
+            [TestCase]
             public void SucceedsForValidContext()
             {
                 var context = new Context
