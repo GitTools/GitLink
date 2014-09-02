@@ -28,6 +28,27 @@ When using GitLink, the user no longer has to specify symbol servers. He/she onl
 
 ![Enabling source server support](doc/images/visualstudio_enablesourceserversupport.png)  
 
+# Supported git providers
+
+GitLink supports the following providers out of the box (will auto-detect based on the url):
+
+* <a href="https://bitbucket.org/" target="_blank">BitBucket</a>
+* <a href="https://github.com/" target="_blank">GitHub</a>
+
+Providers currently being worked on:
+
+* <a href="https://www.assembla.com/home" target="_blank">Assembla</a>
+* <a href="http://beanstalkapp.com/" target="_blank">Beanstalk</a>
+* <a href="http://www.cloudforge.com/" target="_blank">CloudForge</a>
+* <a href="https://www.codebasehq.com/" target="_blank">Codebase</a>
+* <a href="https://www.fogcreek.com/kiln/" target="_blank">FogCreek</a>
+* <a href="https://plan.io/" target="_blank">Planio</a>
+* <a href="http://projectlocker.com/" target="_blank">ProjectLocker</a> 
+* <a href="https://rhodecode.com/" target="_blank">RhodeCode</a>
+* <a href="https://unfuddle.com/" target="_blank">Unfuddle</a>   
+
+It is also possible to specify a custom url provider.
+
 # Using GitLink as command line tool #
 
 Using GitLink via the command line is very simple:
