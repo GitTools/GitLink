@@ -110,7 +110,7 @@ namespace GitLink
             }
             catch (Exception ex)
             {
-                Log.Warning(ex, "Failed to load project '{0}'", projectFile);
+                Log.Warning("Failed to load project '{0}': {1}", projectFile, ex.Message);
                 return null;
             }            
         }
