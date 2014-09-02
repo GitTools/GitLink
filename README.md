@@ -153,7 +153,7 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 
 - <a href="http://www.catelproject.com" target="_blank">Catel</a>
 - <a href="http://www.expandframework.com/" target="_blank">eXpand</a>
-- <a href="https://github.com/GeertvanHorrik/GitLink" target="_blank">GitLink</a>
+- <a href="https://github.com/CatenaLogic/GitLink" target="_blank">GitLink</a>
 - <a href="https://github.com/orcomp/Orc.CsvHelper" target="_blank">Orc.CsvHelper</a>
 - <a href="https://github.com/orcomp/Orc.FilterBuilder" target="_blank">Orc.FilterBuilder</a>
 - <a href="https://github.com/orcomp/Orc.ProjectManagement" target="_blank">Orc.ProjectManagement</a>
