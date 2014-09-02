@@ -17,7 +17,7 @@ namespace GitLink
             var assembly = typeof (HelpWriter).Assembly;
 
             writer(string.Format("{0} v{1}", assembly.Title(), assembly.Version()));
-            writer("===================");
+            writer("================");
             writer(string.Empty);
         }
 
