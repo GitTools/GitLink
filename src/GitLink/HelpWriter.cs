@@ -23,8 +23,7 @@ namespace GitLink
 
         public static void WriteHelp(Action<string> writer)
         {
-            var message =
-                @"Update pdb files to link all sources. This will allow anyone to step through the source code while debugging without a symbol source server.
+            const string message = @"Update pdb files to link all sources. This will allow anyone to step through the source code while debugging without a symbol source server.
 
 Note that the solution must be built because this application will update existing pdb files.
 

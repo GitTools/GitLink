@@ -68,7 +68,7 @@ namespace GitLink
                     continue;
                 }
 
-                int num = value.Stream;
+                var num = value.Stream;
                 var name = value.Name.Substring(FileIndicator.Length);
 
                 var bytes = pdbFile.ReadStreamBytes(num);
@@ -78,7 +78,7 @@ namespace GitLink
                 }
 
                 // Get last 16 bytes for checksum
-                byte[] buffer = new byte[16];
+                var buffer = new byte[16];
                 for (int i = 0; i < 16; i++)
                 {
                     buffer[i] = bytes[i];

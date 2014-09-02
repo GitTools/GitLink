@@ -24,6 +24,7 @@ namespace GitLink
 
             _providerManager = providerManager;
 
+            Authentication = new Authentication();
             ConfigurationName = "Release";
         }
 
@@ -34,6 +35,8 @@ namespace GitLink
         public string SolutionDirectory { get; set; }
 
         public string ConfigurationName { get; set; }
+
+        public Authentication Authentication { get; private set; }
 
         public IProvider Provider 
         {
