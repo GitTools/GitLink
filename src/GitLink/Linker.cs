@@ -48,9 +48,6 @@ namespace GitLink
 
             try
             {
-                var gitPreparer = new GitPreparer(context);
-                gitPreparer.Prepare();
-
                 var projects = new List<Project>();
                 var solutionFiles = Directory.GetFiles(context.SolutionDirectory, "*.sln", SearchOption.AllDirectories);
                 foreach (var solutionFile in solutionFiles)
@@ -58,6 +55,10 @@ namespace GitLink
                     var solutionProjects = ProjectHelper.GetProjects(solutionFile, context.ConfigurationName);
                     projects.AddRange(solutionProjects);
                 }
+
+                var shaHash = context.Provider.GetShaHashOfCurrentBranch(context);
+
+                Log.Info("Using commit sha '{0}' as version stamp", shaHash);
 
                 var projectCount = projects.Count();
                 var failedProjects = new List<Project>();
@@ -67,7 +68,7 @@ namespace GitLink
                 {
                     try
                     {
-                        if (!LinkProject(context, project))
+                        if (!LinkProject(context, project, shaHash))
                         {
                             failedProjects.Add(project);
                         }
@@ -104,12 +105,6 @@ namespace GitLink
             {
                 Log.Error(ex, "An unexpected error occurred");
             }
-            finally
-            {
-                Log.Debug("Clearing temporary directory '{0}'", context.TempDirectory);
-
-                DeleteHelper.DeleteGitRepository(context.TempDirectory);
-            }
 
             stopWatch.Stop();
 
@@ -119,7 +114,7 @@ namespace GitLink
             return exitCode ?? -1;
         }
 
-        private static bool LinkProject(Context context, Project project)
+        private static bool LinkProject(Context context, Project project, string shaHash)
         {
             Argument.IsNotNull(() => context);
             Argument.IsNotNull(() => project);
@@ -151,8 +146,6 @@ namespace GitLink
                 //}
 
                 var rawUrl = string.Format("{0}/{{0}}/%var2%", context.Provider.RawGitUrl);
-                var revision = context.Provider.GetLatestCommitShaOfCurrentBranch(context.TempDirectory);
-
                 var paths = new Dictionary<string, string>();
                 foreach (var compilable in compilables)
                 {
@@ -166,7 +159,7 @@ namespace GitLink
                     paths.Add(compilable, relativePathForUrl);
                 }
 
-                project.CreateSrcSrv(rawUrl, revision, paths);
+                project.CreateSrcSrv(rawUrl, shaHash, paths);
 
                 Log.Debug("Created source server link file, updating pdb file '{0}'", context.GetRelativePath(projectPdbFile));
 

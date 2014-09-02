@@ -35,6 +35,7 @@ GitLink [solutionPath] -u [urlToRepository]
     -c [config]        Name of the configuration, default value is 'Release'.
     -b [branch]        Name of the branch to use on the remote repository.
     -l [file]          The log file to write to.m
+    -s [shaHash]       The SHA-1 hash of the commit.
 ";
             writer(message);
         }

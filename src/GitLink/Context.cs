@@ -7,8 +7,6 @@
 
 namespace GitLink
 {
-    using System;
-    using System.IO;
     using Catel;
     using Catel.Logging;
     using Providers;
@@ -19,14 +17,6 @@ namespace GitLink
 
         private readonly IProviderManager _providerManager;
         private IProvider _provider;
-
-        private readonly Lazy<string> _tempDirectory = new Lazy<string>(() =>
-        {
-            var tempDirectory = Path.Combine(Path.GetTempPath(), "GitLink", Guid.NewGuid().ToString());
-            Directory.CreateDirectory(tempDirectory);
-
-            return tempDirectory;
-        });
 
         public Context(IProviderManager providerManager)
         {
@@ -62,14 +52,11 @@ namespace GitLink
             }
         }
 
-        public string TempDirectory
-        {
-            get { return _tempDirectory.Value; }
-        }
-
         public string TargetUrl { get; set; }
 
         public string TargetBranch { get; set; }
+
+        public string ShaHash { get; set; }
 
         public void ValidateContext()
         {

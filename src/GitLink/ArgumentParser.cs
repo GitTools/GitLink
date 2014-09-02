@@ -84,6 +84,12 @@ namespace GitLink
                     continue;
                 }
 
+                if (IsSwitch("s", name))
+                {
+                    context.ShaHash = value;
+                    continue;
+                }
+
                 Log.ErrorAndThrowException<GitLinkException>("Could not parse command line parameter '{0}'.", name);
             }
 

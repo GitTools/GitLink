@@ -93,6 +93,7 @@
     <Compile Include="Exceptions\GitLinkException.cs" />
     <Compile Include="Git\GitDirFinder.cs" />
     <Compile Include="Git\GitPreparer.cs" />
+    <Compile Include="Git\Interfaces\IRepositoryPreparer.cs" />
     <Compile Include="Helpers\DeleteHelper.cs" />
     <Compile Include="Helpers\GitHelper.cs" />
     <Compile Include="Helpers\PdbStrHelper.cs" />

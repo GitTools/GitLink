@@ -9,10 +9,16 @@ namespace GitLink.Providers
 {
     using System;
     using System.Text.RegularExpressions;
+    using Git;
 
     public class GitHubProvider : ProviderBase
     {
         private readonly Regex _gitHubRegex = new Regex(@"(?<url>(?<companyurl>(?:https://)?github\.com/(?<company>[^/]+))/(?<project>[^/]+))");
+
+        public GitHubProvider() 
+            : base(new GitPreparer())
+        {
+        }
 
         public override string RawGitUrl
         {

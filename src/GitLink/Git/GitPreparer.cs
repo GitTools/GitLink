@@ -7,39 +7,42 @@
 
 namespace GitLink.Git
 {
+    using System;
     using System.IO;
     using Catel;
     using Catel.Logging;
     using LibGit2Sharp;
 
-    public class GitPreparer
+    public class GitPreparer : IRepositoryPreparer
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        private readonly Context _context;
-
-        public GitPreparer(Context context)
+        public bool IsPreparationRequired(Context context)
         {
             Argument.IsNotNull(() => context);
 
-            _context = context;
+            var gitPath = GitDirFinder.TreeWalkForGitDir(context.SolutionDirectory);
+            return string.IsNullOrEmpty(gitPath);
         }
 
-        public string Prepare()
+        public string Prepare(Context context)
         {
-            var gitPath = _context.TempDirectory;
+            Argument.IsNotNull(() => context);
 
-            if (!string.IsNullOrWhiteSpace(_context.TargetUrl))
+            var gitDirectory = Path.Combine(Path.GetTempPath(), "GitLink", Guid.NewGuid().ToString());
+            Directory.CreateDirectory(gitDirectory);
+
+            if (!string.IsNullOrWhiteSpace(context.TargetUrl))
             {
-                gitPath = GetGitInfoFromUrl();
+                gitDirectory = GetGitInfoFromUrl(context, gitDirectory);
             }
 
-            return GitDirFinder.TreeWalkForGitDir(gitPath);
+            return GitDirFinder.TreeWalkForGitDir(gitDirectory);
         }
 
-        private string GetGitInfoFromUrl()
+        private string GetGitInfoFromUrl(Context context, string gitDirectory)
         {
-            var gitDirectory = Path.Combine(_context.TempDirectory, ".git");
+            gitDirectory = Path.Combine(gitDirectory, ".git");
             if (Directory.Exists(gitDirectory))
             {
                 Log.Info("Deleting existing .git folder from '{0}' to force new checkout from url", gitDirectory);
@@ -47,7 +50,7 @@ namespace GitLink.Git
                 DeleteHelper.DeleteGitRepository(gitDirectory);
             }
 
-            Log.Info("Retrieving git info from url '{0}'", _context.TargetUrl);
+            Log.Info("Retrieving git info from url '{0}'", context.TargetUrl);
 
             var cloneOptions = new CloneOptions
             {
@@ -55,19 +58,19 @@ namespace GitLink.Git
                 IsBare = true
             };
 
-            Repository.Clone(_context.TargetUrl, gitDirectory, cloneOptions);
+            Repository.Clone(context.TargetUrl, gitDirectory, cloneOptions);
 
-            if (!string.IsNullOrWhiteSpace(_context.TargetBranch))
+            if (!string.IsNullOrWhiteSpace(context.TargetBranch))
             {
                 // Normalize (download branches) before using the branch
                 GitHelper.NormalizeGitDirectory(gitDirectory);
 
                 using (var repository = new Repository(gitDirectory))
                 {
-                    var targetBranchName = string.Format("refs/heads/{0}", _context.TargetBranch);
+                    var targetBranchName = string.Format("refs/heads/{0}", context.TargetBranch);
                     if (!string.Equals(repository.Head.CanonicalName, targetBranchName))
                     {
-                        Log.Info("Switching to branch '{0}'", _context.TargetBranch);
+                        Log.Info("Switching to branch '{0}'", context.TargetBranch);
 
                         repository.Refs.UpdateTarget("HEAD", targetBranchName);
                     }

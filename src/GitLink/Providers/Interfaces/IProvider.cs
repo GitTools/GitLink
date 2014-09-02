@@ -41,6 +41,6 @@ namespace GitLink.Providers
 
         bool Initialize(string url);
 
-        string GetLatestCommitShaOfCurrentBranch(string repositoryDirectory);
+        string GetShaHashOfCurrentBranch(Context context);
     }
 }

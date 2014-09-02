@@ -7,12 +7,26 @@
 
 namespace GitLink.Providers
 {
+    using System;
+    using System.IO;
     using System.Linq;
     using Catel;
+    using Catel.Logging;
+    using Git;
     using LibGit2Sharp;
 
     public abstract class ProviderBase : IProvider
     {
+        private readonly IRepositoryPreparer _repositoryPreparer;
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
+        protected ProviderBase(IRepositoryPreparer repositoryPreparer)
+        {
+            Argument.IsNotNull(() => repositoryPreparer);
+
+            _repositoryPreparer = repositoryPreparer;
+        }
+
         /// <summary>
         /// Gets or sets the name of the company.
         /// </summary>
@@ -45,15 +59,56 @@ namespace GitLink.Providers
 
         public abstract bool Initialize(string url);
 
-        public string GetLatestCommitShaOfCurrentBranch(string repositoryDirectory)
+        public string GetShaHashOfCurrentBranch(Context context)
         {
-            Argument.IsNotNull(() => repositoryDirectory);
+            Argument.IsNotNull(() => context);
+
+            string commitSha = null;
+            var deleteTempRepository = false;
+            var repositoryDirectory = context.SolutionDirectory;
+
+            if (_repositoryPreparer.IsPreparationRequired(context))
+            {
+                Log.Info("No local repository is found in '{0}', creating a temporary one", repositoryDirectory);
+
+                repositoryDirectory = _repositoryPreparer.Prepare(context);
+                deleteTempRepository = true;
+            }
 
             using (var repository = new Repository(repositoryDirectory))
             {
-                var lastCommit = repository.Commits.First();
-                return lastCommit.Sha;
+                if (string.IsNullOrEmpty(context.ShaHash))
+                {
+                    Log.Info("No sha hash is available on the context, retrieving latest commit of current branch");
+
+                    var lastCommit = repository.Commits.First();
+                    commitSha = lastCommit.Sha;
+                }
+                else
+                {
+                    Log.Info("Checking if commit with sha hash '{0}' exists on the repostory", context.ShaHash);
+
+                    var commit = repository.Commits.FirstOrDefault(c => string.Equals(c.Sha, context.ShaHash, StringComparison.OrdinalIgnoreCase));
+                    if (commit != null)
+                    {
+                        commitSha = commit.Sha;
+                    }
+                }
             }
+
+            if (deleteTempRepository)
+            {
+                Log.Debug("Deleting temporary directory '{0}'", repositoryDirectory);
+
+                Directory.Delete(repositoryDirectory, true);
+            }
+
+            if (commitSha == null)
+            {
+                Log.ErrorAndThrowException<GitLinkException>("Cannot find commit '{0}' in repo.", context.ShaHash);
+            }
+
+            return commitSha;
         }
     }
 }
