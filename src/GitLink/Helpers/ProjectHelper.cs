@@ -12,19 +12,22 @@ namespace GitLink
     using System.Linq;
     using System.Reflection;
     using Catel;
+    using Catel.Logging;
     using Catel.Reflection;
     using Microsoft.Build.Evaluation;
     using System.IO;
 
     public static class ProjectHelper
     {
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
         private static readonly Type SolutionParserType;
         private static readonly PropertyInfo SolutionReaderPropertyInfo;
         private static readonly PropertyInfo ProjectsPropertyInfo;
         private static readonly MethodInfo ParseSolutionMethodInfo;
         private static readonly PropertyInfo RelativePathPropertyInfo;
         private static readonly PropertyInfo ProjectTypePropertyInfo;
-        private static readonly object KnownToBeMSBuildFormat;
+        private static readonly object KnownToBeMsBuildFormat;
 
         static ProjectHelper()
         {
@@ -48,7 +51,7 @@ namespace GitLink
             var solutionProjectTypeType = TypeCache.GetType("Microsoft.Build.Construction.SolutionProjectType");
             if (solutionProjectTypeType != null)
             {
-                KnownToBeMSBuildFormat = Enum.Parse(solutionProjectTypeType, "KnownToBeMSBuildFormat");
+                KnownToBeMsBuildFormat = Enum.Parse(solutionProjectTypeType, "KnownToBeMSBuildFormat");
             }
         }
 
@@ -66,7 +69,7 @@ namespace GitLink
                 for (int i = 0; i < array.Length; i++)
                 {
                     var projectInSolution = array.GetValue(i);
-                    if (!ObjectHelper.AreEqual(ProjectTypePropertyInfo.GetValue(projectInSolution), KnownToBeMSBuildFormat))
+                    if (!ObjectHelper.AreEqual(ProjectTypePropertyInfo.GetValue(projectInSolution), KnownToBeMsBuildFormat))
                     {
                         continue;
                     }
@@ -75,7 +78,10 @@ namespace GitLink
                     var projectFile = Path.Combine(solutionDirectory, relativePath);
 
                     var project = LoadProject(projectFile, configurationName, solutionDirectory);
-                    projects.Add(project);
+                    if (project != null)
+                    {
+                        projects.Add(project);
+                    }
                 }
             }
 
@@ -93,12 +99,20 @@ namespace GitLink
                 solutionDirectory += @"\";
             }
 
-            var collections = new Dictionary<string, string>();
-            collections["Configuration"] = configurationName;
-            collections["SolutionDir"] = solutionDirectory;
+            try
+            {
+                var collections = new Dictionary<string, string>();
+                collections["Configuration"] = configurationName;
+                collections["SolutionDir"] = solutionDirectory;
 
-            var project = new Project(projectFile, collections, null);
-            return project;
+                var project = new Project(projectFile, collections, null);
+                return project;
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Failed to load project '{0}'", projectFile);
+                return null;
+            }            
         }
     }
 }
