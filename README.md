@@ -28,6 +28,8 @@ When using GitLink, the user no longer has to specify symbol servers. He/she onl
 
 ![Enabling source server support](doc/images/visualstudio_enablesourceserversupport.png)  
 
+**Note that Visual Studio 2012 needs to run elevated in order to download the source server files due to a bug in Visual Studio 2012.**
+
 # Supported git providers
 
 GitLink supports the following providers out of the box (will auto-detect based on the url):
