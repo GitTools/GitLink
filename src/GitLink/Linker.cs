@@ -145,6 +145,8 @@ namespace GitLink
                     return false;
                 }
 
+                Log.Info("Verifying pdb file");
+
                 var missingFiles = project.VerifyPdbFiles(compilables);
                 foreach (var missingFile in missingFiles)
                 {
