@@ -56,6 +56,14 @@ namespace GitLink
                     projects.AddRange(solutionProjects);
                 }
 
+                var provider = context.Provider;
+                if (provider == null)
+                {
+                    Log.ErrorAndThrowException<GitLinkException>("Cannot find a matching provider for '{0}'", context.TargetUrl);
+                }
+
+                Log.Info("Using provider '{0}'", provider.GetType().Name);
+
                 var shaHash = context.Provider.GetShaHashOfCurrentBranch(context);
 
                 Log.Info("Using commit sha '{0}' as version stamp", shaHash);

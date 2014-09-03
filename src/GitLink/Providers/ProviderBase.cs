@@ -100,7 +100,17 @@ namespace GitLink.Providers
             {
                 Log.Debug("Deleting temporary directory '{0}'", repositoryDirectory);
 
-                Directory.Delete(repositoryDirectory, true);
+                try
+                {
+                    // Always sleep 1 second to give IO a chance to release
+                    ThreadHelper.Sleep(1000);
+
+                    Directory.Delete(repositoryDirectory, true);
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Failed to delete temporary directory");
+                }
             }
 
             if (commitSha == null)

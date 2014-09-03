@@ -160,6 +160,8 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="https://github.com/orcomp/Orc.Sort" target="_blank">Orc.Sort</a>
 - <a href="https://github.com/orcomp/Orchestra" target="_blank">Orchestra</a>
 - <a href="http://romanticweb.net" target="_blank">Romantic Web</a>
+- <a href="https://github.com/xunit/xunit" target="_blank">xUnit.net</a>
+- <a href="https://github.com/xunit/visualstudio.xunit" target="_blank">xUnit.net Visual Studio Runner</a>
 
 Are you using GitLink in your projects? Let us know and we will add your project to the list.
 

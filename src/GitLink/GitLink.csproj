@@ -80,12 +80,14 @@
     </Compile>
     <Compile Include="ArgumentParser.cs" />
     <Compile Include="Extensions\BinaryReaderExtensions.cs" />
+    <Compile Include="Authentication.cs" />
     <Compile Include="Extensions\ContextExtensions.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Extensions\PdbExtensions.cs" />
     <Compile Include="Extensions\ProjectExtensions.cs" />
     <Compile Include="Extensions\ProjectItemExtensions.cs" />
     <Compile Include="Exceptions\GitLinkException.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Git\GitDirFinder.cs" />
     <Compile Include="Git\GitPreparer.cs" />
     <Compile Include="Git\Interfaces\IRepositoryPreparer.cs" />
