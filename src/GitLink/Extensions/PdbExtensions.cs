@@ -11,7 +11,7 @@ namespace GitLink
     using System.Collections.Generic;
     using System.Linq;
     using Catel;
-    using SourceLink;
+    using Pdb;
 
     public static class PdbExtensions
     {
@@ -21,7 +21,7 @@ namespace GitLink
 
             var missing = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             var actualFileChecksums = (from x in files
-                                       select new KeyValuePair<string, string>(Hex.encode(Crypto.hashesMD5(new[] { x }).First().Item1), x)).ToDictionary(x => x.Value, x => x.Key);
+                                       select new KeyValuePair<string, string>(Hex.Encode(Crypto.HashesMD5(new[] { x }).First().Item1), x)).ToDictionary(x => x.Value, x => x.Key);
 
             foreach (var checksumInfo in pdbFile.GetChecksums())
             {
@@ -45,7 +45,7 @@ namespace GitLink
 
             foreach (var file in pdbFile.GetFiles())
             {
-                checksums.Add(file.Item1, Hex.encode(file.Item2));
+                checksums.Add(file.Item1, Hex.Encode(file.Item2));
             }
 
             return checksums;

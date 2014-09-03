@@ -14,7 +14,7 @@ namespace GitLink
     using Catel;
     using Catel.Logging;
     using Microsoft.Build.Evaluation;
-    using SourceLink;
+    using Pdb;
 
     public static class ProjectExtensions
     {
@@ -54,7 +54,7 @@ namespace GitLink
 
             var srcsrvFile = GetOutputSrcSrvFile(project);
 
-            File.WriteAllBytes(srcsrvFile, SrcSrv.create(rawUrl, revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value))));
+            File.WriteAllBytes(srcsrvFile, SrcSrv.Create(rawUrl, revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value))));
         }
 
         public static IEnumerable<ProjectItem> GetCompilableItems(this Project project)
@@ -68,7 +68,7 @@ namespace GitLink
         {
             Argument.IsNotNull(() => project);
 
-            using (var pdb = new PdbFile(Path.ChangeExtension(project.GetOutputFile(), ".pdb")))
+            using (var pdb = new GitLink.Pdb.PdbFile(Path.ChangeExtension(project.GetOutputFile(), ".pdb")))
             {
                 return pdb.VerifyPdbFiles(files);
             }
