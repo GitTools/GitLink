@@ -145,13 +145,11 @@ namespace GitLink
                     return false;
                 }
 
-                // Note: verify doesn't work yet, maybe implement later
-                Log.Warning("Pdb verification not yet implemented, cannot garantuee that pdb-files are up-to-date");
-                //var missingFiles = project.VerifyPdbFiles(compilables);
-                //foreach (var missingFile in missingFiles)
-                //{
-                //    Log.Warning("Missing file '{0}' or checksum '{1}' did not match", missingFile.Key, missingFile.Value);
-                //}
+                var missingFiles = project.VerifyPdbFiles(compilables);
+                foreach (var missingFile in missingFiles)
+                {
+                    Log.Warning("Missing file '{0}' or checksum '{1}' did not match", missingFile.Key, missingFile.Value);
+                }
 
                 var rawUrl = string.Format("{0}/{{0}}/%var2%", context.Provider.RawGitUrl);
                 var paths = new Dictionary<string, string>();

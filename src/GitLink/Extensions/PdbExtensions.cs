@@ -28,7 +28,7 @@ namespace GitLink
                 var file = checksumInfo.Key;
                 var checksum = checksumInfo.Value;
 
-                if (!actualFileChecksums.ContainsKey(checksum))
+                if (!actualFileChecksums.ContainsValue(checksum))
                 {
                     missing[file] = checksum;
                 }
@@ -72,16 +72,16 @@ namespace GitLink
                 var name = value.Name.Substring(FileIndicator.Length);
 
                 var bytes = pdbFile.ReadStreamBytes(num);
-                if (bytes.Length != 72)
+                if (bytes.Length != 88)
                 {
                     continue;
                 }
 
                 // Get last 16 bytes for checksum
                 var buffer = new byte[16];
-                for (int i = 0; i < 16; i++)
+                for (int i = 72; i < 88; i++)
                 {
-                    buffer[i] = bytes[i];
+                    buffer[i-72] = bytes[i];
                 }
 
                 results.Add(new Tuple<string, byte[]>(name, buffer));
