@@ -14,6 +14,7 @@ namespace GitLink.Pdb
         public PdbRoot(PdbStream stream)
         {
             Stream = stream;
+            Streams = new List<PdbStream>();
         }
 
         public PdbStream Stream { get; set; }

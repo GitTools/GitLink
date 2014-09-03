@@ -23,7 +23,7 @@ namespace GitLink
         {
             var list = new List<byte>();
             byte b = binaryReader.ReadByte();
-            while (b != '\n')
+            while (b != '\0')
             {
                 list.Add(b);
                 b = binaryReader.ReadByte();

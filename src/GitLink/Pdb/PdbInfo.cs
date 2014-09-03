@@ -18,7 +18,7 @@ namespace GitLink.Pdb
             Guid = new Guid();
             StreamToPdbName = new SortedDictionary<int, PdbName>();
             NameToPdbName = new SortedDictionary<string, PdbName>();
-            FlagIndexToPdbName = new SortedDictionary<int, PdbName>(FlagIndexToPdbName);
+            FlagIndexToPdbName = new SortedDictionary<int, PdbName>();
             FlagIndexes = new SortedSet<int>();
             SrcSrv = new string[0];
             Tail = new byte[0];

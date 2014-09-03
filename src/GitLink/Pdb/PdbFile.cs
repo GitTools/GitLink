@@ -197,7 +197,7 @@
         {
             var info = new PdbInfo();
             using (var ms = new MemoryStream(ReadStreamBytes(GetRoot().Streams[1])))
-            using (var sr = new BinaryReader(ms))
+            using (var br = new BinaryReader(ms))
             {
                 info.Version = br.ReadInt32(); // 0x00 of stream
                 info.Signature = br.ReadInt32(); // 0x04
