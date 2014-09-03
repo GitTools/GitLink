@@ -21,7 +21,7 @@ namespace GitLink
 
             var missing = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             var actualFileChecksums = (from x in files
-                                       select new KeyValuePair<string, string>(Hex.Encode(Crypto.HashesMD5(new[] { x }).First().Item1), x)).ToDictionary(x => x.Value, x => x.Key);
+                                       select new KeyValuePair<string, string>(Hex.Encode(Crypto.GetMd5HashForFiles(new[] { x }).First().Item1), x)).ToDictionary(x => x.Value, x => x.Key);
 
             foreach (var checksumInfo in pdbFile.GetChecksums())
             {

@@ -9,22 +9,20 @@ namespace GitLink.Pdb
 {
     using System;
     using System.Linq;
+    using Catel;
 
     public static class Hex
     {
-        public static string Encode(byte[] buf)
+        public static string Encode(byte[] buffer)
         {
-            return BitConverter.ToString(buf).Replace("-", string.Empty);
+            Argument.IsNotNullOrEmptyArray(() => buffer);
+
+            return BitConverter.ToString(buffer).Replace("-", string.Empty);
         }
 
         public static byte[] Decode(string hex)
         {
-            if (hex == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            if (String.IsNullOrEmpty(hex))
+            if (string.IsNullOrEmpty(hex))
             {
                 return new byte[0];
             }

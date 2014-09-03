@@ -9,7 +9,7 @@ namespace GitLink.Pdb
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using Catel;
 
     public class PdbInfo
     {
@@ -30,10 +30,10 @@ namespace GitLink.Pdb
         public int Age { get; set; }
         public int FlagIndexMax { get; set; }
         public int FlagCount { get; set; }
-        public IDictionary<int, PdbName> StreamToPdbName { get; set; }
-        public IDictionary<string, PdbName> NameToPdbName { get; set; }
-        public IDictionary<int, PdbName> FlagIndexToPdbName { get; set; }
-        public SortedSet<int> FlagIndexes { get; set; }
+        public IDictionary<int, PdbName> StreamToPdbName { get; private set; }
+        public IDictionary<string, PdbName> NameToPdbName { get; private set; }
+        public IDictionary<int, PdbName> FlagIndexToPdbName { get; private set; }
+        public SortedSet<int> FlagIndexes { get; private set; }
         public string[] SrcSrv { get; set; }
         public byte[] Tail { get; set; }
 
@@ -45,26 +45,20 @@ namespace GitLink.Pdb
 
         public void AddFlag(PdbName name)
         {
+            Argument.IsNotNull(() => name);
+
             FlagIndexes.Add(name.FlagIndex);
             FlagIndexToPdbName.Add(name.FlagIndex, name);
         }
 
         public void AddName(PdbName name)
         {
+            Argument.IsNotNull(() => name);
+
             StreamToPdbName.Add(name.Stream, name);
             NameToPdbName.Add(name.Name, name);
-            AddFlag(name);
-        }
 
-        public PdbName AddNewName(string name)
-        {
-            var pdbName = new PdbName();
-            pdbName.Name = name;
-            var streamNumbers = StreamToPdbName.Keys.ToArray();
-            var lastStream = streamNumbers[streamNumbers.Length - 1];
-            pdbName.Stream = lastStream + 1;
-            AddName(pdbName);
-            return pdbName;
+            AddFlag(name);
         }
     }
 }

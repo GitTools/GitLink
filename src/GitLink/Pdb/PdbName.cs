@@ -7,13 +7,11 @@
 
 namespace GitLink.Pdb
 {
-    using System;
-
     public class PdbName
     {
-        public PdbName()
+        public PdbName(string name = "")
         {
-            Name = String.Empty;
+            Name = name;
         }
 
         public int Stream { get; set; }
