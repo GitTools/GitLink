@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
-    <id>gitlink</id>
+    <id>githublink</id>
     <version>[VERSION]</version>
-	<title>GitLink</title>
+	<title>GitHubLink</title>
     <authors>GeertvanHorrik</authors>
 	
 	<description>
-	  GitLink let's users step through your code hosted on any Git hosting service! This makes symbol servers obsolete which saves you both time 
-      with uploading source files with symbols and the user no longer has to specify custom symbol servers (such as symbolsource.org).
+	  ** Note: this is a maintenance package, GitHubLink is replaced by GitLink **
 	</description>
     
 	<summary>
@@ -20,5 +19,9 @@
 	<projectUrl>https://github.com/CatenaLogic/GitLink/</projectUrl>	
 	<licenseUrl>https://github.com/CatenaLogic/GitLink/blob/develop/LICENSE</licenseUrl>
 	<iconUrl>https://raw.githubusercontent.com/CatenaLogic/GitLink/develop/design/logo/logo_64.png</iconUrl>
+    
+    <dependencies>
+      <dependency id="gitlink" version="[VERSION]" />
+    </dependencies>        
   </metadata>
 </package>
