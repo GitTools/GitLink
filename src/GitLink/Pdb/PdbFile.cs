@@ -57,6 +57,7 @@
             get { return Info.NameToPdbName.ContainsKey(SrcSrvContent); }
         }
 
+
         public int SrcSrv
         {
             get { return Info.NameToPdbName[SrcSrvContent].Stream; }
