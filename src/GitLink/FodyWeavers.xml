@@ -3,9 +3,8 @@
   <Costura>
     <IncludeAssemblies>
       Catel.Core
-      FSharp.Core
       LibGit2Sharp
-      SourceLink
     </IncludeAssemblies>
   </Costura>
+  <Catel/>
 </Weavers>
