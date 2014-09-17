@@ -1,5 +1,5 @@
-GitHubLink history
-==================
+GitLink history
+===============
 
 (+) Added
 (*) Changed
@@ -8,7 +8,7 @@ GitHubLink history
 
 For more information about issues or new feature requests, please visit:
 
-Project website: https://github.com/GeertvanHorrik/GitHubLink
+Project website: https://github.com/CatenaLogic/GitLink/
 
 **********************************************************
 

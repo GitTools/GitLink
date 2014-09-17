@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Weavers>
+  <Costura>
+    <IncludeAssemblies>
+      Catel.Core
+      LibGit2Sharp
+    </IncludeAssemblies>
+  </Costura>
+  <Catel/>
+</Weavers>
