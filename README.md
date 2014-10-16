@@ -30,7 +30,13 @@ When using GitLink, the user no longer has to specify symbol servers. He/she onl
 
 ![Enabling source server support](doc/images/visualstudio_enablesourceserversupport.png)  
 
+# Troubleshooting
+
 **Note that Visual Studio 2012 needs to run elevated in order to download the source server files due to a bug in Visual Studio 2012.**
+
+If the source stepping is not working, double check that Visual Studio has a valid symbol cache directory to store the source files being downloaded:
+
+![Enabling source server support](doc/images/visualstudio_symbolslocation.png)
 
 # Supported git providers
 
@@ -162,6 +168,7 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="https://github.com/orcomp/Orc.FilterBuilder" target="_blank">Orc.FilterBuilder</a>
 - <a href="https://github.com/orcomp/Orc.ProjectManagement" target="_blank">Orc.ProjectManagement</a>
 - <a href="https://github.com/orcomp/Orc.Sort" target="_blank">Orc.Sort</a>
+- <a href="https://github.com/orcomp/Orc.WorkspaceManagement" target="_blank">Orc.WorkspaceManagement</a>
 - <a href="https://github.com/orcomp/Orchestra" target="_blank">Orchestra</a>
 - <a href="http://romanticweb.net" target="_blank">Romantic Web</a>
 - <a href="https://github.com/xunit/xunit" target="_blank">xUnit.net</a>
