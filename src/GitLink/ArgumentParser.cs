@@ -90,6 +90,12 @@ namespace GitLink
                     continue;
                 }
 
+				if (IsSwitch("f", name))
+				{
+					context.SolutionFile = value;
+					continue;
+				}
+
                 Log.ErrorAndThrowException<GitLinkException>("Could not parse command line parameter '{0}'.", name);
             }
 

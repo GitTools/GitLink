@@ -61,7 +61,9 @@ namespace GitLink
 
         public string ShaHash { get; set; }
 
-        public void ValidateContext()
+	    public string SolutionFile { get; set; }
+
+	    public void ValidateContext()
         {
             if (string.IsNullOrEmpty(SolutionDirectory))
             {

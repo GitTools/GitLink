@@ -48,8 +48,24 @@ namespace GitLink
 
             try
             {
-                var projects = new List<Project>();
-                var solutionFiles = Directory.GetFiles(context.SolutionDirectory, "*.sln", SearchOption.AllDirectories);
+				var projects = new List<Project>();
+				string[] solutionFiles;
+				if (string.IsNullOrEmpty(context.SolutionFile))
+				{
+					solutionFiles = Directory.GetFiles(context.SolutionDirectory, "*.sln", SearchOption.AllDirectories);
+				}
+				else
+				{
+					var pathToSolutionFile = Path.Combine(context.SolutionDirectory, context.SolutionFile);
+					if (File.Exists(pathToSolutionFile) == false)
+					{
+						Log.Error("Could not find solution file: " + pathToSolutionFile);
+						return -1;
+					}
+
+					solutionFiles = new[] { pathToSolutionFile };
+				}
+
                 foreach (var solutionFile in solutionFiles)
                 {
                     var solutionProjects = ProjectHelper.GetProjects(solutionFile, context.ConfigurationName);
