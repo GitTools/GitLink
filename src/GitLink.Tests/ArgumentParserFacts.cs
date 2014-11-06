@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace GitLink.Test
+namespace GitLink.Tests
 {
     using Catel.Test;
     using NUnit.Framework;
@@ -42,6 +42,14 @@ namespace GitLink.Test
             var context = ArgumentParser.ParseArguments("-h");
 
             Assert.IsTrue(context.IsHelp);
+        }
+
+        [TestCase]
+        public void CorrectlyParsesSolutionFile()
+        {
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -f someSolution");
+
+            Assert.AreEqual("someSolution", context.SolutionFile);
         }
 
         [TestCase]
