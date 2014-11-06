@@ -22,7 +22,7 @@ namespace GitLink
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         private static readonly Type SolutionParserType;
-        private static readonly PropertyInfo SolutionReaderPropertyInfo;
+        private static readonly PropertyInfo SolutionReaderPropertyInfo; 
         private static readonly PropertyInfo ProjectsPropertyInfo;
         private static readonly MethodInfo ParseSolutionMethodInfo;
         private static readonly PropertyInfo RelativePathPropertyInfo;
