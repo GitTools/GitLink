@@ -5,15 +5,15 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace GitLink.Test.IntegrationTests
+namespace GitLink.Tests.IntegrationTests
 {
     using NUnit.Framework;
 
     [TestFixture, Explicit]
-    public class BitBucketIntegration : IntegrationTestBase
+    public class GitHubIntegration : IntegrationTestBase
     {
-        public const string Url = "https://bitbucket.org/CatenaLogic/GitLinkTestRepro";
-        public const string Directory = @"C:\Source\GitLinkTestRepro_BitBucket";
+        public const string Url = "https://github.com/CatenaLogic/GitLinkTestRepro";
+        public const string Directory = @"C:\Source\GitLinkTestRepro_GitHub";
 
         [Test]
         public void CorrectlyUpdatesPdbFiles()

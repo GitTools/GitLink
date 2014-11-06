@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace GitLink.Test
+namespace GitLink.Tests
 {
     using Catel.Test;
     using GitLink.Providers;

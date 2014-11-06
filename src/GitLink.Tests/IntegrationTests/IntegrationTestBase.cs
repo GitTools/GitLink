@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace GitLink.Test.IntegrationTests
+namespace GitLink.Tests.IntegrationTests
 {
     using System;
     using System.Diagnostics;

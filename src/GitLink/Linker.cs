@@ -48,23 +48,23 @@ namespace GitLink
 
             try
             {
-				var projects = new List<Project>();
-				string[] solutionFiles;
-				if (string.IsNullOrEmpty(context.SolutionFile))
-				{
-					solutionFiles = Directory.GetFiles(context.SolutionDirectory, "*.sln", SearchOption.AllDirectories);
-				}
-				else
-				{
-					var pathToSolutionFile = Path.Combine(context.SolutionDirectory, context.SolutionFile);
-					if (File.Exists(pathToSolutionFile) == false)
-					{
-						Log.Error("Could not find solution file: " + pathToSolutionFile);
-						return -1;
-					}
+                var projects = new List<Project>();
+                string[] solutionFiles;
+                if (string.IsNullOrEmpty(context.SolutionFile))
+                {
+                    solutionFiles = Directory.GetFiles(context.SolutionDirectory, "*.sln", SearchOption.AllDirectories);
+                }
+                else
+                {
+                    var pathToSolutionFile = Path.Combine(context.SolutionDirectory, context.SolutionFile);
+                    if (!File.Exists(pathToSolutionFile))
+                    {
+                        Log.Error("Could not find solution file: " + pathToSolutionFile);
+                        return -1;
+                    }
 
-					solutionFiles = new[] { pathToSolutionFile };
-				}
+                    solutionFiles = new[] { pathToSolutionFile };
+                }
 
                 foreach (var solutionFile in solutionFiles)
                 {
@@ -173,8 +173,7 @@ namespace GitLink
                 var paths = new Dictionary<string, string>();
                 foreach (var compilable in compilables)
                 {
-                    var relativePathForUrl = compilable.Replace(context.SolutionDirectory, string.Empty)
-                                                       .Replace("\\", "/");
+                    var relativePathForUrl = compilable.Replace(context.SolutionDirectory, string.Empty).Replace("\\", "/");
                     while (relativePathForUrl.StartsWith("/"))
                     {
                         relativePathForUrl = relativePathForUrl.Substring(1, relativePathForUrl.Length - 1);
