@@ -7,7 +7,9 @@
 
 namespace GitLink
 {
+    using System;
     using Catel;
+    using Catel.IO;
     using Catel.Logging;
     using Providers;
 
@@ -38,7 +40,7 @@ namespace GitLink
 
         public Authentication Authentication { get; private set; }
 
-        public IProvider Provider 
+        public IProvider Provider
         {
             get
             {
@@ -61,10 +63,15 @@ namespace GitLink
 
         public string ShaHash { get; set; }
 
-	    public string SolutionFile { get; set; }
+        public string SolutionFile { get; set; }
 
-	    public void ValidateContext()
+        public void ValidateContext()
         {
+            if (!string.IsNullOrWhiteSpace(SolutionDirectory))
+            {
+                SolutionDirectory = Path.GetFullPath(SolutionDirectory, Environment.CurrentDirectory);
+            }
+
             if (string.IsNullOrEmpty(SolutionDirectory))
             {
                 Log.ErrorAndThrowException<GitLinkException>("Solution directory is missing");
