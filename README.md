@@ -130,7 +130,7 @@ Once a context is created, the *Linker* class can be used to actually link the f
 
 # How to get GitLink #
 
-There are three general ways to get GitLink:.
+There are three general ways to get GitLink:
 
 ## Get it from GitHub ##
 
