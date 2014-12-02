@@ -157,7 +157,7 @@ namespace GitLink
                 var projectStcSrvFile = Path.GetFullPath(project.GetOutputSrcSrvFile());
                 if (!File.Exists(projectPdbFile))
                 {
-                    Log.Warning("No pdb file found for '{0}', is project built in '{1}' mode with pdb files enabled?", projectName, context.ConfigurationName);
+                    Log.Warning("No pdb file found for '{0}', is project built in '{1}' mode with pdb files enabled? Expected file is '{2}'", projectName, context.ConfigurationName, projectPdbFile);
                     return false;
                 }
 
