@@ -6,6 +6,12 @@
 *.user
 *.sln.docstates
 
+.nuget/
+tools/FAKE/
+build-log.xml
+Nuget.key
+TestResult.xml
+
 # Build results
 [Bb]in/
 [Cc]lientbin/
@@ -16,6 +22,7 @@
 bin
 obj
 [Ll]ib/
+*.ide/
 *_i.c
 *_p.c
 *.ilk
