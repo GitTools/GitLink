@@ -24,26 +24,8 @@ namespace GitLink
         {
             Argument.IsNotNull(() => project);
 
-            var projectName = GetProjectPropertyValue(project, "MSBuildProjectName");
+            var projectName = project.GetPropertyValue("MSBuildProjectName");
             return projectName ?? Path.GetFileName(project.FullPath);
-        }
-
-        public static string GetProjectPropertyValue(this Project project, string propertyName)
-        {
-            Argument.IsNotNull(() => project);
-            Argument.IsNotNullOrWhitespace(() => propertyName);
-
-            var projectNameProperty = (from property in project.Properties
-                                       where string.Equals(property.Name, "MSBuildProjectName")
-                                       select property).FirstOrDefault();
-
-            if (projectNameProperty == null)
-            {
-                Log.Debug("Failed to get property 'MSBuildProjectName', returning null");
-                return null;
-            }
-
-            return projectNameProperty.EvaluatedValue;
         }
 
         public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths)
@@ -68,7 +50,9 @@ namespace GitLink
         {
             Argument.IsNotNull(() => project);
 
-            using (var pdb = new GitLink.Pdb.PdbFile(Path.ChangeExtension(project.GetOutputFile(), ".pdb")))
+            var pdbFile = GetOutputPdbFile(project);
+
+            using (var pdb = new PdbFile(pdbFile))
             {
                 return pdb.VerifyPdbFiles(files);
             }
@@ -96,17 +80,75 @@ namespace GitLink
         {
             Argument.IsNotNull(() => project);
 
-            string extension = ".dll";
+            var targetDirectory = GetTargetDirectory(project);
+            var targetFileName = GetTargetFileName(project);
 
-            string outputType = project.GetProperty("OutputType").EvaluatedValue;
-            if (outputType.Contains("Exe") || outputType.Contains("WinExe"))
+            var outputFile = Path.Combine(targetDirectory, targetFileName);
+            outputFile = Path.GetFullPath(outputFile);
+
+            return outputFile;
+        }
+
+        public static string GetTargetDirectory(this Project project)
+        {
+            Argument.IsNotNull(() => project);
+
+            var targetDirectory = project.GetPropertyValue("TargetDir");
+            if (string.IsNullOrWhiteSpace(targetDirectory))
             {
-                extension = ".exe";
+                var relativeTargetDirectory = GetRelativeTargetDirectory(project);
+                targetDirectory = Path.Combine(project.DirectoryPath, relativeTargetDirectory);
             }
 
-            var projectOutputPath = project.GetPropertyValue("OutputPath");
-            var outputPath = Path.Combine(project.DirectoryPath, projectOutputPath);
-            return Path.Combine(outputPath, string.Format("{0}{1}", project.GetProperty("AssemblyName").EvaluatedValue, extension));
+            return targetDirectory;
+        }
+
+        public static string GetRelativeTargetDirectory(this Project project)
+        {
+            Argument.IsNotNull(() => project);
+
+            var projectOutputDirectory = project.GetPropertyValue("OutputPath");
+            if (string.IsNullOrWhiteSpace(projectOutputDirectory))
+            {
+                projectOutputDirectory = project.GetPropertyValue("OutDir");
+            }
+
+            return projectOutputDirectory;
+        }
+
+        public static string GetTargetFileName(this Project project)
+        {
+            Argument.IsNotNull(() => project);
+
+            var targetFileName = project.GetPropertyValue("TargetFileName");
+            if (string.IsNullOrWhiteSpace(targetFileName))
+            {
+                var assemblyName = project.GetPropertyValue("AssemblyName");
+                var extension = GetTargetExtension(project);
+
+                targetFileName = string.Format("{0}{1}", assemblyName, extension);
+            }
+
+            return targetFileName;
+        }
+
+        public static string GetTargetExtension(this Project project)
+        {
+            Argument.IsNotNull(() => project);
+
+            var extension = project.GetPropertyValue("TargetExt");
+            if (string.IsNullOrWhiteSpace(extension))
+            {
+                extension = ".dll";
+
+                var outputType = project.GetPropertyValue("OutputType").ToLower();
+                if (outputType.Contains("exe") || outputType.Contains("winexe"))
+                {
+                    extension = ".exe";
+                }
+            }
+
+            return extension;
         }
     }
 }
