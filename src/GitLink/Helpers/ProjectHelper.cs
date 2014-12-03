@@ -31,7 +31,7 @@ namespace GitLink
 
         static ProjectHelper()
         {
-            var bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy;
+            const BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy;
 
             SolutionParserType = TypeCache.GetType("Microsoft.Build.Construction.SolutionParser");
             if (SolutionParserType != null)
