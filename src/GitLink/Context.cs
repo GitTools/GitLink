@@ -32,6 +32,8 @@ namespace GitLink
 
         public bool IsHelp { get; set; }
 
+        public bool IsDebug { get; set; }
+
         public string LogFile { get; set; }
 
         public string SolutionDirectory { get; set; }

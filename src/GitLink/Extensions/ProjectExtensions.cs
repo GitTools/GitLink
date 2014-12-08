@@ -150,5 +150,20 @@ namespace GitLink
 
             return extension;
         }
+
+        public static void DumpProperties(this Project project)
+        {
+            Log.Debug("");
+            Log.Debug("Properties for project '{0}'", project.FullPath);
+            Log.Debug("-----------------------------------------------------------");
+
+            foreach (var property in project.Properties)
+            {
+                Log.Debug("  {0} => {1} ({2})", property.Name, property.EvaluatedValue, property.UnevaluatedValue);
+            }
+
+            Log.Debug("");
+            Log.Debug("");
+        }
     }
 }

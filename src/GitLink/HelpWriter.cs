@@ -36,6 +36,7 @@ GitLink [solutionPath] -u [urlToRepository]
     -b [branch]        Name of the branch to use on the remote repository.
     -l [file]          The log file to write to.
     -s [shaHash]       The SHA-1 hash of the commit.
+    -debug             Enables debug mode with special dumps of msbuild.
 ";
             writer(message);
         }

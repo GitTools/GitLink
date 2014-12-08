@@ -36,6 +36,8 @@ namespace GitLink
             if (!string.IsNullOrEmpty(context.LogFile))
             {
                 var fileLogListener = new FileLogListener(context.LogFile, 25 * 1024);
+                fileLogListener.IsDebugEnabled = context.IsDebug;
+
                 fileLogListener.IgnoreCatelLogging = true;
                 LogManager.AddListener(fileLogListener);
             }
@@ -92,6 +94,11 @@ namespace GitLink
                 {
                     try
                     {
+                        if (context.IsDebug)
+                        {
+                            project.DumpProperties();
+                        }
+
                         if (!LinkProject(context, project, shaHash))
                         {
                             failedProjects.Add(project);

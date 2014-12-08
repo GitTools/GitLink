@@ -52,13 +52,20 @@ namespace GitLink
             context.SolutionDirectory = firstArgument;
 
             var namedArguments = commandLineArguments.Skip(1).ToList();
-
-            EnsureArgumentsEvenCount(commandLineArguments, namedArguments);
-
-            for (var index = 0; index < namedArguments.Count; index = index + 2)
+            for (var index = 0; index < namedArguments.Count; index++)
             {
                 var name = namedArguments[index];
-                var value = namedArguments[index + 1];
+
+                // First check everything without values
+                if (IsSwitch("debug", name))
+                {
+                    context.IsDebug = true;
+                    continue;
+                }
+
+                // After this point, all arguments should have a value
+                index++;
+                var value = namedArguments[index];
 
                 if (IsSwitch("l", name))
                 {
@@ -120,14 +127,6 @@ namespace GitLink
             }
 
             return (string.Equals(switchName, value));
-        }
-
-        private static void EnsureArgumentsEvenCount(IEnumerable<string> commandLineArguments, List<string> namedArguments)
-        {
-            if (namedArguments.Count.IsOdd())
-            {
-                Log.ErrorAndThrowException<GitLinkException>("Could not parse arguments: '{0}'.", string.Join(" ", commandLineArguments));
-            }
         }
 
         private static bool IsHelp(string singleArgument)

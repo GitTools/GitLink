@@ -73,9 +73,14 @@ namespace GitLink.Tests
         }
 
         [TestCase]
-        public void ThrowsExceptionForInvalidNumberOfArguments()
+        public void CorrectlyParsesUrlAndConfigurationWithDebug()
         {
-            ExceptionTester.CallMethodAndExpectException<GitLinkException>(() => ArgumentParser.ParseArguments("solutionDirectory -l logFilePath extraArg"));
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -debug -c someConfiguration");
+
+            Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
+            Assert.AreEqual("http://github.com/CatenaLogic/GitLink", context.TargetUrl);
+            Assert.AreEqual("someConfiguration", context.ConfigurationName);
+            Assert.IsTrue(context.IsDebug);
         }
 
         [TestCase]
