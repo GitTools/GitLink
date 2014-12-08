@@ -73,6 +73,17 @@ namespace GitLink.Tests
         }
 
         [TestCase]
+        public void CorrectlyParsesUrlAndConfigurationAndPlatform()
+        {
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -c someConfiguration -p \"Any CPU\"");
+
+            Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
+            Assert.AreEqual("http://github.com/CatenaLogic/GitLink", context.TargetUrl);
+            Assert.AreEqual("someConfiguration", context.ConfigurationName);
+            Assert.AreEqual("Any CPU", context.PlatformName);
+        }
+
+        [TestCase]
         public void CorrectlyParsesUrlAndConfigurationWithDebug()
         {
             var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -debug -c someConfiguration");

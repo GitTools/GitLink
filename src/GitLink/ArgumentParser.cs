@@ -65,7 +65,9 @@ namespace GitLink
 
                 // After this point, all arguments should have a value
                 index++;
-                var value = namedArguments[index];
+                var valueInfo = GetValue(namedArguments, index);
+                var value = valueInfo.Key;
+                index = index + (valueInfo.Value - 1);
 
                 if (IsSwitch("l", name))
                 {
@@ -76,6 +78,12 @@ namespace GitLink
                 if (IsSwitch("c", name))
                 {
                     context.ConfigurationName = value;
+                    continue;
+                }
+
+                if (IsSwitch("p", name))
+                {
+                    context.PlatformName = value;
                     continue;
                 }
 
@@ -112,6 +120,30 @@ namespace GitLink
             }
 
             return context;
+        }
+
+        private static KeyValuePair<string, int> GetValue(List<string> arguments, int index)
+        {
+            var totalCounter = 1;
+
+            var value = arguments[index];
+
+            while (value.StartsWith("\""))
+            {
+                if (value.EndsWith("\""))
+                {
+                    break;
+                }
+
+                index++;
+                value += " " + arguments[index];
+
+                totalCounter++;
+            }
+
+            value = value.Trim('\"');
+
+            return new KeyValuePair<string, int>(value, totalCounter);
         }
 
         private static bool IsSwitch(string switchName, string value)

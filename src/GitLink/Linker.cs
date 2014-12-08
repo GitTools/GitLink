@@ -70,7 +70,7 @@ namespace GitLink
 
                 foreach (var solutionFile in solutionFiles)
                 {
-                    var solutionProjects = ProjectHelper.GetProjects(solutionFile, context.ConfigurationName);
+                    var solutionProjects = ProjectHelper.GetProjects(solutionFile, context.ConfigurationName, context.PlatformName);
                     projects.AddRange(solutionProjects);
                 }
 

@@ -28,6 +28,7 @@ namespace GitLink
 
             Authentication = new Authentication();
             ConfigurationName = "Release";
+            PlatformName = "AnyCPU";
         }
 
         public bool IsHelp { get; set; }
@@ -39,6 +40,8 @@ namespace GitLink
         public string SolutionDirectory { get; set; }
 
         public string ConfigurationName { get; set; }
+
+        public string PlatformName { get; set; }
 
         public Authentication Authentication { get; private set; }
 
@@ -82,6 +85,11 @@ namespace GitLink
             if (string.IsNullOrEmpty(ConfigurationName))
             {
                 Log.ErrorAndThrowException<GitLinkException>("Configuration name is missing");
+            }
+
+            if (string.IsNullOrEmpty(PlatformName))
+            {
+                Log.ErrorAndThrowException<GitLinkException>("Platform name is missing");
             }
 
             if (string.IsNullOrEmpty(TargetUrl))

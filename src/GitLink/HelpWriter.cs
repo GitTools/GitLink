@@ -33,6 +33,7 @@ GitLink [solutionPath] -u [urlToRepository]
     -u [url]           Url to remote git repository.
     -f [file]          Solution file name.
     -c [config]        Name of the configuration, default value is 'Release'.
+    -p [platform]      Name of the platform, default value is 'AnyCPU'.
     -b [branch]        Name of the branch to use on the remote repository.
     -l [file]          The log file to write to.
     -s [shaHash]       The SHA-1 hash of the commit.
