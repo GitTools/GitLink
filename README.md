@@ -163,13 +163,21 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 
 - <a href="http://www.catelproject.com" target="_blank">Catel</a>
 - <a href="http://www.expandframework.com/" target="_blank">eXpand</a>
+- <a href="https://github.com/fluentribbon/Fluent.Ribbon" target="_blank">Fluent.Ribbon</a>
 - <a href="https://github.com/CatenaLogic/GitLink" target="_blank">GitLink</a>
+- <a href="https://github.com/orcomp/Orc.AutomaticSupport" target="_blank">Orc.AutomaticSupport</a>
+- <a href="https://github.com/orcomp/Orc.Collections" target="_blank">Orc.Collections</a>
+- <a href="https://github.com/orcomp/Orc.Controls" target="_blank">Orc.Controls</a>
 - <a href="https://github.com/orcomp/Orc.CsvHelper" target="_blank">Orc.CsvHelper</a>
+- <a href="https://github.com/orcomp/Orc.Feedback" target="_blank">Orc.Feedback</a>
 - <a href="https://github.com/orcomp/Orc.FilterBuilder" target="_blank">Orc.FilterBuilder</a>
+- <a href="https://github.com/orcomp/Orc.LicenseManager" target="_blank">Orc.LicenseManager</a>
 - <a href="https://github.com/orcomp/Orc.ProjectManagement" target="_blank">Orc.ProjectManagement</a>
 - <a href="https://github.com/orcomp/Orc.Sort" target="_blank">Orc.Sort</a>
+- <a href="https://github.com/orcomp/Orc.Squirrel" target="_blank">Orc.Squirrel</a>
 - <a href="https://github.com/orcomp/Orc.WorkspaceManagement" target="_blank">Orc.WorkspaceManagement</a>
 - <a href="https://github.com/orcomp/Orchestra" target="_blank">Orchestra</a>
+- <a href="https://github.com/oxyplot/oxyplot" target="_blank">OxyPlot</a>
 - <a href="http://romanticweb.net" target="_blank">Romantic Web</a>
 - <a href="https://github.com/xunit/xunit" target="_blank">xUnit.net</a>
 - <a href="https://github.com/xunit/visualstudio.xunit" target="_blank">xUnit.net Visual Studio Runner</a>
