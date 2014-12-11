@@ -95,6 +95,21 @@ namespace GitLink.Tests
         }
 
         [TestCase]
+        public void CorrectlyParsesIgnoredProjects()
+        {
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -debug -c someConfiguration -ignore test1,test2");
+
+            Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
+            Assert.AreEqual("http://github.com/CatenaLogic/GitLink", context.TargetUrl);
+            Assert.AreEqual("someConfiguration", context.ConfigurationName);
+            Assert.IsTrue(context.IsDebug);
+
+            Assert.AreEqual(2, context.IgnoredProjects.Count);
+            Assert.AreEqual("test1", context.IgnoredProjects[0]);
+            Assert.AreEqual("test2", context.IgnoredProjects[1]);
+        }
+
+        [TestCase]
         public void ThrowsExceptionForUnknownArgument()
         {
             ExceptionTester.CallMethodAndExpectException<GitLinkException>(() => ArgumentParser.ParseArguments("solutionDirectory -x logFilePath"));

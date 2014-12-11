@@ -8,6 +8,7 @@
 namespace GitLink
 {
     using System;
+    using System.Collections.Generic;
     using Catel;
     using Catel.IO;
     using Catel.Logging;
@@ -29,6 +30,7 @@ namespace GitLink
             Authentication = new Authentication();
             ConfigurationName = "Release";
             PlatformName = "AnyCPU";
+            IgnoredProjects = new List<string>();
         }
 
         public bool IsHelp { get; set; }
@@ -69,6 +71,8 @@ namespace GitLink
         public string ShaHash { get; set; }
 
         public string SolutionFile { get; set; }
+
+        public List<string> IgnoredProjects { get; private set; }
 
         public void ValidateContext()
         {

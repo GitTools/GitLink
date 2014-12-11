@@ -10,6 +10,7 @@ namespace GitLink
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Catel.Collections;
     using Catel.Logging;
     using GitLink.Providers;
 
@@ -108,6 +109,12 @@ namespace GitLink
                 if (IsSwitch("f", name))
                 {
                     context.SolutionFile = value;
+                    continue;
+                }
+
+                if (IsSwitch("ignore", name))
+                {
+                    context.IgnoredProjects.AddRange(value.Split(new []{ ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()));
                     continue;
                 }
 

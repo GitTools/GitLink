@@ -89,11 +89,19 @@ namespace GitLink
                 var projectCount = projects.Count();
                 var failedProjects = new List<Project>();
                 Log.Info("Found '{0}' project(s)", projectCount);
+                Log.Info(string.Empty);
 
                 foreach (var project in projects)
                 {
                     try
                     {
+                        if (project.ShouldBeIgnored(context.IgnoredProjects))
+                        {
+                            Log.Info("Ignoring '{0}'", project.GetProjectName());
+                            Log.Info(string.Empty);
+                            continue;
+                        }
+
                         if (context.IsDebug)
                         {
                             project.DumpProperties();
