@@ -92,7 +92,7 @@ Sometimes a repository contains more than 1 solution file. By default, all solut
 
 	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln
 
-## Ignoreing projects
+## Ignoring projects
 
 When specific projects should be ignored, use the *-ignore* option. This option accepts a comma separated list of projects to ignore: 
 
