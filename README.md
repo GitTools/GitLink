@@ -96,9 +96,7 @@ Sometimes a repository contains more than 1 solution file. By default, all solut
 
 When specific projects should be ignored, use the *-ignore* option. This option accepts a comma separated list of projects to ignore: 
 
-	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -ignore WindowsPhone,WindowsRuntime
-
-**Note that the ignore list uses Contains([ignoredProject]) to ignore items, so when use *Windows*, *WindowsPhone* will be ignored as well**
+	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -ignore Catel.Core.WP80,Catel.MVVM.WP80
 
 ## Getting help
 

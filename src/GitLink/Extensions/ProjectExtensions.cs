@@ -30,7 +30,7 @@ namespace GitLink
             {
                 var lowerCaseProjectToIgnore = projectToIgnore.ToLower();
 
-                if (projectName.Contains(lowerCaseProjectToIgnore))
+                if (string.Equals(projectName, lowerCaseProjectToIgnore))
                 {
                     return true;
                 }
