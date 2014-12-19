@@ -10,6 +10,7 @@ namespace GitLink
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Catel.Collections;
     using Catel.Logging;
     using GitLink.Providers;
 
@@ -52,13 +53,22 @@ namespace GitLink
             context.SolutionDirectory = firstArgument;
 
             var namedArguments = commandLineArguments.Skip(1).ToList();
-
-            EnsureArgumentsEvenCount(commandLineArguments, namedArguments);
-
-            for (var index = 0; index < namedArguments.Count; index = index + 2)
+            for (var index = 0; index < namedArguments.Count; index++)
             {
                 var name = namedArguments[index];
-                var value = namedArguments[index + 1];
+
+                // First check everything without values
+                if (IsSwitch("debug", name))
+                {
+                    context.IsDebug = true;
+                    continue;
+                }
+
+                // After this point, all arguments should have a value
+                index++;
+                var valueInfo = GetValue(namedArguments, index);
+                var value = valueInfo.Key;
+                index = index + (valueInfo.Value - 1);
 
                 if (IsSwitch("l", name))
                 {
@@ -69,6 +79,12 @@ namespace GitLink
                 if (IsSwitch("c", name))
                 {
                     context.ConfigurationName = value;
+                    continue;
+                }
+
+                if (IsSwitch("p", name))
+                {
+                    context.PlatformName = value;
                     continue;
                 }
 
@@ -90,6 +106,18 @@ namespace GitLink
                     continue;
                 }
 
+                if (IsSwitch("f", name))
+                {
+                    context.SolutionFile = value;
+                    continue;
+                }
+
+                if (IsSwitch("ignore", name))
+                {
+                    context.IgnoredProjects.AddRange(value.Split(new []{ ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()));
+                    continue;
+                }
+
                 Log.ErrorAndThrowException<GitLinkException>("Could not parse command line parameter '{0}'.", name);
             }
 
@@ -99,6 +127,30 @@ namespace GitLink
             }
 
             return context;
+        }
+
+        private static KeyValuePair<string, int> GetValue(List<string> arguments, int index)
+        {
+            var totalCounter = 1;
+
+            var value = arguments[index];
+
+            while (value.StartsWith("\""))
+            {
+                if (value.EndsWith("\""))
+                {
+                    break;
+                }
+
+                index++;
+                value += " " + arguments[index];
+
+                totalCounter++;
+            }
+
+            value = value.Trim('\"');
+
+            return new KeyValuePair<string, int>(value, totalCounter);
         }
 
         private static bool IsSwitch(string switchName, string value)
@@ -114,14 +166,6 @@ namespace GitLink
             }
 
             return (string.Equals(switchName, value));
-        }
-
-        private static void EnsureArgumentsEvenCount(IEnumerable<string> commandLineArguments, List<string> namedArguments)
-        {
-            if (namedArguments.Count.IsOdd())
-            {
-                Log.ErrorAndThrowException<GitLinkException>("Could not parse arguments: '{0}'.", string.Join(" ", commandLineArguments));
-            }
         }
 
         private static bool IsHelp(string singleArgument)

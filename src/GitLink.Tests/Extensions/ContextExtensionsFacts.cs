@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace GitLink.Test.Extensions
+namespace GitLink.Tests.Extensions
 {
     using GitLink.Providers;
     using NUnit.Framework;

@@ -7,7 +7,10 @@
 
 namespace GitLink
 {
+    using System;
+    using System.Collections.Generic;
     using Catel;
+    using Catel.IO;
     using Catel.Logging;
     using Providers;
 
@@ -26,9 +29,13 @@ namespace GitLink
 
             Authentication = new Authentication();
             ConfigurationName = "Release";
+            PlatformName = "AnyCPU";
+            IgnoredProjects = new List<string>();
         }
 
         public bool IsHelp { get; set; }
+
+        public bool IsDebug { get; set; }
 
         public string LogFile { get; set; }
 
@@ -36,9 +43,11 @@ namespace GitLink
 
         public string ConfigurationName { get; set; }
 
+        public string PlatformName { get; set; }
+
         public Authentication Authentication { get; private set; }
 
-        public IProvider Provider 
+        public IProvider Provider
         {
             get
             {
@@ -61,8 +70,17 @@ namespace GitLink
 
         public string ShaHash { get; set; }
 
+        public string SolutionFile { get; set; }
+
+        public List<string> IgnoredProjects { get; private set; }
+
         public void ValidateContext()
         {
+            if (!string.IsNullOrWhiteSpace(SolutionDirectory))
+            {
+                SolutionDirectory = Path.GetFullPath(SolutionDirectory, Environment.CurrentDirectory);
+            }
+
             if (string.IsNullOrEmpty(SolutionDirectory))
             {
                 Log.ErrorAndThrowException<GitLinkException>("Solution directory is missing");
@@ -71,6 +89,11 @@ namespace GitLink
             if (string.IsNullOrEmpty(ConfigurationName))
             {
                 Log.ErrorAndThrowException<GitLinkException>("Configuration name is missing");
+            }
+
+            if (string.IsNullOrEmpty(PlatformName))
+            {
+                Log.ErrorAndThrowException<GitLinkException>("Platform name is missing");
             }
 
             if (string.IsNullOrEmpty(TargetUrl))

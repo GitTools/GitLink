@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace GitLink.Test.Providers
+namespace GitLink.Tests.Providers
 {
     using System;
     using GitLink.Providers;

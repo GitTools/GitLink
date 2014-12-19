@@ -36,6 +36,8 @@ namespace GitLink
             if (!string.IsNullOrEmpty(context.LogFile))
             {
                 var fileLogListener = new FileLogListener(context.LogFile, 25 * 1024);
+                fileLogListener.IsDebugEnabled = context.IsDebug;
+
                 fileLogListener.IgnoreCatelLogging = true;
                 LogManager.AddListener(fileLogListener);
             }
@@ -49,10 +51,26 @@ namespace GitLink
             try
             {
                 var projects = new List<Project>();
-                var solutionFiles = Directory.GetFiles(context.SolutionDirectory, "*.sln", SearchOption.AllDirectories);
+                string[] solutionFiles;
+                if (string.IsNullOrEmpty(context.SolutionFile))
+                {
+                    solutionFiles = Directory.GetFiles(context.SolutionDirectory, "*.sln", SearchOption.AllDirectories);
+                }
+                else
+                {
+                    var pathToSolutionFile = Path.Combine(context.SolutionDirectory, context.SolutionFile);
+                    if (!File.Exists(pathToSolutionFile))
+                    {
+                        Log.Error("Could not find solution file: " + pathToSolutionFile);
+                        return -1;
+                    }
+
+                    solutionFiles = new[] { pathToSolutionFile };
+                }
+
                 foreach (var solutionFile in solutionFiles)
                 {
-                    var solutionProjects = ProjectHelper.GetProjects(solutionFile, context.ConfigurationName);
+                    var solutionProjects = ProjectHelper.GetProjects(solutionFile, context.ConfigurationName, context.PlatformName);
                     projects.AddRange(solutionProjects);
                 }
 
@@ -71,11 +89,24 @@ namespace GitLink
                 var projectCount = projects.Count();
                 var failedProjects = new List<Project>();
                 Log.Info("Found '{0}' project(s)", projectCount);
+                Log.Info(string.Empty);
 
                 foreach (var project in projects)
                 {
                     try
                     {
+                        if (project.ShouldBeIgnored(context.IgnoredProjects))
+                        {
+                            Log.Info("Ignoring '{0}'", project.GetProjectName());
+                            Log.Info(string.Empty);
+                            continue;
+                        }
+
+                        if (context.IsDebug)
+                        {
+                            project.DumpProperties();
+                        }
+
                         if (!LinkProject(context, project, shaHash))
                         {
                             failedProjects.Add(project);
@@ -141,7 +172,7 @@ namespace GitLink
                 var projectStcSrvFile = Path.GetFullPath(project.GetOutputSrcSrvFile());
                 if (!File.Exists(projectPdbFile))
                 {
-                    Log.Warning("No pdb file found for '{0}', is project built in '{1}' mode with pdb files enabled?", projectName, context.ConfigurationName);
+                    Log.Warning("No pdb file found for '{0}', is project built in '{1}' mode with pdb files enabled? Expected file is '{2}'", projectName, context.ConfigurationName, projectPdbFile);
                     return false;
                 }
 
@@ -157,8 +188,7 @@ namespace GitLink
                 var paths = new Dictionary<string, string>();
                 foreach (var compilable in compilables)
                 {
-                    var relativePathForUrl = compilable.Replace(context.SolutionDirectory, string.Empty)
-                                                       .Replace("\\", "/");
+                    var relativePathForUrl = compilable.Replace(context.SolutionDirectory, string.Empty).Replace("\\", "/");
                     while (relativePathForUrl.StartsWith("/"))
                     {
                         relativePathForUrl = relativePathForUrl.Substring(1, relativePathForUrl.Length - 1);

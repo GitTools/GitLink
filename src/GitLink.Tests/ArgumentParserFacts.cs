@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace GitLink.Test
+namespace GitLink.Tests
 {
     using Catel.Test;
     using NUnit.Framework;
@@ -45,6 +45,14 @@ namespace GitLink.Test
         }
 
         [TestCase]
+        public void CorrectlyParsesSolutionFile()
+        {
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -f someSolution");
+
+            Assert.AreEqual("someSolution", context.SolutionFile);
+        }
+
+        [TestCase]
         public void CorrectlyParsesUrlAndBranchName()
         {
             var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -b somebranch");
@@ -65,9 +73,40 @@ namespace GitLink.Test
         }
 
         [TestCase]
-        public void ThrowsExceptionForInvalidNumberOfArguments()
+        public void CorrectlyParsesUrlAndConfigurationAndPlatform()
         {
-            ExceptionTester.CallMethodAndExpectException<GitLinkException>(() => ArgumentParser.ParseArguments("solutionDirectory -l logFilePath extraArg"));
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -c someConfiguration -p \"Any CPU\"");
+
+            Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
+            Assert.AreEqual("http://github.com/CatenaLogic/GitLink", context.TargetUrl);
+            Assert.AreEqual("someConfiguration", context.ConfigurationName);
+            Assert.AreEqual("Any CPU", context.PlatformName);
+        }
+
+        [TestCase]
+        public void CorrectlyParsesUrlAndConfigurationWithDebug()
+        {
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -debug -c someConfiguration");
+
+            Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
+            Assert.AreEqual("http://github.com/CatenaLogic/GitLink", context.TargetUrl);
+            Assert.AreEqual("someConfiguration", context.ConfigurationName);
+            Assert.IsTrue(context.IsDebug);
+        }
+
+        [TestCase]
+        public void CorrectlyParsesIgnoredProjects()
+        {
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -debug -c someConfiguration -ignore test1,test2");
+
+            Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
+            Assert.AreEqual("http://github.com/CatenaLogic/GitLink", context.TargetUrl);
+            Assert.AreEqual("someConfiguration", context.ConfigurationName);
+            Assert.IsTrue(context.IsDebug);
+
+            Assert.AreEqual(2, context.IgnoredProjects.Count);
+            Assert.AreEqual("test1", context.IgnoredProjects[0]);
+            Assert.AreEqual("test2", context.IgnoredProjects[1]);
         }
 
         [TestCase]

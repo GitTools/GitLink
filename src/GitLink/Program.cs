@@ -41,6 +41,8 @@ namespace GitLink
                     return 0;
                 }
 
+                consoleLogListener.IsDebugEnabled = context.IsDebug;
+
                 var result = Linker.Link(context);
 
 #if DEBUG

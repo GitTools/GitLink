@@ -5,8 +5,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace GitLink.Test
+namespace GitLink.Tests
 {
+    using System;
     using Catel.Test;
     using GitLink.Providers;
     using NUnit.Framework;
@@ -71,6 +72,23 @@ namespace GitLink.Test
 
                 // should not throw
                 context.ValidateContext();
+            }
+
+            [TestCase(@".", @"c:\")]
+            [TestCase(@"C:\MyDirectory\", @"C:\MyDirectory\")]
+            [TestCase(@"C:\MyDirectory\..", @"C:\")]
+            [TestCase(@"C:\MyDirectory\..\TestDirectory\", @"C:\TestDirectory\")]
+            public void ExpandsDirectoryIfRequired(string solutionDirectory, string expectedValue)
+            {
+                Environment.CurrentDirectory = @"c:\";
+
+                var context = new Context(new ProviderManager());
+                context.TargetUrl = "https://github.com/CatenaLogic/GitLink.git";
+                context.SolutionDirectory = solutionDirectory;
+
+                context.ValidateContext();
+                
+                Assert.AreEqual(expectedValue, context.SolutionDirectory);
             }
         }
     }

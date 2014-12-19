@@ -5,6 +5,8 @@ GitLink
 
 GitLink let's users step through your code hosted on GitHub! **Help make .NET open source projects more accessible by enabling this for your .NET projects, it's just a single additional step in your build**. See the list of [projects using GitLink](#projects-using-gitlink).
 
+<a href="https://pledgie.com/campaigns/26957"><img alt="Click here to lend your support to: GitLink and make a donation at pledgie.com !" src="https://pledgie.com/campaigns/26957.png?skin_name=chrome" border="0" /></a>
+
 -- 
 
 **Important note** 
@@ -28,7 +30,13 @@ When using GitLink, the user no longer has to specify symbol servers. He/she onl
 
 ![Enabling source server support](doc/images/visualstudio_enablesourceserversupport.png)  
 
+# Troubleshooting
+
 **Note that Visual Studio 2012 needs to run elevated in order to download the source server files due to a bug in Visual Studio 2012.**
+
+If the source stepping is not working, double check that Visual Studio has a valid symbol cache directory to store the source files being downloaded:
+
+![Enabling source server support](doc/images/visualstudio_symbolslocation.png)
 
 # Supported git providers
 
@@ -51,7 +59,7 @@ Providers currently being worked on:
 
 It is also possible to specify a custom url provider.
 
-# Using GitLink as command line tool #
+# Using GitLink as command line tool
 
 Using GitLink via the command line is very simple:
 
@@ -60,44 +68,55 @@ Using GitLink via the command line is very simple:
 
 Below are a few examples.
 
-## Running for the default branch ##
+## Running for the default branch
 
     GitLink.exe c:\source\catel -u https://github.com/catel/catel 
 
 This will use the default branch (which is in most cases **master**). You can find out the default branch by checking what branch is loaded by default on the GitHub page.
 
-## Running for a specific branch ##
+## Running for a specific branch
 
     GitLink.exe c:\source\catel -u https://github.com/catel/catel -b develop
 
 This will use the develop branch.
 
-## Running for a specific branch and configuration ##
+## Running for a specific branch and configuration
 
     GitLink.exe c:\source\catel -u https://github.com/catel/catel -b develop -c debug
 
 This will use the develop branch and the debug configuration.
 
-## Getting help ##
+## Running for a specific solution only
+
+Sometimes a repository contains more than 1 solution file. By default, all solutions will be processed. To only process a single solution file, use the *-f* option: 
+
+	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln
+
+## Ignoring projects
+
+When specific projects should be ignored, use the *-ignore* option. This option accepts a comma separated list of projects to ignore: 
+
+	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -ignore Catel.Core.WP80,Catel.MVVM.WP80
+
+## Getting help
 
 When you need help about GitLink, use the following command line:
 
     GitLink.exe -help
 
-## Logging to a file ##
+## Logging to a file
 
 When you need to log the information to a file, use the following command line:
 
     GitLink.exe c:\source\catel -u https://github.com/catel/catel -b develop -l GitLinkLog.log
 
-
-# Using GitLink in code #
+# Using GitLink in code
 
 GitLink is built with 2 usages in mind: command line and code reference. Though most people will use the command line version, it is possible to reference the executable and use the logic in code.
 
 The command line implementation uses the same available API. 
 
-## Creating a context ##
+## Creating a context
 
 To link files to a Git project, a context must be created. The command line version does this by using the *ArgumentParser* class. It is also possible to create a context from scratch as shown in the example below:
 
@@ -114,33 +133,33 @@ It is possible to create a context based on command line arguments:
 var context = ArgumentParser.Parse(@"c:\source\catel -u https://github.com/catel/catel -b develop");
 ```
 
-## Linking a context ##
+## Linking a context
 
 Once a context is created, the *Linker* class can be used to actually link the files:
 
     Linker.Link(context);
 
-# How to get GitLink #
+# How to get GitLink
 
-There are three general ways to get GitLink:.
+There are three general ways to get GitLink:
 
-## Get it from GitHub ##
+## Get it from GitHub
 
 The releases will be available as separate executable download on the [releases tab](https://github.com/CatenaLogic/GitLink/releases) of the project.
 
-## Get it via Chocolatey ##
+## Get it via Chocolatey
 
 If you want to install the tool on your (build) computer, the package is available via <a href="https://chocolatey.org/" target="_blank">Chocolatey</a>. To install, use the following command:
 
     choco install GitLink
 
-## Get it via NuGet ##
+## Get it via NuGet
 
 If you want to reference the assembly to use it in code, the recommended way to get it is via <a href="http://www.nuget.org/" target="_blank">NuGet</a>. 
 
 **Note that getting GitLink via NuGet will add it as a reference to the project**
 
-# How does it work #
+# How does it work
 
 The SrcSrv tool (Srcsrv.dll) enables a client to retrieve the exact version of the source files that were used to build an application. Because the source code for a module can change between versions and over the course of years, it is important to look at the source code as it existed when the version of the module in question was built.
 
@@ -149,18 +168,27 @@ For more information, see the <a href="http://msdn.microsoft.com/en-us/library/w
 GitLink creates a source index file and updates the PDB file so it will retrieve the files from the Git host file handler.
 
 <a name="projects-using-gitlink"></a>
-# Projects using GitLink #
+# Projects using GitLink
 
 Below is a list of projects already using GitLink (alphabetically ordered).
 
 - <a href="http://www.catelproject.com" target="_blank">Catel</a>
 - <a href="http://www.expandframework.com/" target="_blank">eXpand</a>
+- <a href="https://github.com/fluentribbon/Fluent.Ribbon" target="_blank">Fluent.Ribbon</a>
 - <a href="https://github.com/CatenaLogic/GitLink" target="_blank">GitLink</a>
+- <a href="https://github.com/orcomp/Orc.AutomaticSupport" target="_blank">Orc.AutomaticSupport</a>
+- <a href="https://github.com/orcomp/Orc.Collections" target="_blank">Orc.Collections</a>
+- <a href="https://github.com/orcomp/Orc.Controls" target="_blank">Orc.Controls</a>
 - <a href="https://github.com/orcomp/Orc.CsvHelper" target="_blank">Orc.CsvHelper</a>
+- <a href="https://github.com/orcomp/Orc.Feedback" target="_blank">Orc.Feedback</a>
 - <a href="https://github.com/orcomp/Orc.FilterBuilder" target="_blank">Orc.FilterBuilder</a>
+- <a href="https://github.com/orcomp/Orc.LicenseManager" target="_blank">Orc.LicenseManager</a>
 - <a href="https://github.com/orcomp/Orc.ProjectManagement" target="_blank">Orc.ProjectManagement</a>
 - <a href="https://github.com/orcomp/Orc.Sort" target="_blank">Orc.Sort</a>
+- <a href="https://github.com/orcomp/Orc.Squirrel" target="_blank">Orc.Squirrel</a>
+- <a href="https://github.com/orcomp/Orc.WorkspaceManagement" target="_blank">Orc.WorkspaceManagement</a>
 - <a href="https://github.com/orcomp/Orchestra" target="_blank">Orchestra</a>
+- <a href="https://github.com/oxyplot/oxyplot" target="_blank">OxyPlot</a>
 - <a href="http://romanticweb.net" target="_blank">Romantic Web</a>
 - <a href="https://github.com/xunit/xunit" target="_blank">xUnit.net</a>
 - <a href="https://github.com/xunit/visualstudio.xunit" target="_blank">xUnit.net Visual Studio Runner</a>
@@ -170,6 +198,6 @@ Are you using GitLink in your projects? Let us know and we will add your project
 *Note that you can also create a pull request on this document and add it yourself.* 
  
 
-# Icon #
+# Icon
 
 Link by Dominic Whittle from The Noun Project
