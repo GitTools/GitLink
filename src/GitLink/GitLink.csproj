@@ -49,7 +49,7 @@
   <ItemGroup>
     <Reference Include="Catel.Core, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Catel.Core.4.1.0-unstable0030\lib\net45\Catel.Core.dll</HintPath>
+      <HintPath>..\..\lib\Catel.Core.4.1.0-unstable0038\lib\net45\Catel.Core.dll</HintPath>
     </Reference>
     <Reference Include="Catel.Fody.Attributes, Version=2.4.0.0, Culture=neutral, PublicKeyToken=1c8163524cbe02e6, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -75,6 +75,7 @@
       <Link>Properties\SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ArgumentParser.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Extensions\BinaryReaderExtensions.cs" />
     <Compile Include="Authentication.cs" />
     <Compile Include="Extensions\ContextExtensions.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Helpers\GitHelper.cs" />
     <Compile Include="Helpers\PdbStrHelper.cs" />
     <Compile Include="Helpers\ProjectHelper.cs" />
+    <Compile Include="Helpers\ResourceHelper.cs" />
     <Compile Include="HelpWriter.cs" />
     <Compile Include="Linker.cs" />
     <Compile Include="Logging\OutputLogListener.cs" />
@@ -111,6 +113,7 @@
     <Compile Include="Providers\Interfaces\IProvider.cs" />
     <Compile Include="Providers\ProviderBase.cs" />
     <Compile Include="Providers\ProviderManager.cs" />
+    <Compile Include="TemporaryFilesContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -118,6 +121,8 @@
   <ItemGroup>
     <EmbeddedResource Include="costura32\git2-91fa31f.dll" />
     <EmbeddedResource Include="costura64\git2-91fa31f.dll" />
+    <EmbeddedResource Include="Resources\Files\pdbstr.exe" />
+    <EmbeddedResource Include="Resources\Files\winsdk.redist.txt" />
     <Content Include="Resources\Icons\Logo.ico" />
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>

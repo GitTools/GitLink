@@ -59,7 +59,7 @@ namespace GitLink.Providers
 
         public abstract bool Initialize(string url);
 
-        public string GetShaHashOfCurrentBranch(Context context)
+        public string GetShaHashOfCurrentBranch(Context context, TemporaryFilesContext temporaryFilesContext)
         {
             Argument.IsNotNull(() => context);
 
@@ -71,7 +71,7 @@ namespace GitLink.Providers
             {
                 Log.Info("No local repository is found in '{0}', creating a temporary one", repositoryDirectory);
 
-                repositoryDirectory = _repositoryPreparer.Prepare(context);
+                repositoryDirectory = _repositoryPreparer.Prepare(context, temporaryFilesContext);
                 deleteTempRepository = true;
             }
 

@@ -10,7 +10,6 @@ namespace GitLink.Git
     using System;
     using System.IO;
     using System.Linq;
-    using System.Runtime.Remoting.Messaging;
     using Catel;
     using Catel.Logging;
     using LibGit2Sharp;
@@ -27,11 +26,11 @@ namespace GitLink.Git
             return string.IsNullOrEmpty(gitPath);
         }
 
-        public string Prepare(Context context)
+        public string Prepare(Context context, TemporaryFilesContext temporaryFilesContext)
         {
             Argument.IsNotNull(() => context);
 
-            var gitDirectory = Path.Combine(Path.GetTempPath(), "GitLink", Guid.NewGuid().ToString());
+            var gitDirectory = temporaryFilesContext.GetDirectory("git");
             Directory.CreateDirectory(gitDirectory);
 
             if (!string.IsNullOrWhiteSpace(context.TargetUrl))

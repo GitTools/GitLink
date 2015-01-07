@@ -10,6 +10,6 @@ namespace GitLink.Git
     public interface IRepositoryPreparer
     {
         bool IsPreparationRequired(Context context);
-        string Prepare(Context context);
+        string Prepare(Context context, TemporaryFilesContext temporaryFilesContext);
     }
 }
