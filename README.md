@@ -176,6 +176,7 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="http://www.expandframework.com/" target="_blank">eXpand</a>
 - <a href="https://github.com/fluentribbon/Fluent.Ribbon" target="_blank">Fluent.Ribbon</a>
 - <a href="https://github.com/CatenaLogic/GitLink" target="_blank">GitLink</a>
+- <a href="https://github.com/elasticsearch/elasticsearch-net" target="_blank">NEST and Elasticsearch.NET</a>
 - <a href="https://github.com/orcomp/Orc.AutomaticSupport" target="_blank">Orc.AutomaticSupport</a>
 - <a href="https://github.com/orcomp/Orc.Collections" target="_blank">Orc.Collections</a>
 - <a href="https://github.com/orcomp/Orc.Controls" target="_blank">Orc.Controls</a>
