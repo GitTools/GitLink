@@ -80,6 +80,7 @@
     <Compile Include="Authentication.cs" />
     <Compile Include="Extensions\ContextExtensions.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
+    <Compile Include="Extensions\LibGitExtensions.cs" />
     <Compile Include="Extensions\PdbExtensions.cs" />
     <Compile Include="Extensions\ProjectExtensions.cs" />
     <Compile Include="Extensions\ProjectItemExtensions.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Git\GitDirFinder.cs" />
     <Compile Include="Git\GitPreparer.cs" />
     <Compile Include="Git\Interfaces\IRepositoryPreparer.cs" />
+    <Compile Include="Git\RepositoryLoader.cs" />
     <Compile Include="Helpers\DeleteHelper.cs" />
     <Compile Include="Helpers\GitHelper.cs" />
     <Compile Include="Helpers\PdbStrHelper.cs" />
