@@ -68,6 +68,12 @@ Using GitLink via the command line is very simple:
 
 Below are a few examples.
 
+## Most simple usage
+
+This is the most simple usage available **starting from 2.2.0**. It will automatically determine the url and commit based on a local *.git* directory.
+
+	GitLink.exe c:\source\catel
+
 ## Running for the default branch
 
     GitLink.exe c:\source\catel -u https://github.com/catel/catel 

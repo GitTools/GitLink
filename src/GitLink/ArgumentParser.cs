@@ -125,6 +125,8 @@ namespace GitLink
 
             if (string.IsNullOrEmpty(context.TargetUrl))
             {
+                Log.Info("No target url was specified, trying to determine the target url automatically");
+
                 var gitDir = GitDirFinder.TreeWalkForGitDir(context.SolutionDirectory);
                 if (gitDir != null)
                 {
@@ -139,7 +141,7 @@ namespace GitLink
 
                         if (currentBranch.Remote == null || currentBranch.IsDetachedHead())
                         {
-                            currentBranch = GetBranchesContainingCommit(repo, context.ShaHash).FirstOrDefault(b => b.Remote != null);
+                            currentBranch = repo.GetBranchesContainingCommit(context.ShaHash).FirstOrDefault(b => b.Remote != null);
                         }
 
                         if (currentBranch != null && currentBranch.Remote != null)
@@ -147,7 +149,9 @@ namespace GitLink
                             var url = currentBranch.Remote.Url;
                             if (url.StartsWith("https://"))
                             {
-                                context.TargetUrl = url.EndsWith(".git") ? url.Substring(0, url.Length - 4) : url;
+                                context.TargetUrl = url.OptimizeUrl();
+
+                                Log.Info("Automatically determine target url '{0}'", context.TargetUrl);
                             }
                         }
                     }
@@ -160,38 +164,6 @@ namespace GitLink
             }
 
             return context;
-        }
-
-        private static IEnumerable<Branch> GetBranchesContainingCommit(IRepository repository, string commitSha)
-        {
-            var directBranchHasBeenFound = false;
-            foreach (var branch in repository.Branches)
-            {
-                if (branch.Tip.Sha != commitSha)
-                {
-                    continue;
-                }
-
-                directBranchHasBeenFound = true;
-                yield return branch;
-            }
-
-            if (directBranchHasBeenFound)
-            {
-                yield break;
-            }
-
-            foreach (var branch in repository.Branches)
-            {
-                var commits = repository.Commits.QueryBy(new CommitFilter { Since = branch }).Where(c => c.Sha == commitSha);
-
-                if (!commits.Any())
-                {
-                    continue;
-                }
-
-                yield return branch;
-            }
         }
 
         private static KeyValuePair<string, int> GetValue(List<string> arguments, int index)

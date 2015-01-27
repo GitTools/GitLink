@@ -7,6 +7,8 @@
 
 namespace GitLink
 {
+    using Catel;
+
     public static class StringExtensions
     {
         public static string GetCanonicalBranchName(this string branchName)
@@ -25,6 +27,14 @@ namespace GitLink
         public static bool IsPullRequest(this string branchName)
         {
             return branchName.Contains("pull/") || branchName.Contains("pull-requests/") || branchName.Contains("pr/");
+        }
+
+        public static string OptimizeUrl(this string url)
+        {
+            Argument.IsNotNullOrWhitespace(() => url);
+
+            url = url.EndsWith(".git") ? url.Substring(0, url.Length - 4) : url;
+            return url;
         }
     }
 }
