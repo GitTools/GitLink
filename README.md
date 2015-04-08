@@ -1,7 +1,7 @@
 GitLink
 ==========
 
-[![Join the chat at https://gitter.im/CatenaLogic/GitLink](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/CatenaLogic/GitLink?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/GitTools/GitLink](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/GitTools/GitLink?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ![GitLink](design/logo/logo_64.png)
 
