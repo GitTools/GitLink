@@ -114,6 +114,12 @@ namespace GitLink
                     continue;
                 }
 
+                if (IsSwitch("d", name))
+                {
+                    context.PdbFilesDirectory = value;
+                    continue;
+                }
+
                 if (IsSwitch("ignore", name))
                 {
                     context.IgnoredProjects.AddRange(value.Split(new []{ ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()));

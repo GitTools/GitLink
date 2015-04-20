@@ -37,6 +37,15 @@ namespace GitLink.Tests
         }
 
         [TestCase]
+        public void CorrectlyParsesPdbFilesDirectory()
+        {
+            var context = ArgumentParser.ParseArguments("solutionDirectory -d pdbFilesDirectory");
+
+            Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
+            Assert.AreEqual("pdbFilesDirectory", context.PdbFilesDirectory);
+        }
+
+        [TestCase]
         public void CorrectlyParsesHelp()
         {
             var context = ArgumentParser.ParseArguments("-h");
