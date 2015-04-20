@@ -74,6 +74,8 @@ namespace GitLink
 
         public List<string> IgnoredProjects { get; private set; }
 
+        public string PdbFilesDirectory { get; set; }
+
         public void ValidateContext()
         {
             if (!string.IsNullOrWhiteSpace(SolutionDirectory))
