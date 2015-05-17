@@ -147,19 +147,19 @@ Once a context is created, the *Linker* class can be used to actually link the f
 
     Linker.Link(context);
 
-# How to get GitLink
+# How to get
 
 There are three general ways to get GitLink:
 
 ## Get it from GitHub
 
-The releases will be available as separate executable download on the [releases tab](https://github.com/CatenaLogic/GitLink/releases) of the project.
+The releases will be available as separate executable download on the [releases tab](https://github.com/GitTools/GitLink/releases) of the project.
 
 ## Get it via Chocolatey
 
 If you want to install the tool on your (build) computer, the package is available via <a href="https://chocolatey.org/" target="_blank">Chocolatey</a>. To install, use the following command:
 
-    choco install GitLink
+    choco install gitlink
 
 ## Get it via NuGet
 
@@ -183,7 +183,7 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="http://www.catelproject.com" target="_blank">Catel</a>
 - <a href="http://www.expandframework.com/" target="_blank">eXpand</a>
 - <a href="https://github.com/fluentribbon/Fluent.Ribbon" target="_blank">Fluent.Ribbon</a>
-- <a href="https://github.com/CatenaLogic/GitLink" target="_blank">GitLink</a>
+- <a href="https://github.com/GitTools/GitLink" target="_blank">GitLink</a>
 - <a href="https://github.com/elasticsearch/elasticsearch-net" target="_blank">NEST and Elasticsearch.NET</a>
 - <a href="https://github.com/orcomp/Orc.AutomaticSupport" target="_blank">Orc.AutomaticSupport</a>
 - <a href="https://github.com/orcomp/Orc.Collections" target="_blank">Orc.Collections</a>
