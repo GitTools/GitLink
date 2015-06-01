@@ -12,8 +12,9 @@ namespace GitLink
     using System.Linq;
     using Catel.Collections;
     using Catel.Logging;
-    using Git;
     using GitLink.Providers;
+    using GitTools;
+    using GitTools.Git;
     using LibGit2Sharp;
 
     public static class ArgumentParser

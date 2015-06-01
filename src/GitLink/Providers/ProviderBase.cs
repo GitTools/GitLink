@@ -12,13 +12,15 @@ namespace GitLink.Providers
     using System.Linq;
     using Catel;
     using Catel.Logging;
-    using Git;
+    using GitTools;
+    using GitTools.Git;
     using LibGit2Sharp;
 
     public abstract class ProviderBase : IProvider
     {
-        private readonly IRepositoryPreparer _repositoryPreparer;
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
+        private readonly IRepositoryPreparer _repositoryPreparer;
 
         protected ProviderBase(IRepositoryPreparer repositoryPreparer)
         {
@@ -86,7 +88,7 @@ namespace GitLink.Providers
                 }
                 else
                 {
-                    Log.Info("Checking if commit with sha hash '{0}' exists on the repostory", context.ShaHash);
+                    Log.Info("Checking if commit with sha hash '{0}' exists on the repository", context.ShaHash);
 
                     var commit = repository.Commits.FirstOrDefault(c => string.Equals(c.Sha, context.ShaHash, StringComparison.OrdinalIgnoreCase));
                     if (commit != null)

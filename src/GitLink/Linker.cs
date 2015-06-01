@@ -14,7 +14,7 @@ namespace GitLink
     using System.Linq;
     using Catel;
     using Catel.Logging;
-    using Git;
+    using GitTools;
     using Microsoft.Build.Evaluation;
 
     /// <summary>

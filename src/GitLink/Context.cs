@@ -12,9 +12,10 @@ namespace GitLink
     using Catel;
     using Catel.IO;
     using Catel.Logging;
+    using GitTools;
     using Providers;
 
-    public class Context
+    public class Context : RepositoryContext
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
@@ -39,7 +40,12 @@ namespace GitLink
 
         public string LogFile { get; set; }
 
-        public string SolutionDirectory { get; set; }
+        //[Obsolete("Use 'Directory' instead")]
+        public string SolutionDirectory
+        {
+            get { return Directory; }
+            set { Directory = value; }
+        }
 
         public string ConfigurationName { get; set; }
 
@@ -64,9 +70,19 @@ namespace GitLink
             }
         }
 
-        public string TargetUrl { get; set; }
+        //[Obsolete("Use 'Url' instead")]
+        public string TargetUrl
+        {
+            get { return Url; }
+            set { Url = value; }
+        }
 
-        public string TargetBranch { get; set; }
+        //[Obsolete("Use 'Branch' instead")]
+        public string TargetBranch
+        {
+            get { return Branch; }
+            set { Branch = value; }
+        }
 
         public string ShaHash { get; set; }
 

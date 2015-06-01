@@ -3,7 +3,7 @@
   <Costura>
     <IncludeAssemblies>
       Catel.Core
-      LibGit2Sharp
+      GitTools.Core
     </IncludeAssemblies>
   </Costura>
   <Catel/>

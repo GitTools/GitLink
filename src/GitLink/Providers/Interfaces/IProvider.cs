@@ -7,6 +7,8 @@
 
 namespace GitLink.Providers
 {
+    using GitTools;
+
     public interface IProvider
     {
         /// <summary>
