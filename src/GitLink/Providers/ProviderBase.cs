@@ -66,7 +66,6 @@ namespace GitLink.Providers
             Argument.IsNotNull(() => context);
 
             string commitSha = null;
-            var deleteTempRepository = false;
             var repositoryDirectory = context.SolutionDirectory;
 
             if (_repositoryPreparer.IsPreparationRequired(context))
@@ -74,7 +73,6 @@ namespace GitLink.Providers
                 Log.Info("No local repository is found in '{0}', creating a temporary one", repositoryDirectory);
 
                 repositoryDirectory = _repositoryPreparer.Prepare(context, temporaryFilesContext);
-                deleteTempRepository = true;
             }
 
             using (var repository = new Repository(repositoryDirectory))
@@ -95,23 +93,6 @@ namespace GitLink.Providers
                     {
                         commitSha = commit.Sha;
                     }
-                }
-            }
-
-            if (deleteTempRepository)
-            {
-                Log.Debug("Deleting temporary directory '{0}'", repositoryDirectory);
-
-                try
-                {
-                    // Always sleep 1 second to give IO a chance to release
-                    ThreadHelper.Sleep(1000);
-
-                    Directory.Delete(repositoryDirectory, true);
-                }
-                catch (Exception ex)
-                {
-                    Log.Warning(ex, "Failed to delete temporary directory");
                 }
             }
 
