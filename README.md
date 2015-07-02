@@ -3,6 +3,13 @@ GitLink
 
 [![Join the chat at https://gitter.im/GitTools/GitLink](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/GitTools/GitLink?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+![License](https://img.shields.io/github/license/gittools/gitlink.svg)
+![NuGet downloads](https://img.shields.io/nuget/dt/gitlink.svg)
+![Version](https://img.shields.io/nuget/v/gitlink.svg)
+![Pre-release version](https://img.shields.io/nuget/vpre/gitlink.svg)
+![Chocolatey count](https://img.shields.io/chocolatey/dt/gitlink.svg)
+![Chocolatey version](https://img.shields.io/chocolatey/v/gitlink.svg)
+
 ![GitLink](design/logo/logo_64.png)
 
 GitLink let's users step through your code hosted on GitHub! **Help make .NET open source projects more accessible by enabling this for your .NET projects, it's just a single additional step in your build**. See the list of [projects using GitLink](#projects-using-gitlink).
