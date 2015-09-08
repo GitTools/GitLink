@@ -38,7 +38,8 @@ namespace GitLink
 
             if (commandLineArguments.Count == 0)
             {
-                Log.ErrorAndThrowException<GitLinkException>("Invalid number of arguments");
+                context.IsHelp = true;
+                return context;
             }
 
             var firstArgument = commandLineArguments.First();
