@@ -14,9 +14,10 @@ namespace GitLink.Tests
     public class ArgumentParserFacts
     {
         [TestCase]
-        public void ThrowsExceptionForEmptyParameters()
+        public void ReturnsHelpForEmptyParameters()
         {
-            ExceptionTester.CallMethodAndExpectException<GitLinkException>(() => ArgumentParser.ParseArguments(string.Empty));
+            var context = ArgumentParser.ParseArguments(string.Empty);
+            Assert.IsTrue(context.IsHelp);
         }
 
         [TestCase]
