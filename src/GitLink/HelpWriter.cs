@@ -39,6 +39,7 @@ GitLink [solutionPath] -u [urlToRepository]
     -s [shaHash]       The SHA-1 hash of the commit.
     -d [pdbDirectory]  The directory where pdb files exists, default value 
                        is the normal project output directory.
+    -errorsaswarnings  Don't fail on errors, but treat them as warnings instead.
     -debug             Enables debug mode with special dumps of msbuild.
 ";
             writer(message);

@@ -38,6 +38,8 @@ namespace GitLink
 
         public bool IsDebug { get; set; }
 
+        public bool ErrorsAsWarnings { get; set; }
+
         public string LogFile { get; set; }
 
         //[Obsolete("Use 'Directory' instead")]

@@ -152,7 +152,16 @@ namespace GitLink
             Log.Info(string.Empty);
             Log.Info("Completed in '{0}'", stopWatch.Elapsed);
 
-            return exitCode ?? -1;
+            exitCode = exitCode ?? -1;
+
+            if (context.ErrorsAsWarnings && exitCode != 0)
+            {
+                Log.Info("One or more errors occurred, but treating it as warning instead");
+
+                exitCode = 0;
+            }
+
+            return exitCode.Value;
         }
 
         private static bool LinkProject(Context context, Project project, string pdbStrFile, string shaHash, string pathPdbDirectory=null)

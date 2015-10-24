@@ -68,6 +68,12 @@ namespace GitLink
                     continue;
                 }
 
+                if (IsSwitch("errorsaswarnings", name))
+                {
+                    context.ErrorsAsWarnings = true;
+                    continue;
+                }
+
                 // After this point, all arguments should have a value
                 index++;
                 var valueInfo = GetValue(namedArguments, index);
