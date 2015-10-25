@@ -35,7 +35,7 @@ namespace GitLink
             var processExitCode = process.ExitCode;
             if (processExitCode != 0)
             {
-                Log.ErrorAndThrowException<GitLinkException>("PdbStr exited with unexpected error code '{0}'", processExitCode);
+                throw Log.ErrorAndCreateException<GitLinkException>("PdbStr exited with unexpected error code '{0}'", processExitCode);
             }
         }
     }

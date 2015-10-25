@@ -78,7 +78,7 @@ namespace GitLink
                     var provider = context.Provider;
                     if (provider == null)
                     {
-                        Log.ErrorAndThrowException<GitLinkException>("Cannot find a matching provider for '{0}'", context.TargetUrl);
+                        throw Log.ErrorAndCreateException<GitLinkException>("Cannot find a matching provider for '{0}'", context.TargetUrl);
                     }
 
                     Log.Info("Using provider '{0}'", provider.GetType().Name);

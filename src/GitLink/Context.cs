@@ -103,27 +103,27 @@ namespace GitLink
 
             if (string.IsNullOrEmpty(SolutionDirectory))
             {
-                Log.ErrorAndThrowException<GitLinkException>("Solution directory is missing");
+                throw Log.ErrorAndCreateException<GitLinkException>("Solution directory is missing");
             }
 
             if (string.IsNullOrEmpty(ConfigurationName))
             {
-                Log.ErrorAndThrowException<GitLinkException>("Configuration name is missing");
+                throw Log.ErrorAndCreateException<GitLinkException>("Configuration name is missing");
             }
 
             if (string.IsNullOrEmpty(PlatformName))
             {
-                Log.ErrorAndThrowException<GitLinkException>("Platform name is missing");
+                throw Log.ErrorAndCreateException<GitLinkException>("Platform name is missing");
             }
 
             if (string.IsNullOrEmpty(TargetUrl))
             {
-                Log.ErrorAndThrowException<GitLinkException>("Target url is missing");
+                throw Log.ErrorAndCreateException<GitLinkException>("Target url is missing");
             }
 
             if (Provider == null)
             {
-                Log.ErrorAndThrowException<GitLinkException>("Cannot determine git provider");
+                throw Log.ErrorAndCreateException<GitLinkException>("Cannot determine git provider");
             }
         }
     }

@@ -51,7 +51,7 @@ namespace GitLink
 
             if (commandLineArguments.Count < 3 && commandLineArguments.Count != 1)
             {
-                Log.ErrorAndThrowException<GitLinkException>("Invalid number of arguments");
+                throw Log.ErrorAndCreateException<GitLinkException>("Invalid number of arguments");
             }
 
             context.SolutionDirectory = firstArgument;
@@ -134,7 +134,7 @@ namespace GitLink
                     continue;
                 }
 
-                Log.ErrorAndThrowException<GitLinkException>("Could not parse command line parameter '{0}'.", name);
+                throw Log.ErrorAndCreateException<GitLinkException>("Could not parse command line parameter '{0}'.", name);
             }
 
             if (string.IsNullOrEmpty(context.TargetUrl))

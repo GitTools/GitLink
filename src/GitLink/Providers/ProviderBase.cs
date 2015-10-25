@@ -98,7 +98,7 @@ namespace GitLink.Providers
 
             if (commitSha == null)
             {
-                Log.ErrorAndThrowException<GitLinkException>("Cannot find commit '{0}' in repo.", context.ShaHash);
+                throw Log.ErrorAndCreateException<GitLinkException>("Cannot find commit '{0}' in repo.", context.ShaHash);
             }
 
             return commitSha;
