@@ -240,10 +240,11 @@
             var root = GetRoot();
             if (root.Streams.Count <= 1)
             {
-                
+                throw Log.ErrorAndCreateException<GitLinkException>("Expected at least 2 streams inside the pdb root, but only found '{0}', cannot read pdb info",
+                    root.Streams.Count);
             }
 
-            using (var ms = new MemoryStream(ReadStreamBytes(GetRoot().Streams[1])))
+            using (var ms = new MemoryStream(ReadStreamBytes(root.Streams[1])))
             {
                 using (var br = new BinaryReader(ms))
                 {
@@ -270,7 +271,14 @@
                     var positions = new List<Tuple<int, PdbName>>(nameCount);
                     for (var i = 0; i < info.FlagIndexMax; i++)
                     {
-                        if ((flags[i / 32] & (1 << (i % 32))) != 0)
+                        var flagIndex = i / 32;
+                        if (flagIndex >= flags.Length)
+                        {
+                            break;
+                        }
+
+                        var flag = flags[flagIndex];
+                        if ((flag & (1 << (i % 32))) != 0)
                         {
                             var position = br.ReadInt32();
                             var name = new PdbName();
