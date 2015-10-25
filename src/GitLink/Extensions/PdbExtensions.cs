@@ -30,6 +30,12 @@ namespace GitLink
 
                 if (!actualFileChecksums.ContainsValue(checksum))
                 {
+                    if (file.EndsWith(".xaml"))
+                    {
+                        // #64 ignore xaml files, not important
+                        continue;
+                    }
+
                     missing[file] = checksum;
                 }
             }
