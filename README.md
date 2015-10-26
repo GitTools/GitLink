@@ -193,16 +193,25 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="https://github.com/GitTools/GitLink" target="_blank">GitLink</a>
 - <a href="https://github.com/MahApps/MahApps.Metro" target="_blank">MahApps.Metro</a>
 - <a href="https://github.com/elasticsearch/elasticsearch-net" target="_blank">NEST and Elasticsearch.NET</a>
+- <a href="https://github.com/orcomp/Orc.Analytics" target="_blank">Orc.Analytics</a>
 - <a href="https://github.com/orcomp/Orc.AutomaticSupport" target="_blank">Orc.AutomaticSupport</a>
-- <a href="https://github.com/orcomp/Orc.Collections" target="_blank">Orc.Collections</a>
+- <a href="https://github.com/orcomp/Orc.CommandLine" target="_blank">Orc.CommandLine</a>
 - <a href="https://github.com/orcomp/Orc.Controls" target="_blank">Orc.Controls</a>
+- <a href="https://github.com/orcomp/Orc.CrashReporting" target="_blank">Orc.CrashReporting</a>
 - <a href="https://github.com/orcomp/Orc.CsvHelper" target="_blank">Orc.CsvHelper</a>
 - <a href="https://github.com/orcomp/Orc.Feedback" target="_blank">Orc.Feedback</a>
+- <a href="https://github.com/orcomp/Orc.FileAssociation" target="_blank">Orc.FileAssociation</a>
 - <a href="https://github.com/orcomp/Orc.FilterBuilder" target="_blank">Orc.FilterBuilder</a>
 - <a href="https://github.com/orcomp/Orc.LicenseManager" target="_blank">Orc.LicenseManager</a>
+- <a href="https://github.com/orcomp/Orc.Metadata" target="_blank">Orc.Metadata</a>
+- <a href="https://github.com/orcomp/Orc.Notifications" target="_blank">Orc.Notifications</a>
+- <a href="https://github.com/orcomp/Orc.NuGetExplorer" target="_blank">Orc.NuGetExplorer</a>
 - <a href="https://github.com/orcomp/Orc.ProjectManagement" target="_blank">Orc.ProjectManagement</a>
+- <a href="https://github.com/orcomp/Orc.Search" target="_blank">Orc.Search</a>
 - <a href="https://github.com/orcomp/Orc.Sort" target="_blank">Orc.Sort</a>
 - <a href="https://github.com/orcomp/Orc.Squirrel" target="_blank">Orc.Squirrel</a>
+- <a href="https://github.com/orcomp/Orc.SupportPackage" target="_blank">Orc.SupportPackage</a>
+- <a href="https://github.com/orcomp/Orc.SystemInfo" target="_blank">Orc.SystemInfo</a>
 - <a href="https://github.com/orcomp/Orc.WorkspaceManagement" target="_blank">Orc.WorkspaceManagement</a>
 - <a href="https://github.com/orcomp/Orchestra" target="_blank">Orchestra</a>
 - <a href="https://github.com/oxyplot/oxyplot" target="_blank">OxyPlot</a>
