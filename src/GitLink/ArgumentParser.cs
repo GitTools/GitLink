@@ -74,6 +74,12 @@ namespace GitLink
                     continue;
                 }
 
+                if (IsSwitch("skipverify", name))
+                {
+                    context.SkipVerify = true;
+                    continue;
+                }
+
                 // After this point, all arguments should have a value
                 index++;
                 var valueInfo = GetValue(namedArguments, index);

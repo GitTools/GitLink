@@ -40,6 +40,7 @@ GitLink [solutionPath] -u [urlToRepository]
     -d [pdbDirectory]  The directory where pdb files exists, default value 
                        is the normal project output directory.
     -errorsaswarnings  Don't fail on errors, but treat them as warnings instead.
+    -skipverify        Skip pdb verification in case it causes issues (it's a formality anyway)
     -debug             Enables debug mode with special dumps of msbuild.
 ";
             writer(message);

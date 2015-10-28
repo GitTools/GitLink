@@ -65,7 +65,6 @@ namespace GitLink
             Argument.IsNotNullOrWhitespace(() => revision);
             Argument.IsNotNullOrWhitespace(() => srcsrvFile);
 
-
             File.WriteAllBytes(srcsrvFile, SrcSrv.Create(rawUrl, revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value))));
         }
 

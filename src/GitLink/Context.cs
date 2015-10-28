@@ -40,6 +40,8 @@ namespace GitLink
 
         public bool ErrorsAsWarnings { get; set; }
 
+        public bool SkipVerify { get; set; }
+
         public string LogFile { get; set; }
 
         //[Obsolete("Use 'Directory' instead")]

@@ -164,7 +164,7 @@ namespace GitLink
             return exitCode.Value;
         }
 
-        private static bool LinkProject(Context context, Project project, string pdbStrFile, string shaHash, string pathPdbDirectory=null)
+        private static bool LinkProject(Context context, Project project, string pdbStrFile, string shaHash, string pathPdbDirectory = null)
         {
             Argument.IsNotNull(() => context);
             Argument.IsNotNull(() => project);
@@ -180,7 +180,7 @@ namespace GitLink
                 var compilables = project.GetCompilableItems().Select(x => x.GetFullFileName()).ToList();
 
                 var outputPdbFile = project.GetOutputPdbFile();
-                var projectPdbFile = pathPdbDirectory!=null ? Path.Combine(pathPdbDirectory,Path.GetFileName(outputPdbFile)) : Path.GetFullPath(outputPdbFile);
+                var projectPdbFile = pathPdbDirectory != null ? Path.Combine(pathPdbDirectory, Path.GetFileName(outputPdbFile)) : Path.GetFullPath(outputPdbFile);
                 var projectSrcSrvFile = projectPdbFile + ".srcsrv";
                 if (!File.Exists(projectPdbFile))
                 {
@@ -188,12 +188,15 @@ namespace GitLink
                     return false;
                 }
 
-                Log.Info("Verifying pdb file");
-
-                var missingFiles = project.VerifyPdbFiles(compilables, projectPdbFile);
-                foreach (var missingFile in missingFiles)
+                if (!context.SkipVerify)
                 {
-                    Log.Warning("Missing file '{0}' or checksum '{1}' did not match", missingFile.Key, missingFile.Value);
+                    Log.Info("Verifying pdb file");
+
+                    var missingFiles = project.VerifyPdbFiles(compilables, projectPdbFile);
+                    foreach (var missingFile in missingFiles)
+                    {
+                        Log.Warning("Missing file '{0}' or checksum '{1}' did not match", missingFile.Key, missingFile.Value);
+                    }
                 }
 
                 var rawUrl = string.Format("{0}/{{0}}/%var2%", context.Provider.RawGitUrl);
