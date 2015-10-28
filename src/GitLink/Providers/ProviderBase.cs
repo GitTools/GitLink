@@ -12,13 +12,15 @@ namespace GitLink.Providers
     using System.Linq;
     using Catel;
     using Catel.Logging;
-    using Git;
+    using GitTools;
+    using GitTools.Git;
     using LibGit2Sharp;
 
     public abstract class ProviderBase : IProvider
     {
-        private readonly IRepositoryPreparer _repositoryPreparer;
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
+        private readonly IRepositoryPreparer _repositoryPreparer;
 
         protected ProviderBase(IRepositoryPreparer repositoryPreparer)
         {
@@ -59,20 +61,18 @@ namespace GitLink.Providers
 
         public abstract bool Initialize(string url);
 
-        public string GetShaHashOfCurrentBranch(Context context)
+        public string GetShaHashOfCurrentBranch(Context context, TemporaryFilesContext temporaryFilesContext)
         {
             Argument.IsNotNull(() => context);
 
             string commitSha = null;
-            var deleteTempRepository = false;
             var repositoryDirectory = context.SolutionDirectory;
 
             if (_repositoryPreparer.IsPreparationRequired(context))
             {
                 Log.Info("No local repository is found in '{0}', creating a temporary one", repositoryDirectory);
 
-                repositoryDirectory = _repositoryPreparer.Prepare(context);
-                deleteTempRepository = true;
+                repositoryDirectory = _repositoryPreparer.Prepare(context, temporaryFilesContext);
             }
 
             using (var repository = new Repository(repositoryDirectory))
@@ -86,7 +86,7 @@ namespace GitLink.Providers
                 }
                 else
                 {
-                    Log.Info("Checking if commit with sha hash '{0}' exists on the repostory", context.ShaHash);
+                    Log.Info("Checking if commit with sha hash '{0}' exists on the repository", context.ShaHash);
 
                     var commit = repository.Commits.FirstOrDefault(c => string.Equals(c.Sha, context.ShaHash, StringComparison.OrdinalIgnoreCase));
                     if (commit != null)
@@ -96,26 +96,9 @@ namespace GitLink.Providers
                 }
             }
 
-            if (deleteTempRepository)
-            {
-                Log.Debug("Deleting temporary directory '{0}'", repositoryDirectory);
-
-                try
-                {
-                    // Always sleep 1 second to give IO a chance to release
-                    ThreadHelper.Sleep(1000);
-
-                    Directory.Delete(repositoryDirectory, true);
-                }
-                catch (Exception ex)
-                {
-                    Log.Warning(ex, "Failed to delete temporary directory");
-                }
-            }
-
             if (commitSha == null)
             {
-                Log.ErrorAndThrowException<GitLinkException>("Cannot find commit '{0}' in repo.", context.ShaHash);
+                throw Log.ErrorAndCreateException<GitLinkException>("Cannot find commit '{0}' in repo.", context.ShaHash);
             }
 
             return commitSha;

@@ -14,9 +14,10 @@ namespace GitLink.Tests
     public class ArgumentParserFacts
     {
         [TestCase]
-        public void ThrowsExceptionForEmptyParameters()
+        public void ReturnsHelpForEmptyParameters()
         {
-            ExceptionTester.CallMethodAndExpectException<GitLinkException>(() => ArgumentParser.ParseArguments(string.Empty));
+            var context = ArgumentParser.ParseArguments(string.Empty);
+            Assert.IsTrue(context.IsHelp);
         }
 
         [TestCase]
@@ -34,6 +35,15 @@ namespace GitLink.Tests
 
             Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
             Assert.AreEqual("logFilePath", context.LogFile);
+        }
+
+        [TestCase]
+        public void CorrectlyParsesPdbFilesDirectory()
+        {
+            var context = ArgumentParser.ParseArguments("solutionDirectory -d pdbFilesDirectory");
+
+            Assert.AreEqual("solutionDirectory", context.SolutionDirectory);
+            Assert.AreEqual("pdbFilesDirectory", context.PdbFilesDirectory);
         }
 
         [TestCase]

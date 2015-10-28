@@ -9,7 +9,7 @@ namespace GitLink.Providers
 {
     using System;
     using System.Text.RegularExpressions;
-    using Git;
+    using GitTools.Git;
 
     public class BitBucketProvider : ProviderBase
     {

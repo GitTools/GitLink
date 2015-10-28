@@ -13,6 +13,9 @@ namespace GitLink
     using Catel.Collections;
     using Catel.Logging;
     using GitLink.Providers;
+    using GitTools;
+    using GitTools.Git;
+    using LibGit2Sharp;
 
     public static class ArgumentParser
     {
@@ -35,7 +38,8 @@ namespace GitLink
 
             if (commandLineArguments.Count == 0)
             {
-                Log.ErrorAndThrowException<GitLinkException>("Invalid number of arguments");
+                context.IsHelp = true;
+                return context;
             }
 
             var firstArgument = commandLineArguments.First();
@@ -45,9 +49,9 @@ namespace GitLink
                 return context;
             }
 
-            if (commandLineArguments.Count < 3)
+            if (commandLineArguments.Count < 3 && commandLineArguments.Count != 1)
             {
-                Log.ErrorAndThrowException<GitLinkException>("Invalid number of arguments");
+                throw Log.ErrorAndCreateException<GitLinkException>("Invalid number of arguments");
             }
 
             context.SolutionDirectory = firstArgument;
@@ -61,6 +65,18 @@ namespace GitLink
                 if (IsSwitch("debug", name))
                 {
                     context.IsDebug = true;
+                    continue;
+                }
+
+                if (IsSwitch("errorsaswarnings", name))
+                {
+                    context.ErrorsAsWarnings = true;
+                    continue;
+                }
+
+                if (IsSwitch("skipverify", name))
+                {
+                    context.SkipVerify = true;
                     continue;
                 }
 
@@ -112,13 +128,54 @@ namespace GitLink
                     continue;
                 }
 
+                if (IsSwitch("d", name))
+                {
+                    context.PdbFilesDirectory = value;
+                    continue;
+                }
+
                 if (IsSwitch("ignore", name))
                 {
                     context.IgnoredProjects.AddRange(value.Split(new []{ ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()));
                     continue;
                 }
 
-                Log.ErrorAndThrowException<GitLinkException>("Could not parse command line parameter '{0}'.", name);
+                throw Log.ErrorAndCreateException<GitLinkException>("Could not parse command line parameter '{0}'.", name);
+            }
+
+            if (string.IsNullOrEmpty(context.TargetUrl))
+            {
+                Log.Info("No target url was specified, trying to determine the target url automatically");
+
+                var gitDir = GitDirFinder.TreeWalkForGitDir(context.SolutionDirectory);
+                if (gitDir != null)
+                {
+                    using (var repo = RepositoryLoader.GetRepo(gitDir))
+                    {
+                        var currentBranch = repo.Head;
+
+                        if (string.IsNullOrEmpty(context.ShaHash))
+                        {
+                            context.ShaHash = currentBranch.Tip.Sha;
+                        }
+
+                        if (currentBranch.Remote == null || currentBranch.IsDetachedHead())
+                        {
+                            currentBranch = repo.GetBranchesContainingCommit(context.ShaHash).FirstOrDefault(b => b.Remote != null);
+                        }
+
+                        if (currentBranch != null && currentBranch.Remote != null)
+                        {
+                            var url = currentBranch.Remote.Url;
+                            if (url.StartsWith("https://"))
+                            {
+                                context.TargetUrl = url.OptimizeUrl();
+
+                                Log.Info("Automatically determine target url '{0}'", context.TargetUrl);
+                            }
+                        }
+                    }
+                }
             }
 
             if (!string.IsNullOrEmpty(context.TargetUrl))

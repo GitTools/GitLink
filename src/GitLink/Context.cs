@@ -12,9 +12,10 @@ namespace GitLink
     using Catel;
     using Catel.IO;
     using Catel.Logging;
+    using GitTools;
     using Providers;
 
-    public class Context
+    public class Context : RepositoryContext
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
@@ -37,9 +38,18 @@ namespace GitLink
 
         public bool IsDebug { get; set; }
 
+        public bool ErrorsAsWarnings { get; set; }
+
+        public bool SkipVerify { get; set; }
+
         public string LogFile { get; set; }
 
-        public string SolutionDirectory { get; set; }
+        //[Obsolete("Use 'Directory' instead")]
+        public string SolutionDirectory
+        {
+            get { return Directory; }
+            set { Directory = value; }
+        }
 
         public string ConfigurationName { get; set; }
 
@@ -64,15 +74,27 @@ namespace GitLink
             }
         }
 
-        public string TargetUrl { get; set; }
+        //[Obsolete("Use 'Url' instead")]
+        public string TargetUrl
+        {
+            get { return Url; }
+            set { Url = value; }
+        }
 
-        public string TargetBranch { get; set; }
+        //[Obsolete("Use 'Branch' instead")]
+        public string TargetBranch
+        {
+            get { return Branch; }
+            set { Branch = value; }
+        }
 
         public string ShaHash { get; set; }
 
         public string SolutionFile { get; set; }
 
         public List<string> IgnoredProjects { get; private set; }
+
+        public string PdbFilesDirectory { get; set; }
 
         public void ValidateContext()
         {
@@ -83,27 +105,27 @@ namespace GitLink
 
             if (string.IsNullOrEmpty(SolutionDirectory))
             {
-                Log.ErrorAndThrowException<GitLinkException>("Solution directory is missing");
+                throw Log.ErrorAndCreateException<GitLinkException>("Solution directory is missing");
             }
 
             if (string.IsNullOrEmpty(ConfigurationName))
             {
-                Log.ErrorAndThrowException<GitLinkException>("Configuration name is missing");
+                throw Log.ErrorAndCreateException<GitLinkException>("Configuration name is missing");
             }
 
             if (string.IsNullOrEmpty(PlatformName))
             {
-                Log.ErrorAndThrowException<GitLinkException>("Platform name is missing");
+                throw Log.ErrorAndCreateException<GitLinkException>("Platform name is missing");
             }
 
             if (string.IsNullOrEmpty(TargetUrl))
             {
-                Log.ErrorAndThrowException<GitLinkException>("Target url is missing");
+                throw Log.ErrorAndCreateException<GitLinkException>("Target url is missing");
             }
 
             if (Provider == null)
             {
-                Log.ErrorAndThrowException<GitLinkException>("Cannot determine git provider");
+                throw Log.ErrorAndCreateException<GitLinkException>("Cannot determine git provider");
             }
         }
     }

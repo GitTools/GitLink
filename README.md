@@ -1,6 +1,15 @@
 GitLink
 ==========
 
+[![Join the chat at https://gitter.im/GitTools/GitLink](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/GitTools/GitLink?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+![License](https://img.shields.io/github/license/gittools/gitlink.svg)
+![NuGet downloads](https://img.shields.io/nuget/dt/gitlink.svg)
+![Version](https://img.shields.io/nuget/v/gitlink.svg)
+![Pre-release version](https://img.shields.io/nuget/vpre/gitlink.svg)
+![Chocolatey count](https://img.shields.io/chocolatey/dt/gitlink.svg)
+![Chocolatey version](https://img.shields.io/chocolatey/v/gitlink.svg)
+
 ![GitLink](design/logo/logo_64.png)
 
 GitLink let's users step through your code hosted on GitHub! **Help make .NET open source projects more accessible by enabling this for your .NET projects, it's just a single additional step in your build**. See the list of [projects using GitLink](#projects-using-gitlink).
@@ -67,6 +76,12 @@ Using GitLink via the command line is very simple:
 2. Run the console application with the right command line parameters
 
 Below are a few examples.
+
+## Most simple usage
+
+This is the most simple usage available **starting from 2.2.0**. It will automatically determine the url and commit based on a local *.git* directory.
+
+	GitLink.exe c:\source\catel
 
 ## Running for the default branch
 
@@ -139,19 +154,19 @@ Once a context is created, the *Linker* class can be used to actually link the f
 
     Linker.Link(context);
 
-# How to get GitLink
+# How to get
 
 There are three general ways to get GitLink:
 
 ## Get it from GitHub
 
-The releases will be available as separate executable download on the [releases tab](https://github.com/CatenaLogic/GitLink/releases) of the project.
+The releases will be available as separate executable download on the [releases tab](https://github.com/GitTools/GitLink/releases) of the project.
 
 ## Get it via Chocolatey
 
 If you want to install the tool on your (build) computer, the package is available via <a href="https://chocolatey.org/" target="_blank">Chocolatey</a>. To install, use the following command:
 
-    choco install GitLink
+    choco install gitlink
 
 ## Get it via NuGet
 
@@ -175,17 +190,28 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="http://www.catelproject.com" target="_blank">Catel</a>
 - <a href="http://www.expandframework.com/" target="_blank">eXpand</a>
 - <a href="https://github.com/fluentribbon/Fluent.Ribbon" target="_blank">Fluent.Ribbon</a>
-- <a href="https://github.com/CatenaLogic/GitLink" target="_blank">GitLink</a>
+- <a href="https://github.com/GitTools/GitLink" target="_blank">GitLink</a>
+- <a href="https://github.com/MahApps/MahApps.Metro" target="_blank">MahApps.Metro</a>
+- <a href="https://github.com/elasticsearch/elasticsearch-net" target="_blank">NEST and Elasticsearch.NET</a>
+- <a href="https://github.com/orcomp/Orc.Analytics" target="_blank">Orc.Analytics</a>
 - <a href="https://github.com/orcomp/Orc.AutomaticSupport" target="_blank">Orc.AutomaticSupport</a>
-- <a href="https://github.com/orcomp/Orc.Collections" target="_blank">Orc.Collections</a>
+- <a href="https://github.com/orcomp/Orc.CommandLine" target="_blank">Orc.CommandLine</a>
 - <a href="https://github.com/orcomp/Orc.Controls" target="_blank">Orc.Controls</a>
+- <a href="https://github.com/orcomp/Orc.CrashReporting" target="_blank">Orc.CrashReporting</a>
 - <a href="https://github.com/orcomp/Orc.CsvHelper" target="_blank">Orc.CsvHelper</a>
 - <a href="https://github.com/orcomp/Orc.Feedback" target="_blank">Orc.Feedback</a>
+- <a href="https://github.com/orcomp/Orc.FileAssociation" target="_blank">Orc.FileAssociation</a>
 - <a href="https://github.com/orcomp/Orc.FilterBuilder" target="_blank">Orc.FilterBuilder</a>
 - <a href="https://github.com/orcomp/Orc.LicenseManager" target="_blank">Orc.LicenseManager</a>
+- <a href="https://github.com/orcomp/Orc.Metadata" target="_blank">Orc.Metadata</a>
+- <a href="https://github.com/orcomp/Orc.Notifications" target="_blank">Orc.Notifications</a>
+- <a href="https://github.com/orcomp/Orc.NuGetExplorer" target="_blank">Orc.NuGetExplorer</a>
 - <a href="https://github.com/orcomp/Orc.ProjectManagement" target="_blank">Orc.ProjectManagement</a>
+- <a href="https://github.com/orcomp/Orc.Search" target="_blank">Orc.Search</a>
 - <a href="https://github.com/orcomp/Orc.Sort" target="_blank">Orc.Sort</a>
 - <a href="https://github.com/orcomp/Orc.Squirrel" target="_blank">Orc.Squirrel</a>
+- <a href="https://github.com/orcomp/Orc.SupportPackage" target="_blank">Orc.SupportPackage</a>
+- <a href="https://github.com/orcomp/Orc.SystemInfo" target="_blank">Orc.SystemInfo</a>
 - <a href="https://github.com/orcomp/Orc.WorkspaceManagement" target="_blank">Orc.WorkspaceManagement</a>
 - <a href="https://github.com/orcomp/Orchestra" target="_blank">Orchestra</a>
 - <a href="https://github.com/oxyplot/oxyplot" target="_blank">OxyPlot</a>

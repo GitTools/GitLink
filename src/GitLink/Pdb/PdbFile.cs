@@ -81,7 +81,7 @@
             var bytes = Encoding.UTF8.GetBytes(msf);
             if (!bytes.SequenceEqual(_br.ReadBytes(32)))
             {
-                Log.ErrorAndThrowException<GitLinkException>("Pdb header didn't match");
+                throw Log.ErrorAndCreateException<GitLinkException>("Pdb header didn't match");
             }
         }
 
@@ -102,13 +102,13 @@
             var length = _fs.Length;
             if (length % _pageByteCount != 0)
             {
-                Log.ErrorAndThrowException<GitLinkException>("pdb length {0} bytes per page <> 0, {1}, {2}", length, _pageByteCount,
+                throw Log.ErrorAndCreateException<GitLinkException>("pdb length {0} bytes per page <> 0, {1}, {2}", length, _pageByteCount,
                     PageCount);
             }
 
             if (length / _pageByteCount != PageCount)
             {
-                Log.ErrorAndThrowException<GitLinkException>("pdb length does not match page count, length: {0}, bytes per page: {1}, page count: {2}",
+                throw Log.ErrorAndCreateException<GitLinkException>("pdb length does not match page count, length: {0}, bytes per page: {1}, page count: {2}",
                         length, _pageByteCount, PageCount);
             }
         }
@@ -168,7 +168,8 @@
 
         private PdbRoot GetRoot()
         {
-            return ReadRoot(GetRootPdbStream());
+            var pdbRootStream = GetRootPdbStream();
+            return ReadRoot(pdbRootStream);
         }
 
         #region Reading methods
@@ -195,7 +196,7 @@
             var read = _br.Read(bytes, offset, count);
             if (read != count)
             {
-                Log.ErrorAndThrowException<GitLinkException>("tried reading {0} bytes at offset {1}, but only read {2}", count, offset, read);
+                throw Log.ErrorAndCreateException<GitLinkException>("tried reading {0} bytes at offset {1}, but only read {2}", count, offset, read);
             }
         }
 
@@ -235,59 +236,76 @@
         private PdbInfo InternalInfo()
         {
             var info = new PdbInfo();
-            using (var ms = new MemoryStream(ReadStreamBytes(GetRoot().Streams[1])))
-            using (var br = new BinaryReader(ms))
+
+            var root = GetRoot();
+            if (root.Streams.Count <= 1)
             {
-                info.Version = br.ReadInt32(); // 0x00 of stream
-                info.Signature = br.ReadInt32(); // 0x04
-                info.Age = br.ReadInt32(); // 0x08
-                info.Guid = new Guid(br.ReadBytes(16)); // 0x0C
+                throw Log.ErrorAndCreateException<GitLinkException>("Expected at least 2 streams inside the pdb root, but only found '{0}', cannot read pdb info",
+                    root.Streams.Count);
+            }
 
-                var namesByteCount = br.ReadInt32(); // 0x16
-                var namesByteStart = br.BaseStream.Position; // 0x20
-                br.BaseStream.Position = namesByteStart + namesByteCount;
-
-                var nameCount = br.ReadInt32();
-                info.FlagIndexMax = br.ReadInt32();
-                info.FlagCount = br.ReadInt32();
-
-                var flags = new int[info.FlagCount]; // bit flags for each nameCountMax
-                for (var i = 0; i < flags.Length; i++)
+            using (var ms = new MemoryStream(ReadStreamBytes(root.Streams[1])))
+            {
+                using (var br = new BinaryReader(ms))
                 {
-                    flags[i] = br.ReadInt32();
-                }
+                    info.Version = br.ReadInt32(); // 0x00 of stream
+                    info.Signature = br.ReadInt32(); // 0x04
+                    info.Age = br.ReadInt32(); // 0x08
+                    info.Guid = new Guid(br.ReadBytes(16)); // 0x0C
 
-                br.BaseStream.Position += 4; // 0
-                var positions = new List<Tuple<int, PdbName>>(nameCount);
-                for (var i = 0; i < info.FlagIndexMax; i++)
-                {
-                    if ((flags[i / 32] & (1 << (i % 32))) != 0)
+                    var namesByteCount = br.ReadInt32(); // 0x16
+                    var namesByteStart = br.BaseStream.Position; // 0x20
+                    br.BaseStream.Position = namesByteStart + namesByteCount;
+
+                    var nameCount = br.ReadInt32();
+                    info.FlagIndexMax = br.ReadInt32();
+                    info.FlagCount = br.ReadInt32();
+
+                    var flags = new int[info.FlagCount]; // bit flags for each nameCountMax
+                    for (var i = 0; i < flags.Length; i++)
                     {
-                        var position = br.ReadInt32();
-                        var name = new PdbName();
-                        name.FlagIndex = i;
-                        name.Stream = br.ReadInt32();
-
-                        positions.Add(new Tuple<int, PdbName>(position, name));
+                        flags[i] = br.ReadInt32();
                     }
+
+                    br.BaseStream.Position += 4; // 0
+                    var positions = new List<Tuple<int, PdbName>>(nameCount);
+                    for (var i = 0; i < info.FlagIndexMax; i++)
+                    {
+                        var flagIndex = i / 32;
+                        if (flagIndex >= flags.Length)
+                        {
+                            break;
+                        }
+
+                        var flag = flags[flagIndex];
+                        if ((flag & (1 << (i % 32))) != 0)
+                        {
+                            var position = br.ReadInt32();
+                            var name = new PdbName();
+                            name.FlagIndex = i;
+                            name.Stream = br.ReadInt32();
+
+                            positions.Add(new Tuple<int, PdbName>(position, name));
+                        }
+                    }
+
+                    if (positions.Count != nameCount)
+                    {
+                        throw Log.ErrorAndCreateException<GitLinkException>("names count, {0} <> {1}", positions.Count, nameCount);
+                    }
+
+                    var tailByteCount = GetRoot().Streams[1].ByteCount - br.BaseStream.Position;
+                    info.Tail = br.ReadBytes((int) tailByteCount);
+
+                    foreach (var tuple in positions)
+                    {
+                        br.BaseStream.Position = namesByteStart + tuple.Item1;
+                        tuple.Item2.Name = br.ReadCString();
+                        info.AddName(tuple.Item2);
+                    }
+
+                    return info;
                 }
-
-                if (positions.Count != nameCount)
-                {
-                    Log.ErrorAndThrowException<GitLinkException>("names count, {0} <> {1}", positions.Count, nameCount);
-                }
-
-                var tailByteCount = GetRoot().Streams[1].ByteCount - br.BaseStream.Position;
-                info.Tail = br.ReadBytes((int)tailByteCount);
-
-                foreach (var tuple in positions)
-                {
-                    br.BaseStream.Position = namesByteStart + tuple.Item1;
-                    tuple.Item2.Name = br.ReadCString();
-                    info.AddName(tuple.Item2);
-                }
-
-                return info;
             }
         }
 
