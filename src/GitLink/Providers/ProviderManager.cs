@@ -14,7 +14,7 @@ namespace GitLink.Providers
     {
         public ProviderBase GetProvider(string url)
         {
-            var providerTypes = TypeCache.GetTypes(x => typeof(ProviderBase).IsAssignableFromEx(x) && !x.IsAbstract);
+            var providerTypes = TypeCache.GetTypes(x => typeof(ProviderBase).IsAssignableFromEx(x) && !x.IsAbstract && x != typeof(CustomRawUrlProvider));
 
             var typeFactory = TypeFactory.Default;
 
@@ -25,6 +25,12 @@ namespace GitLink.Providers
                 {
                     return provider;
                 }
+            }
+
+            var customProvider = typeFactory.CreateInstance<CustomRawUrlProvider>();
+            if (customProvider.Initialize(url))
+            {
+                return customProvider;
             }
 
             return null;

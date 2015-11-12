@@ -113,6 +113,14 @@ When specific projects should be ignored, use the *-ignore* option. This option 
 
 	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -ignore Catel.Core.WP80,Catel.MVVM.WP80
 
+## Running for a custom raw content URL
+
+When working with a content proxy or an alternative git VCS system that supports direct HTTP access to specific file revisions use the `-u` parameter with the custom raw content root URL
+
+    GitLink.exe c:\source\catel -u https://raw.githubusercontent.com/catel/catel
+    
+The custom url will be used to fill in the following pattern `{customUrl}/{revision}/{raltiveFilePath}` when generating the source mapping.
+
 ## Getting help
 
 When you need help about GitLink, use the following command line:
