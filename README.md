@@ -28,9 +28,6 @@ GitLink makes symbol servers obsolete which saves you both time with uploading s
 
 ![Stepping through external source code](doc/images/GitLink_example.gif)  
 
-
-This application is based on the <a href="https://github.com/ctaggart/SourceLink"  target="_blank">SourceLink project</a>. SourceLink requires FAKE to run and not everyone likes to write code in F#. GitLink is a wrapper around SourceLink specifically written to be easily used from any build system (locally or a build server) and in any .NET language. It also provides new features such as standard integration with GitHub and BitBucket and the possibility to use remote repositories. GitLink is available as console application and can be referenced as assembly to be used in other .NET assemblies.
-
 The advantage of GitLink is that it is fully customized for Git. It also works with GitHub or BitBucket urls so it **does not require a local git repository to work**. This makes it perfectly usable in continuous integration servers such as <a href="http://www.finalbuilder.com/Continua-CI" target="_blank">Continua CI</a>.
 
 Updating all the pdb files is very fast. A solution with over 85 projects will be handled in less than 30 seconds.
@@ -53,6 +50,7 @@ GitLink supports the following providers out of the box (will auto-detect based 
 
 * <a href="https://bitbucket.org/" target="_blank">BitBucket</a>
 * <a href="https://github.com/" target="_blank">GitHub</a>
+* Custom Provider (custom urls)
 
 Providers currently being worked on:
 
@@ -119,7 +117,7 @@ When working with a content proxy or an alternative git VCS system that supports
 
     GitLink.exe c:\source\catel -u https://raw.githubusercontent.com/catel/catel
     
-The custom url will be used to fill in the following pattern `{customUrl}/{revision}/{raltiveFilePath}` when generating the source mapping.
+The custom url will be used to fill in the following pattern `{customUrl}/{revision}/{relativeFilePath}` when generating the source mapping.
 
 ## Getting help
 
@@ -143,18 +141,14 @@ The command line implementation uses the same available API.
 
 To link files to a Git project, a context must be created. The command line version does this by using the *ArgumentParser* class. It is also possible to create a context from scratch as shown in the example below:
 
-```csharp
-var context = new GitLink.Context();
-context.SolutionDirectory = @"c:\source\catel";
-context.TargetUrl = "https://github.com/catel/catel";
-context.TargetBranch = "develop";
-```
+	var context = new GitLink.Context();
+	context.SolutionDirectory = @"c:\source\catel";
+	context.TargetUrl = "https://github.com/catel/catel";
+	context.TargetBranch = "develop";
 
 It is possible to create a context based on command line arguments:
 
-```csharp
-var context = ArgumentParser.Parse(@"c:\source\catel -u https://github.com/catel/catel -b develop");
-```
+	var context = ArgumentParser.Parse(@"c:\source\catel -u https://github.com/catel/catel -b develop");
 
 ## Linking a context
 
@@ -221,6 +215,7 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="https://github.com/orcomp/Orc.SupportPackage" target="_blank">Orc.SupportPackage</a>
 - <a href="https://github.com/orcomp/Orc.SystemInfo" target="_blank">Orc.SystemInfo</a>
 - <a href="https://github.com/orcomp/Orc.WorkspaceManagement" target="_blank">Orc.WorkspaceManagement</a>
+- <a href="https://github.com/orcomp/Orc.Wizard" target="_blank">Orc.Wizard</a>
 - <a href="https://github.com/orcomp/Orchestra" target="_blank">Orchestra</a>
 - <a href="https://github.com/oxyplot/oxyplot" target="_blank">OxyPlot</a>
 - <a href="http://romanticweb.net" target="_blank">Romantic Web</a>
