@@ -20,20 +20,20 @@ namespace GitLink
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        public static bool ShouldBeIgnored(this Project project, IEnumerable<string> projectsToIgnore)
+        public static bool ShouldBeIgnored(this Project project, ICollection<string> projectsToInclude, ICollection<string> projectsToIgnore)
         {
             Argument.IsNotNull(() => project);
 
             var projectName = GetProjectName(project).ToLower();
 
-            foreach (var projectToIgnore in projectsToIgnore)
+            if (projectsToIgnore.Any(projectToIgnore => string.Equals(projectName, projectToIgnore, StringComparison.InvariantCultureIgnoreCase)))
             {
-                var lowerCaseProjectToIgnore = projectToIgnore.ToLower();
+                return true;
+            }
 
-                if (string.Equals(projectName, lowerCaseProjectToIgnore))
-                {
-                    return true;
-                }
+            if (projectsToInclude.Count > 0 && !projectsToInclude.Any(projectToInclude => string.Equals(projectName, projectToInclude, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                return true;
             }
 
             return false;

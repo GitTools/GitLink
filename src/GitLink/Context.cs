@@ -31,6 +31,7 @@ namespace GitLink
             Authentication = new Authentication();
             ConfigurationName = "Release";
             PlatformName = "AnyCPU";
+            IncludedProjects = new List<string>();
             IgnoredProjects = new List<string>();
         }
 
@@ -91,6 +92,8 @@ namespace GitLink
         public string ShaHash { get; set; }
 
         public string SolutionFile { get; set; }
+
+        public List<string> IncludedProjects { get; private set; }
 
         public List<string> IgnoredProjects { get; private set; }
 
