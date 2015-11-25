@@ -73,6 +73,15 @@ namespace GitLink.Tests.Providers
                 }
 
                 [TestCase]
+                public void ReturnsValidProjectUrlWhenContainsPeriod()
+                {
+                    var provider = new BitBucketProvider();
+                    provider.Initialize("https://bitbucket.org/CatenaLogic/dotted.Project");
+
+                    Assert.AreEqual("https://bitbucket.org/CatenaLogic/dotted.Project", provider.ProjectUrl);
+                }
+
+                [TestCase]
                 public void ReturnsValidRawGitUrl()
                 {
                     var provider = new BitBucketProvider();

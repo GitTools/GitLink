@@ -13,7 +13,7 @@ namespace GitLink.Providers
 
     public class BitBucketProvider : ProviderBase
     {
-        private readonly Regex _gitHubRegex = new Regex(@"(?<url>(?<companyurl>(?:https://)?bitbucket\.org/(?<company>[^/]+))/(?<project>[^\./]+))");
+        private readonly Regex _gitHubRegex = new Regex(@"(?<url>(?<companyurl>(?:https://)?bitbucket\.org/(?<company>[^/]+))/(?<project>[^/]+))");
 
         public BitBucketProvider() 
             : base(new GitPreparer())
