@@ -20,7 +20,7 @@ GitLink let's users step through your code hosted on GitHub! **Help make .NET op
 
 **Important note** 
 
-*GitLink* was formerly named *GitHubLink*. By adding support to more Git hosting services the name seemed not covering the whole package. Note that the old GitHubLink packages on NuGet and Chocolatey will no long be updated / maintained.
+*GitLink* was formerly named *GitHubLink*. By adding support to more Git hosting services the name seemed not covering the whole package. The old GitHubLink packages on NuGet and Chocolatey will no longer be updated or maintained.
 
 -- 
 
@@ -32,17 +32,25 @@ The advantage of GitLink is that it is fully customized for Git. It also works w
 
 Updating all the pdb files is very fast. A solution with over 85 projects will be handled in less than 30 seconds.
 
-When using GitLink, the user no longer has to specify symbol servers. He/she only has to enable the support for source servers in Visual Studio as shown in the image below:
+When using GitLink, the user no longer has to specify symbol servers. The only requirement is to ensure the check the `Enable source server support` option in Visual Studio as shown below:
 
 ![Enabling source server support](doc/images/visualstudio_enablesourceserversupport.png)  
 
 # Troubleshooting
 
-**Note that Visual Studio 2012 needs to run elevated in order to download the source server files due to a bug in Visual Studio 2012.**
+## Source Stepping isn't working
 
-If the source stepping is not working, double check that Visual Studio has a valid symbol cache directory to store the source files being downloaded:
+* Visual Studio 2012 needs to run elevated in order to download the source server files
+
+* Specify a value for Visual Studio -> Options -> Debugging -> Symbols -> `Cache Symbols in this directory`
 
 ![Enabling source server support](doc/images/visualstudio_symbolslocation.png)
+
+## Source Stepping returns HTML
+If your repository is private, you are likely seeing the logon HTML from your git host.
+
+* Log onto your git host in Internet Explorer
+* Purge your local symbol cache 
 
 # Supported git providers
 
@@ -70,10 +78,11 @@ It is also possible to specify a custom url provider.
 
 Using GitLink via the command line is very simple:
 
-1. Build the software (in release mode with pdb files enabled)
+1. Build the solution - in release mode with pdb files enabled
 2. Run the console application with the right command line parameters
+3. Include the PDB in your nuget package
 
-Below are a few examples.
+See [Oren Novotony's blog post](https://oren.codes/2015/09/23/enabling-source-code-debugging-for-your-nuget-packages-with-gitlink/) for even more detail and examples on build integration.
 
 ## Most simple usage
 
