@@ -80,6 +80,12 @@ namespace GitLink
                     continue;
                 }
 
+                if (IsSwitch("powershell", name))
+                {
+                    context.DownloadWithPowershell = true;
+                    continue;
+                }
+
                 // After this point, all arguments should have a value
                 index++;
                 var valueInfo = GetValue(namedArguments, index);

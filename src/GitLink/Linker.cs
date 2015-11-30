@@ -199,7 +199,13 @@ namespace GitLink
                     }
                 }
 
-                var rawUrl = string.Format("{0}/{{0}}/%var2%", context.Provider.RawGitUrl);
+				var rawUrl = context.Provider.RawGitUrl;
+
+                if(!rawUrl.Contains("%var2%") && !rawUrl.Contains("{0}"))
+                { 
+                    rawUrl= string.Format("{0}/{{0}}/%var2%", context.Provider.RawGitUrl);
+                }
+				
                 var paths = new Dictionary<string, string>();
                 foreach (var compilable in compilables)
                 {
@@ -212,7 +218,7 @@ namespace GitLink
                     paths.Add(compilable, relativePathForUrl);
                 }
 
-                project.CreateSrcSrv(rawUrl, shaHash, paths, projectSrcSrvFile);
+                project.CreateSrcSrv(rawUrl, shaHash, paths, projectSrcSrvFile, context.DownloadWithPowershell);
 
                 Log.Debug("Created source server link file, updating pdb file '{0}'", context.GetRelativePath(projectPdbFile));
 

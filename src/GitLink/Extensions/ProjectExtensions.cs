@@ -47,7 +47,7 @@ namespace GitLink
             return projectName ?? Path.GetFileName(project.FullPath);
         }
 
-        public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths)
+        public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths, bool DownloadWithPowershell)
         {
             Argument.IsNotNull(() => project);
             Argument.IsNotNullOrWhitespace(() => rawUrl);
@@ -55,17 +55,17 @@ namespace GitLink
 
             var srcsrvFile = GetOutputSrcSrvFile(project);
 
-            CreateSrcSrv(project, rawUrl, revision, paths, srcsrvFile);
+            CreateSrcSrv(project, rawUrl, revision, paths, srcsrvFile, DownloadWithPowershell);
         }
 
-        public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths, string srcsrvFile)
+        public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths, string srcsrvFile, bool DownloadWithPowershell)
         {
             Argument.IsNotNull(() => project);
             Argument.IsNotNullOrWhitespace(() => rawUrl);
             Argument.IsNotNullOrWhitespace(() => revision);
             Argument.IsNotNullOrWhitespace(() => srcsrvFile);
 
-            File.WriteAllBytes(srcsrvFile, SrcSrv.Create(rawUrl, revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value))));
+            File.WriteAllBytes(srcsrvFile, SrcSrv.Create(rawUrl, revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value)), DownloadWithPowershell));
         }
 
         public static IEnumerable<ProjectItem> GetCompilableItems(this Project project)
