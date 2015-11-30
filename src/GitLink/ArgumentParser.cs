@@ -134,6 +134,12 @@ namespace GitLink
                     continue;
                 }
 
+                if (IsSwitch("include", name))
+                {
+                    context.IncludedProjects.AddRange(value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()));
+                    continue;
+                }
+
                 if (IsSwitch("ignore", name))
                 {
                     context.IgnoredProjects.AddRange(value.Split(new []{ ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()));
