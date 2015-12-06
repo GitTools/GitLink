@@ -93,6 +93,7 @@
     <Compile Include="GlobalInitialization.cs" />
     <Compile Include="Providers\BitBucketProviderFacts.cs" />
     <Compile Include="Providers\CustomRawUrlProviderFacts.cs" />
+    <Compile Include="Providers\CustomUrlProviderFacts.cs" />
     <Compile Include="Providers\GitHubProviderFacts.cs" />
     <Compile Include="Providers\ProviderManagerFacts.cs" />
   </ItemGroup>

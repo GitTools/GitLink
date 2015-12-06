@@ -34,7 +34,8 @@ namespace GitLink
             IgnoredProjects = new List<string>();
         }
 
-		public bool DownloadWithPowershell { get; set; } = false;
+		public bool DownloadWithPowershell { get; set; }
+
         public bool IsHelp { get; set; }
 
         public bool IsDebug { get; set; }

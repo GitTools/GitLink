@@ -19,7 +19,7 @@ namespace GitLink.Pdb
             return string.Format(rawUrl, revision);
         }
 
-        public static byte[] Create(string rawUrl, string revision, IEnumerable<Tuple<string, string>> paths, bool DebugWithPowershell)
+        public static byte[] Create(string rawUrl, string revision, IEnumerable<Tuple<string, string>> paths, bool downloadWithPowershell)
         {
             Argument.IsNotNullOrWhitespace(() => rawUrl);
             Argument.IsNotNullOrWhitespace(() => revision);
@@ -34,11 +34,11 @@ namespace GitLink.Pdb
                     sw.WriteLine("VERSION=2");
                     sw.WriteLine("SRCSRV: variables ------------------------------------------");                    
                     sw.WriteLine("RAWURL={0}", CreateTarget(rawUrl, revision));
-                    if(DebugWithPowershell)
+                    if(downloadWithPowershell)
                     {
                         sw.WriteLine("TRGFILE=%fnbksl%(%targ%%var2%)");
                         sw.WriteLine("SRCSRVTRG=%TRGFILE%");
-                        sw.WriteLine("SRCSRVCMD=powershell -NoProfile -Command \"(New-Object system.net.WebClient).DownloadFile('%RAWURL%', '%TRGFILE%')\"");
+                        sw.WriteLine("SRCSRVCMD=powershell -NoProfile -Command \"(New-Object System.Net.WebClient).DownloadFile('%RAWURL%', '%TRGFILE%')\"");
                     }
                     else
                     {

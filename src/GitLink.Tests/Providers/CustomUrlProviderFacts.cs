@@ -1,13 +1,13 @@
-﻿using GitLink.Providers;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GitLink.Tests.Providers
+﻿namespace GitLink.Tests.Providers
 {
+    using GitLink.Providers;
+    using NUnit.Framework;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     public class CustomUrlProviderFacts
     {
         private const string correctUrl = "https://bitbucket.intra.company.com/projects/aaa/repos/a/browse/{filename}?at={revision}&raw";
