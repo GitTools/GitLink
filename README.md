@@ -127,6 +127,7 @@ When working with a repository using uncommon URL you can use placeholders to sp
     GitLink.exe c:\source\catel -u "https://host/projects/catel/repos/catel/browse/{filename}?at={revision}&raw"
     
 The custom url will be used to fill the placeholders with the relative file path and the revision hash.
+
 ## Running for a custom raw content URL
 
 When working with a content proxy or an alternative git VCS system that supports direct HTTP access to specific file revisions use the `-u` parameter with the custom raw content root URL

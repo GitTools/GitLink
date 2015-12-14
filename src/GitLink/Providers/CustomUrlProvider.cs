@@ -26,8 +26,8 @@
 
         public override bool Initialize(string url)
         {
-            if (string.IsNullOrEmpty(url) || !_regexUrl.IsMatch(url) ||(
-                !url.Contains(FileNamePlaceHolder) && !url.Contains(RevisionPlaceHolder)))
+            if (string.IsNullOrEmpty(url) || !_regexUrl.IsMatch(url) || 
+               (!url.Contains(FileNamePlaceHolder) && !url.Contains(RevisionPlaceHolder)))
             {
                 return false;
             }

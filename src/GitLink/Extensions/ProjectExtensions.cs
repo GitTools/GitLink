@@ -58,14 +58,14 @@ namespace GitLink
             CreateSrcSrv(project, rawUrl, revision, paths, srcsrvFile, downloadWithPowershell);
         }
 
-        public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths, string srcsrvFile, bool DownloadWithPowershell)
+        public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths, string srcsrvFile, bool downloadWithPowershell)
         {
             Argument.IsNotNull(() => project);
             Argument.IsNotNullOrWhitespace(() => rawUrl);
             Argument.IsNotNullOrWhitespace(() => revision);
             Argument.IsNotNullOrWhitespace(() => srcsrvFile);
 
-            File.WriteAllBytes(srcsrvFile, SrcSrv.Create(rawUrl, revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value)), DownloadWithPowershell));
+            File.WriteAllBytes(srcsrvFile, SrcSrv.Create(rawUrl, revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value)), downloadWithPowershell));
         }
 
         public static IEnumerable<ProjectItem> GetCompilableItems(this Project project)

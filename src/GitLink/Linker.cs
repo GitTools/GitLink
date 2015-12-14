@@ -203,7 +203,7 @@ namespace GitLink
 
                 if(!rawUrl.Contains("%var2%") && !rawUrl.Contains("{0}"))
                 { 
-                    rawUrl= string.Format("{0}/{{0}}/%var2%", context.Provider.RawGitUrl);
+                    rawUrl= string.Format("{0}/{{0}}/%var2%", rawUrl);
                 }
 				
                 var paths = new Dictionary<string, string>();
