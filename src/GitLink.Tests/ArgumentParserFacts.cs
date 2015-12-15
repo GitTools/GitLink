@@ -139,5 +139,13 @@ namespace GitLink.Tests
         {
             ExceptionTester.CallMethodAndExpectException<GitLinkException>(() => ArgumentParser.ParseArguments("solutionDirectory -x logFilePath"));
         }
+
+        [TestCase]
+        public void PowershellDownloadSetToTrue()
+        {
+            var context = ArgumentParser.ParseArguments("solutionDirectory -u http://github.com/CatenaLogic/GitLink -powershell");
+
+            Assert.IsTrue(context.DownloadWithPowershell);
+        }
     }
 }

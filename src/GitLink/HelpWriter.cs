@@ -39,6 +39,8 @@ GitLink [solutionPath] -u [urlToRepository]
     -s [shaHash]       The SHA-1 hash of the commit.
     -d [pdbDirectory]  The directory where pdb files exists, default value 
                        is the normal project output directory.
+    -powershell        Use an indexing strategy that won't rely on SRCSRV http support,
+                       but use a powershell command for URL download instead.
     -errorsaswarnings  Don't fail on errors, but treat them as warnings instead.
     -skipverify        Skip pdb verification in case it causes issues (it's a formality anyway)
     -debug             Enables debug mode with special dumps of msbuild.
