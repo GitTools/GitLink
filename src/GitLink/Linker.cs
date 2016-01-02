@@ -97,7 +97,7 @@ namespace GitLink
                         try
                         {
                             var projectName = project.GetProjectName();
-                            if (ProjectExtensions.ShouldBeIgnored(projectName, context.IncludedProjects, context.IgnoredProjects))
+                            if (ProjectHelper.ShouldBeIgnored(projectName, context.IncludedProjects, context.IgnoredProjects))
                             {
                                 Log.Info("Ignoring '{0}'", project.GetProjectName());
                                 Log.Info(string.Empty);

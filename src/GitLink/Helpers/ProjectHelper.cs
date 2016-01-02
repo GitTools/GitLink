@@ -116,5 +116,22 @@ namespace GitLink
                 return null;
             }
         }
+
+        public static bool ShouldBeIgnored(string projectName, ICollection<string> projectsToInclude, ICollection<string> projectsToIgnore)
+        {
+            Argument.IsNotNull(() => projectName);
+
+            if (projectsToIgnore.Any(projectToIgnore => String.Equals(projectName, projectToIgnore, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                return true;
+            }
+
+            if (projectsToInclude.Count > 0 && !projectsToInclude.Any(projectToInclude => String.Equals(projectName, projectToInclude, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

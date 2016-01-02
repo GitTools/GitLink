@@ -13,21 +13,21 @@ namespace GitLink.Tests
         [Test]
         public void NoIncludesExcludes_ProjectNotIgnored()
         {
-            Assert.IsFalse(ProjectExtensions.ShouldBeIgnored("project", new string[0], new string[0]));
+            Assert.IsFalse(ProjectHelper.ShouldBeIgnored("project", new string[0], new string[0]));
         }
 
         [TestCase("ignoredProject", true)]
         [TestCase("nonIgnoredProject", false)]
         public void ExcludedProject_IgnoredOnlySpecifiedOne(string projectName, bool expectedIgnore)
         {
-            Assert.AreEqual(expectedIgnore, ProjectExtensions.ShouldBeIgnored(projectName, new string[0], new[] { "ignoredProject" }));
+            Assert.AreEqual(expectedIgnore, ProjectHelper.ShouldBeIgnored(projectName, new string[0], new[] { "ignoredProject" }));
         }
 
         [TestCase("anotherProject", true)]
         [TestCase("includedProject", false)]
         public void ExplicitlyIncludedProject_OthersAreIgnored(string projectName, bool expectedIgnore)
         {
-            Assert.AreEqual(expectedIgnore, ProjectExtensions.ShouldBeIgnored(projectName, new[] { "includedProject" }, new string[0]));
+            Assert.AreEqual(expectedIgnore, ProjectHelper.ShouldBeIgnored(projectName, new[] { "includedProject" }, new string[0]));
         }
 
         [TestCase("excludedProject", true)]
@@ -36,9 +36,9 @@ namespace GitLink.Tests
         [TestCase("notIncludedNorExcludedProject", true)]
         public void BothIncludedAndExcludedProjects(string projectName, bool expectedIgnore)
         {
-            Assert.AreEqual(expectedIgnore, ProjectExtensions.ShouldBeIgnored(projectName,
-                                                                              new[] { "includedProject", "includedAndExcludedProject" },
-                                                                              new[] { "excludedProject", "includedAndExcludedProject" }));
+            Assert.AreEqual(expectedIgnore, ProjectHelper.ShouldBeIgnored(projectName,
+                                                                          new[] { "includedProject", "includedAndExcludedProject" },
+                                                                          new[] { "excludedProject", "includedAndExcludedProject" }));
         }
     }
 }
