@@ -16,18 +16,26 @@ namespace GitLink.Tests
             Assert.IsFalse(ProjectHelper.ShouldBeIgnored("project", new string[0], new string[0]));
         }
 
-        [TestCase("ignoredProject", true)]
-        [TestCase("nonIgnoredProject", false)]
-        public void ExcludedProject_IgnoredOnlySpecifiedOne(string projectName, bool expectedIgnore)
+        [TestCase("ignoredProject", "ignoredProject", true)]
+        [TestCase("ignoredProject", "ignoredproject", true)]
+        [TestCase("ignoredProject", "/ignoredProject/", true)]
+        [TestCase("ignoredProject", "/ignoredproject/", true)]
+        [TestCase("ignoredProject", "/^i\\w+t$/", true)]
+        [TestCase("nonIgnoredProject", "ignoredProject", false)]
+        public void ExcludedProject_IgnoredOnlySpecifiedOne(string projectName, string ignorePattern, bool expectedIgnore)
         {
-            Assert.AreEqual(expectedIgnore, ProjectHelper.ShouldBeIgnored(projectName, new string[0], new[] { "ignoredProject" }));
+            Assert.AreEqual(expectedIgnore, ProjectHelper.ShouldBeIgnored(projectName, new string[0], new[] { ignorePattern }));
         }
 
-        [TestCase("anotherProject", true)]
-        [TestCase("includedProject", false)]
-        public void ExplicitlyIncludedProject_OthersAreIgnored(string projectName, bool expectedIgnore)
+        [TestCase("anotherProject", "includedProject", true)]
+        [TestCase("anotherProject", "includedproject", true)]
+        [TestCase("anotherProject", "/includedProject/", true)]
+        [TestCase("anotherProject", "/includedproject/", true)]
+        [TestCase("anotherProject", "/[a-z]+/", false)]
+        [TestCase("includedProject", "includedProject", false)]
+        public void ExplicitlyIncludedProject_OthersAreIgnored(string projectName, string includePattern, bool expectedIgnore)
         {
-            Assert.AreEqual(expectedIgnore, ProjectHelper.ShouldBeIgnored(projectName, new[] { "includedProject" }, new string[0]));
+            Assert.AreEqual(expectedIgnore, ProjectHelper.ShouldBeIgnored(projectName, new[] { includePattern }, new string[0]));
         }
 
         [TestCase("excludedProject", true)]
