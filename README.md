@@ -114,12 +114,22 @@ Sometimes a repository contains more than 1 solution file. By default, all solut
 
 	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln
 
-## Ignoring projects
+## Ignoring projects and excplicitly including them
 
-When specific projects should be ignored, use the *-ignore* option. This option accepts a comma separated list of projects to ignore: 
+When specific projects should be ignored, use the *-ignore* option. This option accepts a comma separated list of patterns to ignore. Each pattern is either a literal project name (case-insensitive) or a regex enclosed in slashes. For example: 
 
 	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -ignore Catel.Core.WP80,Catel.MVVM.WP80
+	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -ignore /^.+\.WP80$/,Catel.Core
 
+In case you want to ignore most of your projects, you can explicitly *-include* only the projects you need - others will be ignored automatically. Same as *-ignore* it accepts list of patterns. For example:
+
+	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -include Catel.Core
+	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -include /Catel\..*$/,SomeOtherProject
+
+Finally, you can set both *-ignore* and *-include* options. In this case only projects matching one of *-include* patterns will be taken, but if and only if they don't match one of *-ignore*s. For example, the following command line will include only Catel.* projects, except "Catel.Core":
+
+	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -include /Catel\..*$/ -ignore Catel.Core
+ 
 ## Running for an uncommon / customized URL
 
 When working with a repository using uncommon URL you can use placeholders to specifiy where the filename and revision hash should be, use `-u` parameter with the custom URL
