@@ -127,7 +127,10 @@ namespace GitLink
                 return true;
             }
 
-            if (projectsToInclude.Count == 0) return false;
+            if (projectsToInclude.Count == 0)
+            {
+                return false;
+            }
 
             if (projectsToInclude.All(projectToInclude => !ProjectNameMatchesPattern(projectName, projectToInclude)))
             {
@@ -138,14 +141,18 @@ namespace GitLink
         }
 
         // pattern may be either a literal string, and then we'll be comparing literally ignoring case
-        // or it can be a regex eclosed in slashes like /this-is-my-regex/
+        // or it can be a regex enclosed in slashes like /this-is-my-regex/
         private static bool ProjectNameMatchesPattern(string projectName, string pattern)
         {
+            Argument.IsNotNull(() => pattern);
+
             if (pattern.Length > 2 && pattern.StartsWith("/") && pattern.EndsWith("/"))
             {
                 var ignoreRegex = new Regex(pattern.Substring(1, pattern.Length - 2), RegexOptions.IgnoreCase);
                 if (ignoreRegex.IsMatch(projectName))
+                {
                     return true;
+                }
             }
             return string.Equals(projectName, pattern, StringComparison.InvariantCultureIgnoreCase);
         }
