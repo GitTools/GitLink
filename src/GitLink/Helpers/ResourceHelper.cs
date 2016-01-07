@@ -14,7 +14,7 @@ namespace GitLink
     {
         public static void ExtractEmbeddedResource(string resourceName, string destinationFileName)
         {
-            var assembly = AssemblyHelper.GetEntryAssembly();
+            var assembly = typeof(ResourceHelper).Assembly;
 
             using (var resource = assembly.GetManifestResourceStream(resourceName))
             {
