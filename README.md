@@ -168,7 +168,7 @@ The command line implementation uses the same available API.
 
 To link files to a Git project, a context must be created. The command line version does this by using the *ArgumentParser* class. It is also possible to create a context from scratch as shown in the example below:
 
-	var context = new GitLink.Context();
+	var context = new GitLink.Context(new ProviderManager());
 	context.SolutionDirectory = @"c:\source\catel";
 	context.TargetUrl = "https://github.com/catel/catel";
 	context.TargetBranch = "develop";
