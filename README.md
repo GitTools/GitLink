@@ -245,6 +245,7 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="https://github.com/orcomp/Orc.Wizard" target="_blank">Orc.Wizard</a>
 - <a href="https://github.com/orcomp/Orchestra" target="_blank">Orchestra</a>
 - <a href="https://github.com/oxyplot/oxyplot" target="_blank">OxyPlot</a>
+- <a href="http://reactiveui.net" target="_blank">ReactiveUI</a>
 - <a href="http://romanticweb.net" target="_blank">Romantic Web</a>
 - <a href="https://github.com/xunit/xunit" target="_blank">xUnit.net</a>
 - <a href="https://github.com/xunit/visualstudio.xunit" target="_blank">xUnit.net Visual Studio Runner</a>
