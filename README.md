@@ -221,6 +221,8 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="https://github.com/fluentribbon/Fluent.Ribbon" target="_blank">Fluent.Ribbon</a>
 - <a href="https://github.com/GitTools/GitLink" target="_blank">GitLink</a>
 - <a href="https://github.com/MahApps/MahApps.Metro" target="_blank">MahApps.Metro</a>
+- <a href="https://github.com/MetacoSA/NBitcoin" target="_blank">NBitcoin</a>
+- <a href="https://github.com/MetacoSA/NBitcoin.Indexer" target="_blank">NBitcoin.Indexer</a>
 - <a href="https://github.com/elasticsearch/elasticsearch-net" target="_blank">NEST and Elasticsearch.NET</a>
 - <a href="https://github.com/orcomp/Orc.Analytics" target="_blank">Orc.Analytics</a>
 - <a href="https://github.com/orcomp/Orc.AutomaticSupport" target="_blank">Orc.AutomaticSupport</a>
@@ -245,6 +247,7 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="https://github.com/orcomp/Orc.Wizard" target="_blank">Orc.Wizard</a>
 - <a href="https://github.com/orcomp/Orchestra" target="_blank">Orchestra</a>
 - <a href="https://github.com/oxyplot/oxyplot" target="_blank">OxyPlot</a>
+- <a href="https://github.com/MetacoSA/QBitNinja" target="_blank">QBitNinja</a>
 - <a href="http://reactiveui.net" target="_blank">ReactiveUI</a>
 - <a href="http://romanticweb.net" target="_blank">Romantic Web</a>
 - <a href="https://github.com/xunit/xunit" target="_blank">xUnit.net</a>
