@@ -96,7 +96,8 @@ namespace GitLink
                     {
                         try
                         {
-                            if (project.ShouldBeIgnored(context.IgnoredProjects))
+                            var projectName = project.GetProjectName();
+                            if (ProjectHelper.ShouldBeIgnored(projectName, context.IncludedProjects, context.IgnoredProjects))
                             {
                                 Log.Info("Ignoring '{0}'", project.GetProjectName());
                                 Log.Info(string.Empty);
@@ -199,7 +200,13 @@ namespace GitLink
                     }
                 }
 
-                var rawUrl = string.Format("{0}/{{0}}/%var2%", context.Provider.RawGitUrl);
+				var rawUrl = context.Provider.RawGitUrl;
+
+                if(!rawUrl.Contains("%var2%") && !rawUrl.Contains("{0}"))
+                { 
+                    rawUrl= string.Format("{0}/{{0}}/%var2%", rawUrl);
+                }
+				
                 var paths = new Dictionary<string, string>();
                 foreach (var compilable in compilables)
                 {
@@ -212,7 +219,7 @@ namespace GitLink
                     paths.Add(compilable, relativePathForUrl);
                 }
 
-                project.CreateSrcSrv(rawUrl, shaHash, paths, projectSrcSrvFile);
+                project.CreateSrcSrv(rawUrl, shaHash, paths, projectSrcSrvFile, context.DownloadWithPowershell);
 
                 Log.Debug("Created source server link file, updating pdb file '{0}'", context.GetRelativePath(projectPdbFile));
 

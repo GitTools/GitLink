@@ -19,7 +19,7 @@ namespace GitLink.Pdb
             return string.Format(rawUrl, revision);
         }
 
-        public static byte[] Create(string rawUrl, string revision, IEnumerable<Tuple<string, string>> paths)
+        public static byte[] Create(string rawUrl, string revision, IEnumerable<Tuple<string, string>> paths, bool downloadWithPowershell)
         {
             Argument.IsNotNullOrWhitespace(() => rawUrl);
             Argument.IsNotNullOrWhitespace(() => revision);
@@ -29,12 +29,22 @@ namespace GitLink.Pdb
                 using (var sw = new StreamWriter(ms))
                 {
                     var scheme = new Uri(rawUrl).Scheme;
-
+                
                     sw.WriteLine("SRCSRV: ini ------------------------------------------------");
                     sw.WriteLine("VERSION=2");
-                    sw.WriteLine("SRCSRV: variables ------------------------------------------");
-                    sw.WriteLine("SRCSRVVERCTRL={0}", scheme);
-                    sw.WriteLine("SRCSRVTRG={0}", CreateTarget(rawUrl, revision));
+                    sw.WriteLine("SRCSRV: variables ------------------------------------------");                    
+                    sw.WriteLine("RAWURL={0}", CreateTarget(rawUrl, revision));
+                    if(downloadWithPowershell)
+                    {
+                        sw.WriteLine("TRGFILE=%fnbksl%(%targ%%var2%)");
+                        sw.WriteLine("SRCSRVTRG=%TRGFILE%");
+                        sw.WriteLine("SRCSRVCMD=powershell -NoProfile -Command \"(New-Object System.Net.WebClient).DownloadFile('%RAWURL%', '%TRGFILE%')\"");
+                    }
+                    else
+                    {
+                        sw.WriteLine("SRCSRVVERCTRL={0}", scheme);
+                        sw.WriteLine("SRCSRVTRG=%RAWURL%");
+                    }
                     sw.WriteLine("SRCSRV: source files ---------------------------------------");
 
                     foreach (var tuple in paths)

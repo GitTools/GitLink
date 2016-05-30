@@ -80,6 +80,12 @@ namespace GitLink
                     continue;
                 }
 
+                if (IsSwitch("powershell", name))
+                {
+                    context.DownloadWithPowershell = true;
+                    continue;
+                }
+
                 // After this point, all arguments should have a value
                 index++;
                 var valueInfo = GetValue(namedArguments, index);
@@ -131,6 +137,12 @@ namespace GitLink
                 if (IsSwitch("d", name))
                 {
                     context.PdbFilesDirectory = value;
+                    continue;
+                }
+
+                if (IsSwitch("include", name))
+                {
+                    context.IncludedProjects.AddRange(value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()));
                     continue;
                 }
 

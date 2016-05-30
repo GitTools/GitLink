@@ -111,6 +111,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Providers\BitBucketProvider.cs" />
+    <Compile Include="Providers\CustomRawUrlProvider.cs" />
+    <Compile Include="Providers\CustomUrlProvider.cs" />
     <Compile Include="Providers\GitHubProvider.cs" />
     <Compile Include="Providers\Interfaces\IProviderManager.cs" />
     <Compile Include="Providers\Interfaces\IProvider.cs" />

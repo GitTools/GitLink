@@ -16,6 +16,7 @@ namespace GitLink
     using Catel.Reflection;
     using Microsoft.Build.Evaluation;
     using System.IO;
+    using System.Text.RegularExpressions;
 
     public static class ProjectHelper
     {
@@ -115,6 +116,45 @@ namespace GitLink
                 Log.Warning("Failed to load project '{0}': {1}", projectFile, ex.Message);
                 return null;
             }
+        }
+
+        public static bool ShouldBeIgnored(string projectName, ICollection<string> projectsToInclude, ICollection<string> projectsToIgnore)
+        {
+            Argument.IsNotNull(() => projectName);
+
+            if (projectsToIgnore.Any(projectToIgnore => ProjectNameMatchesPattern(projectName, projectToIgnore)))
+            {
+                return true;
+            }
+
+            if (projectsToInclude.Count == 0)
+            {
+                return false;
+            }
+
+            if (projectsToInclude.All(projectToInclude => !ProjectNameMatchesPattern(projectName, projectToInclude)))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        // pattern may be either a literal string, and then we'll be comparing literally ignoring case
+        // or it can be a regex enclosed in slashes like /this-is-my-regex/
+        private static bool ProjectNameMatchesPattern(string projectName, string pattern)
+        {
+            Argument.IsNotNull(() => pattern);
+
+            if (pattern.Length > 2 && pattern.StartsWith("/") && pattern.EndsWith("/"))
+            {
+                var ignoreRegex = new Regex(pattern.Substring(1, pattern.Length - 2), RegexOptions.IgnoreCase);
+                if (ignoreRegex.IsMatch(projectName))
+                {
+                    return true;
+                }
+            }
+            return string.Equals(projectName, pattern, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

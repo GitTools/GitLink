@@ -20,7 +20,7 @@ GitLink let's users step through your code hosted on GitHub! **Help make .NET op
 
 **Important note** 
 
-*GitLink* was formerly named *GitHubLink*. By adding support to more Git hosting services the name seemed not covering the whole package. Note that the old GitHubLink packages on NuGet and Chocolatey will no long be updated / maintained.
+*GitLink* was formerly named *GitHubLink*. By adding support to more Git hosting services the name seemed not covering the whole package. The old GitHubLink packages on NuGet and Chocolatey will no longer be updated or maintained.
 
 -- 
 
@@ -28,24 +28,29 @@ GitLink makes symbol servers obsolete which saves you both time with uploading s
 
 ![Stepping through external source code](doc/images/GitLink_example.gif)  
 
-
-This application is based on the <a href="https://github.com/ctaggart/SourceLink"  target="_blank">SourceLink project</a>. SourceLink requires FAKE to run and not everyone likes to write code in F#. GitLink is a wrapper around SourceLink specifically written to be easily used from any build system (locally or a build server) and in any .NET language. It also provides new features such as standard integration with GitHub and BitBucket and the possibility to use remote repositories. GitLink is available as console application and can be referenced as assembly to be used in other .NET assemblies.
-
 The advantage of GitLink is that it is fully customized for Git. It also works with GitHub or BitBucket urls so it **does not require a local git repository to work**. This makes it perfectly usable in continuous integration servers such as <a href="http://www.finalbuilder.com/Continua-CI" target="_blank">Continua CI</a>.
 
 Updating all the pdb files is very fast. A solution with over 85 projects will be handled in less than 30 seconds.
 
-When using GitLink, the user no longer has to specify symbol servers. He/she only has to enable the support for source servers in Visual Studio as shown in the image below:
+When using GitLink, the user no longer has to specify symbol servers. The only requirement is to ensure the check the `Enable source server support` option in Visual Studio as shown below:
 
 ![Enabling source server support](doc/images/visualstudio_enablesourceserversupport.png)  
 
 # Troubleshooting
 
-**Note that Visual Studio 2012 needs to run elevated in order to download the source server files due to a bug in Visual Studio 2012.**
+## Source Stepping isn't working
 
-If the source stepping is not working, double check that Visual Studio has a valid symbol cache directory to store the source files being downloaded:
+* Visual Studio 2012 needs to run elevated in order to download the source server files
+
+* Specify a value for Visual Studio -> Options -> Debugging -> Symbols -> `Cache Symbols in this directory`
 
 ![Enabling source server support](doc/images/visualstudio_symbolslocation.png)
+
+## Source Stepping returns HTML
+If your repository is private, you are likely seeing the logon HTML from your git host.
+
+* Log onto your git host in Internet Explorer
+* Purge your local symbol cache 
 
 # Supported git providers
 
@@ -53,6 +58,7 @@ GitLink supports the following providers out of the box (will auto-detect based 
 
 * <a href="https://bitbucket.org/" target="_blank">BitBucket</a>
 * <a href="https://github.com/" target="_blank">GitHub</a>
+* Custom Provider (custom urls)
 
 Providers currently being worked on:
 
@@ -72,10 +78,11 @@ It is also possible to specify a custom url provider.
 
 Using GitLink via the command line is very simple:
 
-1. Build the software (in release mode with pdb files enabled)
+1. Build the solution - in release mode with pdb files enabled
 2. Run the console application with the right command line parameters
+3. Include the PDB in your nuget package
 
-Below are a few examples.
+See [Oren Novotony's blog post](https://oren.codes/2015/09/23/enabling-source-code-debugging-for-your-nuget-packages-with-gitlink/) for even more detail and examples on build integration.
 
 ## Most simple usage
 
@@ -107,11 +114,37 @@ Sometimes a repository contains more than 1 solution file. By default, all solut
 
 	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln
 
-## Ignoring projects
+## Ignoring projects and explicitly including them
 
-When specific projects should be ignored, use the *-ignore* option. This option accepts a comma separated list of projects to ignore: 
+When specific projects should be ignored, use the *-ignore* option. This option accepts a comma separated list of patterns to ignore. Each pattern is either a literal project name (case-insensitive) or a regex enclosed in slashes. For example: 
 
 	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -ignore Catel.Core.WP80,Catel.MVVM.WP80
+	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -ignore /^.+\.WP80$/,Catel.Core
+
+In case you want to ignore most of your projects, you can explicitly *-include* only the projects you need - others will be ignored automatically. Same as *-ignore* it accepts list of patterns. For example:
+
+	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -include Catel.Core
+	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -include /Catel\..*$/,SomeOtherProject
+
+Finally, you can set both *-ignore* and *-include* options. In this case only projects matching one of *-include* patterns will be taken, but if and only if they don't match one of *-ignore*s. For example, the following command line will include only Catel.* projects, except "Catel.Core":
+
+	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -include /Catel\..*$/ -ignore Catel.Core
+ 
+## Running for an uncommon / customized URL
+
+When working with a repository using uncommon URL you can use placeholders to specifiy where the filename and revision hash should be, use `-u` parameter with the custom URL
+
+    GitLink.exe c:\source\catel -u "https://host/projects/catel/repos/catel/browse/{filename}?at={revision}&raw"
+    
+The custom url will be used to fill the placeholders with the relative file path and the revision hash.
+
+## Running for a custom raw content URL
+
+When working with a content proxy or an alternative git VCS system that supports direct HTTP access to specific file revisions use the `-u` parameter with the custom raw content root URL
+
+    GitLink.exe c:\source\catel -u https://raw.githubusercontent.com/catel/catel
+    
+The custom url will be used to fill in the following pattern `{customUrl}/{revision}/{relativeFilePath}` when generating the source mapping.
 
 ## Getting help
 
@@ -135,18 +168,14 @@ The command line implementation uses the same available API.
 
 To link files to a Git project, a context must be created. The command line version does this by using the *ArgumentParser* class. It is also possible to create a context from scratch as shown in the example below:
 
-```csharp
-var context = new GitLink.Context();
-context.SolutionDirectory = @"c:\source\catel";
-context.TargetUrl = "https://github.com/catel/catel";
-context.TargetBranch = "develop";
-```
+	var context = new GitLink.Context(new ProviderManager());
+	context.SolutionDirectory = @"c:\source\catel";
+	context.TargetUrl = "https://github.com/catel/catel";
+	context.TargetBranch = "develop";
 
 It is possible to create a context based on command line arguments:
 
-```csharp
-var context = ArgumentParser.Parse(@"c:\source\catel -u https://github.com/catel/catel -b develop");
-```
+	var context = ArgumentParser.Parse(@"c:\source\catel -u https://github.com/catel/catel -b develop");
 
 ## Linking a context
 
@@ -192,6 +221,8 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="https://github.com/fluentribbon/Fluent.Ribbon" target="_blank">Fluent.Ribbon</a>
 - <a href="https://github.com/GitTools/GitLink" target="_blank">GitLink</a>
 - <a href="https://github.com/MahApps/MahApps.Metro" target="_blank">MahApps.Metro</a>
+- <a href="https://github.com/MetacoSA/NBitcoin" target="_blank">NBitcoin</a>
+- <a href="https://github.com/MetacoSA/NBitcoin.Indexer" target="_blank">NBitcoin.Indexer</a>
 - <a href="https://github.com/elasticsearch/elasticsearch-net" target="_blank">NEST and Elasticsearch.NET</a>
 - <a href="https://github.com/orcomp/Orc.Analytics" target="_blank">Orc.Analytics</a>
 - <a href="https://github.com/orcomp/Orc.AutomaticSupport" target="_blank">Orc.AutomaticSupport</a>
@@ -213,8 +244,11 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="https://github.com/orcomp/Orc.SupportPackage" target="_blank">Orc.SupportPackage</a>
 - <a href="https://github.com/orcomp/Orc.SystemInfo" target="_blank">Orc.SystemInfo</a>
 - <a href="https://github.com/orcomp/Orc.WorkspaceManagement" target="_blank">Orc.WorkspaceManagement</a>
+- <a href="https://github.com/orcomp/Orc.Wizard" target="_blank">Orc.Wizard</a>
 - <a href="https://github.com/orcomp/Orchestra" target="_blank">Orchestra</a>
 - <a href="https://github.com/oxyplot/oxyplot" target="_blank">OxyPlot</a>
+- <a href="https://github.com/MetacoSA/QBitNinja" target="_blank">QBitNinja</a>
+- <a href="http://reactiveui.net" target="_blank">ReactiveUI</a>
 - <a href="http://romanticweb.net" target="_blank">Romantic Web</a>
 - <a href="https://github.com/xunit/xunit" target="_blank">xUnit.net</a>
 - <a href="https://github.com/xunit/visualstudio.xunit" target="_blank">xUnit.net Visual Studio Runner</a>
