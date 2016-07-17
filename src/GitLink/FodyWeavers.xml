@@ -8,4 +8,9 @@
     </IncludeAssemblies>
   </Costura>
   <Catel/>
+  <LoadAssembliesOnStartup>
+    <IncludeAssemblies>
+      Microsoft.Build
+    </IncludeAssemblies>
+  </LoadAssembliesOnStartup>
 </Weavers>
