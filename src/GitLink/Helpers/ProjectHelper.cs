@@ -8,6 +8,7 @@
 namespace GitLink
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -37,6 +38,12 @@ namespace GitLink
         {
             object ProjectType { get; }
             string RelativePath { get; }
+            object ProjectConfigurations { get; }
+        }
+
+        public interface IProjectConfigurationInSolution
+        {
+            bool IncludeInBuild { get; }
         }
 
         static ProjectHelper()
@@ -66,7 +73,10 @@ namespace GitLink
                 for (int i = 0; i < array.Length; i++)
                 {
                     var projectInSolution = array.GetValue(i).ActLike<IProjectInSolution>();
-                    if (!ObjectHelper.AreEqual(projectInSolution.ProjectType, KnownToBeMsBuildFormat))
+
+                    var isKnownToBeMsBuildFormat = ObjectHelper.AreEqual(projectInSolution.ProjectType, KnownToBeMsBuildFormat);
+                    var isSelectedForBuild = ProjectIsSelectedForBuild(projectInSolution, configurationName, platformName);
+                    if (!isKnownToBeMsBuildFormat || !isSelectedForBuild)
                     {
                         continue;
                     }
@@ -151,6 +161,21 @@ namespace GitLink
                 }
             }
             return string.Equals(projectName, pattern, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static bool ProjectIsSelectedForBuild(IProjectInSolution project, string configurationName, string platformName)
+        {
+            var configurationPlatformKey = configurationName + "|" + platformName;
+
+            var configurationsDictionary = (IDictionary)project.ProjectConfigurations;
+            if (configurationsDictionary.Contains(configurationPlatformKey))
+            {
+                var cis = configurationsDictionary[configurationPlatformKey].ActLike<IProjectConfigurationInSolution>();
+
+                return cis.IncludeInBuild;
+            }
+
+            return true;
         }
     }
 }
