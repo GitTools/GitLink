@@ -69,11 +69,9 @@ namespace GitLink
                 solutionParser.SolutionReader = streamReader;
                 solutionParser.ParseSolution();
                 var solutionDirectory = Path.GetDirectoryName(solutionFile);
-                var array = solutionParser.Projects;
-                for (int i = 0; i < array.Length; i++)
+                var projectsInSolution = solutionParser.Projects.AllActLike<IProjectInSolution>();
+                foreach (var projectInSolution in projectsInSolution)
                 {
-                    var projectInSolution = array.GetValue(i).ActLike<IProjectInSolution>();
-
                     var isKnownToBeMsBuildFormat = ObjectHelper.AreEqual(projectInSolution.ProjectType, KnownToBeMsBuildFormat);
                     var isSelectedForBuild = ProjectIsSelectedForBuild(projectInSolution, configurationName, platformName);
                     if (!isKnownToBeMsBuildFormat || !isSelectedForBuild)
