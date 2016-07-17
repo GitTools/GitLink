@@ -17,37 +17,31 @@ namespace GitLink
     using Microsoft.Build.Evaluation;
     using System.IO;
     using System.Text.RegularExpressions;
+    using ImpromptuInterface;
 
     public static class ProjectHelper
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         private static readonly Type SolutionParserType;
-        private static readonly PropertyInfo SolutionReaderPropertyInfo;
-        private static readonly PropertyInfo ProjectsPropertyInfo;
-        private static readonly MethodInfo ParseSolutionMethodInfo;
-        private static readonly PropertyInfo RelativePathPropertyInfo;
-        private static readonly PropertyInfo ProjectTypePropertyInfo;
         private static readonly object KnownToBeMsBuildFormat;
+
+        public interface ISolutionParser
+        {
+            StreamReader SolutionReader { get; set; }
+            object[] Projects { get; }
+            void ParseSolution();
+        }
+
+        public interface IProjectInSolution
+        {
+            object ProjectType { get; }
+            string RelativePath { get; }
+        }
 
         static ProjectHelper()
         {
-            const BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy;
-
             SolutionParserType = TypeCache.GetType("Microsoft.Build.Construction.SolutionParser");
-            if (SolutionParserType != null)
-            {
-                SolutionReaderPropertyInfo = SolutionParserType.GetProperty("SolutionReader", bindingFlags);
-                ProjectsPropertyInfo = SolutionParserType.GetProperty("Projects", bindingFlags);
-                ParseSolutionMethodInfo = SolutionParserType.GetMethod("ParseSolution", bindingFlags);
-            }
-
-            var projectInSolutionType = TypeCache.GetType("Microsoft.Build.Construction.ProjectInSolution");
-            if (projectInSolutionType != null)
-            {
-                RelativePathPropertyInfo = projectInSolutionType.GetProperty("RelativePath", bindingFlags);
-                ProjectTypePropertyInfo = projectInSolutionType.GetProperty("ProjectType", bindingFlags);
-            }
 
             var solutionProjectTypeType = TypeCache.GetType("Microsoft.Build.Construction.SolutionProjectType");
             if (solutionProjectTypeType != null)
@@ -59,23 +53,25 @@ namespace GitLink
         public static IEnumerable<Project> GetProjects(string solutionFile, string configurationName, string platformName)
         {
             var projects = new List<Project>();
-            var solutionParser = SolutionParserType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic).First().Invoke(null);
+            var constructorInfos = SolutionParserType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic);
+            var invoke = constructorInfos.First().Invoke(null);
+            var solutionParser = invoke.ActLike<ISolutionParser>();
 
             using (var streamReader = new StreamReader(solutionFile))
             {
-                SolutionReaderPropertyInfo.SetValue(solutionParser, streamReader, null);
-                ParseSolutionMethodInfo.Invoke(solutionParser, null);
+                solutionParser.SolutionReader = streamReader;
+                solutionParser.ParseSolution();
                 var solutionDirectory = Path.GetDirectoryName(solutionFile);
-                var array = (Array)ProjectsPropertyInfo.GetValue(solutionParser, null);
+                var array = solutionParser.Projects;
                 for (int i = 0; i < array.Length; i++)
                 {
-                    var projectInSolution = array.GetValue(i);
-                    if (!ObjectHelper.AreEqual(ProjectTypePropertyInfo.GetValue(projectInSolution), KnownToBeMsBuildFormat))
+                    var projectInSolution = array.GetValue(i).ActLike<IProjectInSolution>();
+                    if (!ObjectHelper.AreEqual(projectInSolution.ProjectType, KnownToBeMsBuildFormat))
                     {
                         continue;
                     }
 
-                    var relativePath = (string)RelativePathPropertyInfo.GetValue(projectInSolution);
+                    var relativePath = projectInSolution.RelativePath;
                     var projectFile = Path.Combine(solutionDirectory, relativePath);
 
                     var project = LoadProject(projectFile, configurationName, platformName, solutionDirectory);

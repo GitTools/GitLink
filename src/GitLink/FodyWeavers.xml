@@ -4,6 +4,7 @@
     <IncludeAssemblies>
       Catel.Core
       GitTools.Core
+      ImpromptuInterface
     </IncludeAssemblies>
   </Costura>
   <Catel/>
