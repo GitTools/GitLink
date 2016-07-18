@@ -218,7 +218,7 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 
 - <a href="http://www.catelproject.com" target="_blank">Catel</a>
 - <a href="http://www.expandframework.com/" target="_blank">eXpand</a>
-- <a href="https://github.com/FakeItEasy/FakeItEasy" target="_blank">FakeItEasy</a>
+- <a href="https://fakeiteasy.github.io/" target="_blank">FakeItEasy</a>
 - <a href="https://github.com/fluentribbon/Fluent.Ribbon" target="_blank">Fluent.Ribbon</a>
 - <a href="https://github.com/GitTools/GitLink" target="_blank">GitLink</a>
 - <a href="https://github.com/MahApps/MahApps.Metro" target="_blank">MahApps.Metro</a>
