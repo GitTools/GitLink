@@ -17,8 +17,8 @@
 	<tags>gitlink githublinksource symbol symbols server sourcelink github bitbucket git stepping debugging</tags>
 	
 	<language>en-US</language>
-	<projectUrl>https://github.com/CatenaLogic/GitLink/</projectUrl>	
-	<licenseUrl>https://github.com/CatenaLogic/GitLink/blob/develop/LICENSE</licenseUrl>
-	<iconUrl>https://raw.githubusercontent.com/CatenaLogic/GitLink/develop/design/logo/logo_128.png</iconUrl>
+	<projectUrl>https://github.com/GitTools/GitLink/</projectUrl>	
+	<licenseUrl>https://github.com/GitTools/GitLink/blob/develop/LICENSE</licenseUrl>
+	<iconUrl>https://raw.githubusercontent.com/GitTools/GitLink/develop/design/logo/logo_128.png</iconUrl>
   </metadata>
 </package>
