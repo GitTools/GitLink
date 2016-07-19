@@ -1,9 +1,16 @@
-﻿using System.IO;
-using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LinkProject.cs" company="CatenaLogic">
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitLinkTask
 {
+    using System.IO;
+    using Microsoft.Build.Framework;
+    using Microsoft.Build.Utilities;
+
     public class LinkProject : ToolTask
     {
         [Required]

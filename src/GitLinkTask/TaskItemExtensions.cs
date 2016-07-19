@@ -1,8 +1,15 @@
-﻿using System.Diagnostics;
-using Microsoft.Build.Framework;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TaskItemExtensions.cs" company="CatenaLogic">
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitLinkTask
 {
+    using System.Diagnostics;
+    using Microsoft.Build.Framework;
+
     public static class TaskItemExtensions
     {
         [DebuggerStepThrough]
