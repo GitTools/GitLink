@@ -19,6 +19,7 @@ namespace GitLink
     using System.IO;
     using System.Text.RegularExpressions;
     using ImpromptuInterface;
+    using Interfaces;
 
     public static class ProjectHelper
     {
@@ -26,25 +27,6 @@ namespace GitLink
 
         private static readonly Type SolutionParserType;
         private static readonly object KnownToBeMsBuildFormat;
-
-        public interface ISolutionParser
-        {
-            StreamReader SolutionReader { get; set; }
-            object[] Projects { get; }
-            void ParseSolution();
-        }
-
-        public interface IProjectInSolution
-        {
-            object ProjectType { get; }
-            string RelativePath { get; }
-            object ProjectConfigurations { get; }
-        }
-
-        public interface IProjectConfigurationInSolution
-        {
-            bool IncludeInBuild { get; }
-        }
 
         static ProjectHelper()
         {
