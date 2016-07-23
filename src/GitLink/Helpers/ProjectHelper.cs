@@ -42,7 +42,7 @@ namespace GitLink
         public static IEnumerable<Project> GetProjects(string solutionFile, string configurationName, string platformName)
         {
             var projects = new List<Project>();
-            var solutionParser = SolutionParserType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic).First().Invoke(null).ActLike<ISolutionParser>();
+            var solutionParser = ((object)Impromptu.InvokeConstructor(SolutionParserType)).ActLike<ISolutionParser>();
 
             using (var streamReader = new StreamReader(solutionFile))
             {
