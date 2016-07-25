@@ -1,4 +1,4 @@
-namespace GitLink.Interfaces
+namespace GitLink.Build.Construction
 {
     public interface IProjectConfigurationInSolution
     {

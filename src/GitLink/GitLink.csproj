@@ -97,9 +97,9 @@
     <Compile Include="Extensions\ProjectItemExtensions.cs" />
     <Compile Include="Exceptions\GitLinkException.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Interfaces\IProjectConfigurationInSolution.cs" />
-    <Compile Include="Interfaces\IProjectInSolution.cs" />
-    <Compile Include="Interfaces\ISolutionParser.cs" />
+    <Compile Include="Build\Construction\Interfaces\IProjectConfigurationInSolution.cs" />
+    <Compile Include="Build\Construction\Interfaces\IProjectInSolution.cs" />
+    <Compile Include="Build\Construction\Interfaces\ISolutionParser.cs" />
     <Compile Include="Helpers\PdbStrHelper.cs" />
     <Compile Include="Helpers\ProjectHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />

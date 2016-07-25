@@ -11,15 +11,14 @@ namespace GitLink
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using Catel;
     using Catel.Logging;
     using Catel.Reflection;
     using Microsoft.Build.Evaluation;
     using System.IO;
     using System.Text.RegularExpressions;
+    using Build.Construction;
     using ImpromptuInterface;
-    using Interfaces;
 
     public static class ProjectHelper
     {
