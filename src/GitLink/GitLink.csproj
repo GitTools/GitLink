@@ -63,6 +63,10 @@
       <HintPath>..\..\lib\GitTools.Core.1.0.0-unstable0021\lib\net45\GitTools.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ImpromptuInterface">
+      <HintPath>..\..\lib\ImpromptuInterface.6.2.2\lib\net40\ImpromptuInterface.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="LibGit2Sharp, Version=0.21.0.176, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\LibGit2Sharp.0.21.0.176\lib\net40\LibGit2Sharp.dll</HintPath>
@@ -93,6 +97,9 @@
     <Compile Include="Extensions\ProjectItemExtensions.cs" />
     <Compile Include="Exceptions\GitLinkException.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Build\Construction\Interfaces\IProjectConfigurationInSolution.cs" />
+    <Compile Include="Build\Construction\Interfaces\IProjectInSolution.cs" />
+    <Compile Include="Build\Construction\Interfaces\ISolutionParser.cs" />
     <Compile Include="Helpers\PdbStrHelper.cs" />
     <Compile Include="Helpers\ProjectHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />

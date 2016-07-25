@@ -67,6 +67,7 @@
       <HintPath>..\..\lib\LibGit2Sharp.0.21.0.176\lib\net40\LibGit2Sharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Build" />
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\..\lib\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -90,6 +91,7 @@
     <Compile Include="IntegrationTests\GitHubIntegration.cs" />
     <Compile Include="IntegrationTests\IntegrationTestBase.cs" />
     <Compile Include="ProjectExtensionsFacts.cs" />
+    <Compile Include="ProjectHelperFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GlobalInitialization.cs" />
     <Compile Include="Providers\BitBucketProviderFacts.cs" />
@@ -110,7 +112,20 @@
   <ItemGroup>
     <Content Include="IntegrationTests\BitBucketIntegration.CorrectlyUpdatesPdbFiles.approved.txt" />
     <Content Include="IntegrationTests\GitHubIntegration.CorrectlyUpdatesPdbFiles.approved.txt" />
+    <Content Include="TestSolution\BuiltAlways\BuiltAlways.csproj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestSolution\BuiltInAnyCpuOnly\BuiltInAnyCpuOnly.csproj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestSolution\BuiltInDebugOnly\BuiltInDebugOnly.csproj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestSolution\TestSolution.sln">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
