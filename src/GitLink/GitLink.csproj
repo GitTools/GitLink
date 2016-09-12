@@ -125,6 +125,7 @@
     <Compile Include="Providers\Interfaces\IProvider.cs" />
     <Compile Include="Providers\ProviderBase.cs" />
     <Compile Include="Providers\ProviderManager.cs" />
+    <Compile Include="Providers\VisualStudioTeamServicesProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -28,7 +28,7 @@ namespace GitLink
             return projectName ?? Path.GetFileName(project.FullPath);
         }
 
-        public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths, bool downloadWithPowershell)
+        public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths, bool downloadWithPowershell, Dictionary<string, string> vstsData = null)
         {
             Argument.IsNotNull(() => project);
             Argument.IsNotNullOrWhitespace(() => rawUrl);
@@ -36,7 +36,14 @@ namespace GitLink
 
             var srcsrvFile = GetOutputSrcSrvFile(project);
 
-            CreateSrcSrv(project, rawUrl, revision, paths, srcsrvFile, downloadWithPowershell);
+            if(vstsData != null)
+            {
+                CreateSrcSrv(project, revision, paths, srcsrvFile, vstsData);
+            }
+            else
+            {
+                CreateSrcSrv(project, rawUrl, revision, paths, srcsrvFile, downloadWithPowershell);
+            }
         }
 
         public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths, string srcsrvFile, bool downloadWithPowershell)
@@ -47,6 +54,15 @@ namespace GitLink
             Argument.IsNotNullOrWhitespace(() => srcsrvFile);
 
             File.WriteAllBytes(srcsrvFile, SrcSrv.Create(rawUrl, revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value)), downloadWithPowershell));
+        }
+
+        public static void CreateSrcSrv(this Project project, string revision, Dictionary<string, string> paths, string srcsrvFile, Dictionary<string, string> vstsData)
+        {
+            Argument.IsNotNull(() => project);
+            Argument.IsNotNullOrWhitespace(() => revision);
+            Argument.IsNotNullOrWhitespace(() => srcsrvFile);
+
+            File.WriteAllBytes(srcsrvFile, SrcSrv.CreateVsts(revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value)), vstsData));
         }
 
         public static IEnumerable<ProjectItem> GetCompilableItems(this Project project)

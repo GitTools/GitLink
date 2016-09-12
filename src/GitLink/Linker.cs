@@ -219,7 +219,20 @@ namespace GitLink
                     paths.Add(compilable, relativePathForUrl);
                 }
 
-                project.CreateSrcSrv(rawUrl, shaHash, paths, projectSrcSrvFile, context.DownloadWithPowershell);
+                // When using the VisualStudioTeamServicesProvider, create dictionary with VSTS-specific data
+                if (context.Provider.GetType().Name.EqualsIgnoreCase("VisualStudioTeamServicesProvider"))
+                {
+                    var vstsData = new Dictionary<string, string> { };
+                    vstsData["TFS_COLLECTION"] = context.Provider.CompanyUrl;
+                    vstsData["TFS_TEAM_PROJECT"] = context.Provider.ProjectName;
+                    vstsData["TFS_REPO"] = context.Provider.ProjectName;
+
+                    project.CreateSrcSrv(shaHash, paths, projectSrcSrvFile, vstsData);
+                }
+                else
+                {
+                    project.CreateSrcSrv(rawUrl, shaHash, paths, projectSrcSrvFile, context.DownloadWithPowershell);
+                }
 
                 Log.Debug("Created source server link file, updating pdb file '{0}'", context.GetRelativePath(projectPdbFile));
 
