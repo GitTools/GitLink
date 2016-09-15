@@ -28,7 +28,7 @@ namespace GitLink
             return projectName ?? Path.GetFileName(project.FullPath);
         }
 
-        public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths, bool downloadWithPowershell, Dictionary<string, string> vstsData = null)
+        public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths, bool downloadWithPowershell, SrcSrvContext srcSrvContext)
         {
             Argument.IsNotNull(() => project);
             Argument.IsNotNullOrWhitespace(() => rawUrl);
@@ -36,33 +36,24 @@ namespace GitLink
 
             var srcsrvFile = GetOutputSrcSrvFile(project);
 
-            if(vstsData != null)
-            {
-                CreateSrcSrv(project, revision, paths, srcsrvFile, vstsData);
-            }
-            else
-            {
-                CreateSrcSrv(project, rawUrl, revision, paths, srcsrvFile, downloadWithPowershell);
-            }
+            CreateSrcSrv(project, rawUrl, revision, paths, srcsrvFile, downloadWithPowershell, srcSrvContext);
         }
 
-        public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths, string srcsrvFile, bool downloadWithPowershell)
+        public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths, string srcsrvFile, bool downloadWithPowershell, SrcSrvContext srcSrvContext)
         {
             Argument.IsNotNull(() => project);
             Argument.IsNotNullOrWhitespace(() => rawUrl);
             Argument.IsNotNullOrWhitespace(() => revision);
             Argument.IsNotNullOrWhitespace(() => srcsrvFile);
 
-            File.WriteAllBytes(srcsrvFile, SrcSrv.Create(rawUrl, revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value)), downloadWithPowershell));
-        }
-
-        public static void CreateSrcSrv(this Project project, string revision, Dictionary<string, string> paths, string srcsrvFile, Dictionary<string, string> vstsData)
-        {
-            Argument.IsNotNull(() => project);
-            Argument.IsNotNullOrWhitespace(() => revision);
-            Argument.IsNotNullOrWhitespace(() => srcsrvFile);
-
-            File.WriteAllBytes(srcsrvFile, SrcSrv.CreateVsts(revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value)), vstsData));
+            if (srcSrvContext.VstsData.Count != 0)
+            {
+                File.WriteAllBytes(srcsrvFile, SrcSrv.CreateVsts(revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value)), srcSrvContext.VstsData));
+            }
+            else
+            {
+                File.WriteAllBytes(srcsrvFile, SrcSrv.Create(rawUrl, revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value)), downloadWithPowershell));
+            }
         }
 
         public static IEnumerable<ProjectItem> GetCompilableItems(this Project project)

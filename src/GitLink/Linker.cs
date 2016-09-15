@@ -16,6 +16,7 @@ namespace GitLink
     using Catel.Logging;
     using GitTools;
     using Microsoft.Build.Evaluation;
+    using Pdb;
 
     /// <summary>
     /// Class Linker.
@@ -219,20 +220,17 @@ namespace GitLink
                     paths.Add(compilable, relativePathForUrl);
                 }
 
-                // When using the VisualStudioTeamServicesProvider, create dictionary with VSTS-specific data
+                var srcSrvContext = new SrcSrvContext();
+
+                // When using the VisualStudioTeamServicesProvider, add extra infomration to dictionary with VSTS-specific data
                 if (context.Provider.GetType().Name.EqualsIgnoreCase("VisualStudioTeamServicesProvider"))
                 {
-                    var vstsData = new Dictionary<string, string> { };
-                    vstsData["TFS_COLLECTION"] = context.Provider.CompanyUrl;
-                    vstsData["TFS_TEAM_PROJECT"] = context.Provider.ProjectName;
-                    vstsData["TFS_REPO"] = context.Provider.ProjectName;
+                    srcSrvContext.VstsData["TFS_COLLECTION"] = context.Provider.CompanyUrl;
+                    srcSrvContext.VstsData["TFS_TEAM_PROJECT"] = context.Provider.ProjectName;
+                    srcSrvContext.VstsData["TFS_REPO"] = context.Provider.ProjectName;
+                }
 
-                    project.CreateSrcSrv(shaHash, paths, projectSrcSrvFile, vstsData);
-                }
-                else
-                {
-                    project.CreateSrcSrv(rawUrl, shaHash, paths, projectSrcSrvFile, context.DownloadWithPowershell);
-                }
+                project.CreateSrcSrv(rawUrl, shaHash, paths, projectSrcSrvFile, context.DownloadWithPowershell, srcSrvContext);
 
                 Log.Debug("Created source server link file, updating pdb file '{0}'", context.GetRelativePath(projectPdbFile));
 

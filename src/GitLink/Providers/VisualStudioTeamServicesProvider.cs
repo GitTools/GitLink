@@ -1,28 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using GitTools.Git;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="VisualStudioTeamServicesProvider.cs" company="CatenaLogic">
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitLink.Providers
 {
+    using System;
+    using System.Text.RegularExpressions;
+    using Catel;
+    using GitTools.Git;
+
     public class VisualStudioTeamServicesProvider : ProviderBase
     {
         private readonly Regex _visualStudioTeamServicesRegex = new Regex(@"(?<url>(?<companyurl>(?:https://)?(?<accountname>([a-zA-Z0-9\-\.]*)?)\.visualstudio\.com/)(?<project>[a-zA-Z0-9\-\.]*)/?_git/(?<repo>[^/]+))");
 
-        public VisualStudioTeamServicesProvider() 
+        public VisualStudioTeamServicesProvider()
             : base(new GitPreparer())
         {
         }
 
         public override string RawGitUrl
         {
-            get
-            {
-                return "";
-            }
+            get { return string.Empty; }
         }
 
         public override bool Initialize(string url)
@@ -35,22 +36,22 @@ namespace GitLink.Providers
             }
 
             CompanyName = match.Groups["accountname"].Value;
-            CompanyUrl = match.Groups["companyurl"].Value + "DefaultCollection/";
+            CompanyUrl = match.Groups["companyurl"].Value;
 
             ProjectName = match.Groups["project"].Value;
-            if(ProjectName == "")
+            if (string.IsNullOrWhiteSpace(ProjectName))
             {
                 ProjectName = match.Groups["repo"].Value;
             }
 
             ProjectUrl = match.Groups["companyurl"].Value + ProjectName + "/";
 
-            if (!CompanyUrl.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
+            if (!CompanyUrl.StartsWithIgnoreCase("https://"))
             {
                 CompanyUrl = String.Concat("https://", CompanyUrl);
             }
 
-            if (!ProjectUrl.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
+            if (!ProjectUrl.StartsWithIgnoreCase("https://"))
             {
                 ProjectUrl = String.Concat("https://", ProjectUrl);
             }
