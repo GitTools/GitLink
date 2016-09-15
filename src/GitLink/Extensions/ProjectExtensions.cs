@@ -28,31 +28,31 @@ namespace GitLink
             return projectName ?? Path.GetFileName(project.FullPath);
         }
 
-        public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths, bool downloadWithPowershell, SrcSrvContext srcSrvContext)
+        public static void CreateSrcSrv(this Project project, SrcSrvContext srcSrvContext)
         {
             Argument.IsNotNull(() => project);
-            Argument.IsNotNullOrWhitespace(() => rawUrl);
-            Argument.IsNotNullOrWhitespace(() => revision);
+            Argument.IsNotNullOrWhitespace(() => srcSrvContext.RawUrl);
+            Argument.IsNotNullOrWhitespace(() => srcSrvContext.Revision);
 
             var srcsrvFile = GetOutputSrcSrvFile(project);
 
-            CreateSrcSrv(project, rawUrl, revision, paths, srcsrvFile, downloadWithPowershell, srcSrvContext);
+            CreateSrcSrv(project, srcsrvFile, srcSrvContext);
         }
 
-        public static void CreateSrcSrv(this Project project, string rawUrl, string revision, Dictionary<string, string> paths, string srcsrvFile, bool downloadWithPowershell, SrcSrvContext srcSrvContext)
+        public static void CreateSrcSrv(this Project project, string srcsrvFile, SrcSrvContext srcSrvContext)
         {
             Argument.IsNotNull(() => project);
-            Argument.IsNotNullOrWhitespace(() => rawUrl);
-            Argument.IsNotNullOrWhitespace(() => revision);
+            Argument.IsNotNullOrWhitespace(() => srcSrvContext.RawUrl);
+            Argument.IsNotNullOrWhitespace(() => srcSrvContext.Revision);
             Argument.IsNotNullOrWhitespace(() => srcsrvFile);
 
             if (srcSrvContext.VstsData.Count != 0)
             {
-                File.WriteAllBytes(srcsrvFile, SrcSrv.CreateVsts(revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value)), srcSrvContext.VstsData));
+                File.WriteAllBytes(srcsrvFile, SrcSrv.CreateVsts(srcSrvContext.Revision, srcSrvContext.Paths, srcSrvContext.VstsData));
             }
             else
             {
-                File.WriteAllBytes(srcsrvFile, SrcSrv.Create(rawUrl, revision, paths.Select(x => new Tuple<string, string>(x.Key, x.Value)), downloadWithPowershell));
+                File.WriteAllBytes(srcsrvFile, SrcSrv.Create(srcSrvContext.RawUrl, srcSrvContext.Revision, srcSrvContext.Paths, srcSrvContext.DownloadWithPowershell));
             }
         }
 

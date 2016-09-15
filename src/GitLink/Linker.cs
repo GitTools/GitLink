@@ -184,6 +184,12 @@ namespace GitLink
                 var outputPdbFile = project.GetOutputPdbFile();
                 var projectPdbFile = pathPdbDirectory != null ? Path.Combine(pathPdbDirectory, Path.GetFileName(outputPdbFile)) : Path.GetFullPath(outputPdbFile);
                 var projectSrcSrvFile = projectPdbFile + ".srcsrv";
+
+                var srcSrvContext = new SrcSrvContext();
+                srcSrvContext.Revision = shaHash;
+                srcSrvContext.RawUrl = context.Provider.RawGitUrl;
+                srcSrvContext.DownloadWithPowershell = context.DownloadWithPowershell;
+
                 if (!File.Exists(projectPdbFile))
                 {
                     Log.Warning("No pdb file found for '{0}', is project built in '{1}' mode with pdb files enabled? Expected file is '{2}'", projectName, context.ConfigurationName, projectPdbFile);
@@ -201,14 +207,11 @@ namespace GitLink
                     }
                 }
 
-				var rawUrl = context.Provider.RawGitUrl;
-
-                if(!rawUrl.Contains("%var2%") && !rawUrl.Contains("{0}"))
-                { 
-                    rawUrl= string.Format("{0}/{{0}}/%var2%", rawUrl);
+                if(!srcSrvContext.RawUrl.Contains("%var2%") && !srcSrvContext.RawUrl.Contains("{0}"))
+                {
+                    srcSrvContext.RawUrl = string.Format("{0}/{{0}}/%var2%", srcSrvContext.RawUrl);
                 }
 				
-                var paths = new Dictionary<string, string>();
                 foreach (var compilable in compilables)
                 {
                     var relativePathForUrl = compilable.Replace(context.SolutionDirectory, string.Empty).Replace("\\", "/");
@@ -217,10 +220,8 @@ namespace GitLink
                         relativePathForUrl = relativePathForUrl.Substring(1, relativePathForUrl.Length - 1);
                     }
 
-                    paths.Add(compilable, relativePathForUrl);
+                    srcSrvContext.Paths.Add(new Tuple<string, string>(compilable, relativePathForUrl));
                 }
-
-                var srcSrvContext = new SrcSrvContext();
 
                 // When using the VisualStudioTeamServicesProvider, add extra infomration to dictionary with VSTS-specific data
                 if (context.Provider.GetType().Name.EqualsIgnoreCase("VisualStudioTeamServicesProvider"))
@@ -230,7 +231,7 @@ namespace GitLink
                     srcSrvContext.VstsData["TFS_REPO"] = context.Provider.ProjectName;
                 }
 
-                project.CreateSrcSrv(rawUrl, shaHash, paths, projectSrcSrvFile, context.DownloadWithPowershell, srcSrvContext);
+                project.CreateSrcSrv(projectSrcSrvFile, srcSrvContext);
 
                 Log.Debug("Created source server link file, updating pdb file '{0}'", context.GetRelativePath(projectPdbFile));
 
