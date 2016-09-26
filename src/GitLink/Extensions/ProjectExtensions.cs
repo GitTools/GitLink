@@ -31,6 +31,7 @@ namespace GitLink
         public static void CreateSrcSrv(this Project project, SrcSrvContext srcSrvContext)
         {
             Argument.IsNotNull(() => project);
+            Argument.IsNotNull(() => srcSrvContext);
             Argument.IsNotNullOrWhitespace(() => srcSrvContext.RawUrl);
             Argument.IsNotNullOrWhitespace(() => srcSrvContext.Revision);
 
@@ -42,6 +43,7 @@ namespace GitLink
         public static void CreateSrcSrv(this Project project, string srcsrvFile, SrcSrvContext srcSrvContext)
         {
             Argument.IsNotNull(() => project);
+            Argument.IsNotNull(() => srcSrvContext);
             Argument.IsNotNullOrWhitespace(() => srcSrvContext.RawUrl);
             Argument.IsNotNullOrWhitespace(() => srcSrvContext.Revision);
             Argument.IsNotNullOrWhitespace(() => srcsrvFile);

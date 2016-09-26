@@ -185,10 +185,12 @@ namespace GitLink
                 var projectPdbFile = pathPdbDirectory != null ? Path.Combine(pathPdbDirectory, Path.GetFileName(outputPdbFile)) : Path.GetFullPath(outputPdbFile);
                 var projectSrcSrvFile = projectPdbFile + ".srcsrv";
 
-                var srcSrvContext = new SrcSrvContext();
-                srcSrvContext.Revision = shaHash;
-                srcSrvContext.RawUrl = context.Provider.RawGitUrl;
-                srcSrvContext.DownloadWithPowershell = context.DownloadWithPowershell;
+                var srcSrvContext = new SrcSrvContext
+                {
+                    Revision = shaHash,
+                    RawUrl = context.Provider.RawGitUrl,
+                    DownloadWithPowershell = context.DownloadWithPowershell
+                };
 
                 if (!File.Exists(projectPdbFile))
                 {
