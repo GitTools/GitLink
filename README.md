@@ -18,11 +18,13 @@ GitLink let's users step through your code hosted on GitHub! **Help make .NET op
 
 -- 
 
-**Important note** 
+**Important** 
 
 *GitLink* was formerly named *GitHubLink*. By adding support to more Git hosting services the name seemed not covering the whole package. The old GitHubLink packages on NuGet and Chocolatey will no longer be updated or maintained.
 
--- 
+*Private git repositories* might be problematic. [More info](#source-stepping-returns-html).
+
+--
 
 GitLink makes symbol servers obsolete which saves you both time with uploading source files with symbols and the user no longer has to specify custom symbol servers (such as symbolsource.org).
 
@@ -50,7 +52,16 @@ When using GitLink, the user no longer has to specify symbol servers. The only r
 If your repository is private, you are likely seeing the logon HTML from your git host.
 
 * Log onto your git host in Internet Explorer
-* Purge your local symbol cache 
+* Purge your local symbol cache
+
+Note that this approach is not guaranteed to work.  Visual Studio needs to authenticate to retrieve the source files
+but does not ask the user for credentials to do so.  There are ways to work around this, but no mechanism is currently
+provided out-of-the-box in *GitLink*.
+
+Possible workarounds
+* Include a mechanism in the pdb to retrieve credentials (using PowerShell and Windows credentials store) (see [#37](https://github.com/GitTools/GitLink/issues/37))
+* Use a proxy service that does not require authentication (see [#66](https://github.com/GitTools/GitLink/issues/66) and [Source server with Git repository](https://shonnlyga.wordpress.com/2016/05/28/source-server-with-git-repository))
+
 
 # Supported git providers
 
