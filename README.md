@@ -48,6 +48,8 @@ When using GitLink, the user no longer has to specify symbol servers. The only r
 
 ![Enabling source server support](doc/images/visualstudio_symbolslocation.png)
 
+* Verify that there is not a case mismatch in git folder names vs. references in the .csproj that was used during packaging. E.g. GitHub will not serve /Folder/Somefile.cs if Visual Studio requests /FOLdeR/Somefile.cs.
+
 ## Source Stepping returns HTML
 If your repository is private, you are likely seeing the logon HTML from your git host.
 
