@@ -30,8 +30,8 @@ namespace GitLink
             };
 
             var process = new Process();
-            process.OutputDataReceived += (s, e) => Log.Info(e.Data);
-            process.ErrorDataReceived += (s, e) => Log.Error(e.Data);
+            process.OutputDataReceived += (s, e) => { if (e.Data != null) Log.Info(e.Data); };
+            process.ErrorDataReceived += (s, e) => { if (e.Data != null) Log.Error(e.Data); };
             process.EnableRaisingEvents = true;
             process.StartInfo = processStartInfo;
             process.Start();
