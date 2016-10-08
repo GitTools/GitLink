@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>29e78909-b7fb-472c-a9a0-1749a8be9a9a</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NuProjPath>$(UserProfile)\.nuget\packages\NuProj\0.11.14-beta\tools</NuProjPath>
+  </PropertyGroup>
+  <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
+  <PropertyGroup Label="Configuration">
+    <Id>GitLink</Id>
+    <Title>GitLink</Title>
+    <Authors>GeertvanHorrik</Authors>
+    <Owners>GeertvanHorrik</Owners>
+    <Summary>GitLink.NuGet</Summary>
+    <Description> GitLink let's users step through your code hosted on any Git hosting service! This makes symbol servers obsolete which saves you both time </Description>
+    <ReleaseNotes>
+    </ReleaseNotes>
+    <ProjectUrl>https://github.com/GitTools/GitLink</ProjectUrl>
+    <LicenseUrl>https://github.com/GitTools/GitLink/blob/develop/LICENSE</LicenseUrl>
+    <Tags>GitLink.NuGet</Tags>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <IconUrl>https://raw.githubusercontent.com/GitTools/GitLink/develop/design/logo/logo_64.png</IconUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GitLink\GitLink.csproj">
+      <PackageDirectory>Tools</PackageDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(NuProjPath)\NuProj.targets" />
+</Project>
