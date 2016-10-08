@@ -32,8 +32,9 @@ namespace GitLink
         {
             Argument.IsNotNull(() => project);
             Argument.IsNotNull(() => srcSrvContext);
-            Argument.IsNotNullOrWhitespace(() => srcSrvContext.RawUrl);
-            Argument.IsNotNullOrWhitespace(() => srcSrvContext.Revision);
+
+            Argument.IsNotNullOrWhitespace("rawUrl", srcSrvContext.RawUrl);
+            Argument.IsNotNullOrWhitespace("revision", srcSrvContext.Revision);
 
             var srcsrvFile = GetOutputSrcSrvFile(project);
 
@@ -44,8 +45,8 @@ namespace GitLink
         {
             Argument.IsNotNull(() => project);
             Argument.IsNotNull(() => srcSrvContext);
-            Argument.IsNotNullOrWhitespace(() => srcSrvContext.RawUrl);
-            Argument.IsNotNullOrWhitespace(() => srcSrvContext.Revision);
+            Argument.IsNotNullOrWhitespace("rawUrl", srcSrvContext.RawUrl);
+            Argument.IsNotNullOrWhitespace("revision", srcSrvContext.Revision);
             Argument.IsNotNullOrWhitespace(() => srcsrvFile);
 
             if (srcSrvContext.VstsData.Count != 0)
