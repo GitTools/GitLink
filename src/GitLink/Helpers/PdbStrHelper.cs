@@ -24,12 +24,19 @@ namespace GitLink
             {
                 Arguments = string.Format("-w -s:srcsrv -p:\"{0}\" -i:\"{1}\"", projectPdbFile, pdbStrFile),
                 CreateNoWindow = true,
-                UseShellExecute = false
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
             };
 
             var process = new Process();
+            process.OutputDataReceived += (s, e) => Log.Info(e.Data);
+            process.ErrorDataReceived += (s, e) => Log.Error(e.Data);
+            process.EnableRaisingEvents = true;
             process.StartInfo = processStartInfo;
             process.Start();
+            process.BeginErrorReadLine();
+            process.BeginOutputReadLine();
             process.WaitForExit();
 
             var processExitCode = process.ExitCode;
