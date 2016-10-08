@@ -34,12 +34,13 @@ namespace GitLink
             Argument.IsNotNullOrEmpty(() => pdbPath);
 
             var pdb = new PdbFile(pdbPath);
-            var filesAndChecksums = pdb.GetFiles();
-            var sourceFiles = filesAndChecksums.Select(f => f.Item1);
+            var sourceFiles = pdb.GetFiles().Select(f => f.Item1).ToList();
 
             string repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(sourceFiles.First()));
             using (var repository = new Repository(repositoryDirectory))
             {
+                var repoSourceFiles = sourceFiles.ToDictionary(e => e, repository.GetRepoNormalizedPath);
+
                 var providerManager = new Providers.ProviderManager();
                 Providers.IProvider provider;
                 if (options.GitRemoteUrl == null)
@@ -83,11 +84,13 @@ namespace GitLink
                     DownloadWithPowershell = options.DownloadWithPowerShell,
                     Revision = commitId,
                 };
-                foreach (string sourceFile in sourceFiles)
+                foreach (var sourceFile in repoSourceFiles)
                 {
-                    string repoRelativePath = Catel.IO.Path.GetRelativePath(sourceFile, Path.GetDirectoryName(repositoryDirectory))
-                        .Replace('\\', '/');
-                    srcSrvContext.Paths.Add(Tuple.Create(sourceFile, repoRelativePath));
+                    // Skip files that aren't tracked by source control.
+                    if (sourceFile.Value != null)
+                    {
+                        srcSrvContext.Paths.Add(Tuple.Create(sourceFile.Key, sourceFile.Value.Replace('\\', '/')));
+                    }
                 }
 
                 if (provider is Providers.VisualStudioTeamServicesProvider)
