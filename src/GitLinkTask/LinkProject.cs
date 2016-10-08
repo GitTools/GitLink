@@ -35,12 +35,13 @@ namespace GitLinkTask
         {
             LogManager.GetCurrentClassLogger().LogMessage += this.LinkProject_LogMessage;
 
-            Linker.Link(
-                this.PdbFile.GetMetadata("FullPath"),
-                this.SourceFiles.Select(i => i.GetMetadata("FullPath")),
-                this.DownloadWithPowershell,
-                this.SkipVerify,
-                this.GitRemoteUrl);
+            var options = new LinkOptions
+            {
+                DownloadWithPowerShell = this.DownloadWithPowershell,
+                SkipVerify = this.SkipVerify,
+                GitRemoteUrl = new Uri(this.GitRemoteUrl, UriKind.Absolute),
+            };
+            Linker.Link(this.PdbFile.GetMetadata("FullPath"), options);
 
             return !this.Log.HasLoggedErrors;
         }

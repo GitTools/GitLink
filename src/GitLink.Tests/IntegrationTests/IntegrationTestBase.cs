@@ -62,7 +62,7 @@ namespace GitLink.Tests.IntegrationTests
                 TargetBranch = branchName
             };
 
-            return Linker.Link(context);
+            throw new NotImplementedException();
         }
 
         protected void VerifyUpdatedPdbs(string directory, string configurationName)
