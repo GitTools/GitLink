@@ -5,7 +5,7 @@
     <version>[VERSION]</version>
 	<title>GitHubLink</title>
     <authors>GeertvanHorrik</authors>
-    <DevelopmentDependency>True</DevelopmentDependency>
+    <developmentDependency>true</developmentDependency>
 	
 	<description>
 	  ** Note: this is a maintenance package, GitHubLink is replaced by GitLink **
