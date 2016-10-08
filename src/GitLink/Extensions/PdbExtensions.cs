@@ -11,6 +11,7 @@ namespace GitLink
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Security.Cryptography;
     using Catel;
     using Pdb;
 
@@ -20,34 +21,21 @@ namespace GitLink
         {
             Argument.IsNotNull(() => pdbFile);
 
-            foreach (var checksumInfo in pdbFile.GetChecksums())
+            foreach (var checksumInfo in pdbFile.GetFilesAndChecksums())
             {
                 string file = checksumInfo.Key;
-                string expectedChecksum = checksumInfo.Value;
-                string actualChecksum = File.Exists(file) ? Hex.Encode(Crypto.GetMd5HashForFile(file)) : string.Empty;
+                byte[] expectedChecksum = checksumInfo.Value;
+                HashAlgorithm hasher = expectedChecksum.Length == 16 ? (HashAlgorithm)MD5.Create() : SHA1.Create();
+                byte[] actualChecksum = File.Exists(file) ? Crypto.HashFile(hasher, file) : null;
 
-                if (expectedChecksum != actualChecksum)
+                if (!AreEqualBuffers(expectedChecksum, actualChecksum))
                 {
                     yield return file;
                 }
             }
         }
 
-        public static Dictionary<string, string> GetChecksums(this PdbFile pdbFile)
-        {
-            Argument.IsNotNull(() => pdbFile);
-
-            var checksums = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
-            foreach (var file in pdbFile.GetFiles())
-            {
-                checksums.Add(file.Item1, Hex.Encode(file.Item2));
-            }
-
-            return checksums;
-        }
-
-        public static IEnumerable<Tuple<string, byte[]>> GetFiles(this PdbFile pdbFile)
+        public static IReadOnlyDictionary<string, byte[]> GetFilesAndChecksums(this PdbFile pdbFile)
         {
             Argument.IsNotNull(() => pdbFile);
 
@@ -56,7 +44,7 @@ namespace GitLink
 
             var values = pdbFile.Info.NameToPdbName.Values;
 
-            var results = new List<Tuple<string, byte[]>>();
+            var results = new Dictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
             foreach (var value in values)
             {
                 if (!value.Name.StartsWith(FileIndicator))
@@ -67,14 +55,36 @@ namespace GitLink
                 var num = value.Stream;
                 var name = value.Name.Substring(FileIndicator.Length);
 
-                // Get last 16 bytes for checksum
+                // Get last bytes for checksum (it may be MD5 or SHA1)
                 var bytes = pdbFile.ReadStreamBytes(num);
-                var checksum = new byte[16];
-                Array.Copy(bytes, bytes.Length - 16, checksum, 0, 16);
-                results.Add(Tuple.Create(name, checksum));
+                int hashLength = bytes.Length - 72;
+                var checksum = new byte[hashLength];
+                Array.Copy(bytes, bytes.Length - hashLength, checksum, 0, hashLength);
+                results.Add(name, checksum);
             }
 
             return results;
+        }
+
+        private static bool AreEqualBuffers(byte[] first, byte[] second)
+        {
+            Argument.IsNotNull(nameof(first), first);
+            Argument.IsNotNull(nameof(second), second);
+
+            if (first.Length != second.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < first.Length; i++)
+            {
+                if (first[i] != second[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

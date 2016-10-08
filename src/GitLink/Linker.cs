@@ -39,7 +39,7 @@ namespace GitLink
             IReadOnlyDictionary<string, string> repoSourceFiles;
             using (var pdb = new PdbFile(pdbPath))
             {
-                sourceFiles = pdb.GetFiles().Select(f => f.Item1).ToList();
+                sourceFiles = pdb.GetFilesAndChecksums().Keys.ToList();
 
                 repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(sourceFiles.First()));
                 if (repositoryDirectory == null)
