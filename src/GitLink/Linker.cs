@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Linker.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+// <copyright file="Linker.cs" company="Andrew Arnott">
+//   Copyright (c) 2016 Andrew Arnott. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LinkProject.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
+// <copyright file="GitLink.cs" company="Andrew Arnott">
+//   Copyright (c) 2016 Andrew Arnott. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
