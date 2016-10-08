@@ -58,11 +58,17 @@ namespace GitLink
                                                  let p = providerManager.GetProvider(remote.Url)
                                                  where p != null
                                                  select p;
-                        provider = candidateProviders.First();
+                        provider = candidateProviders.FirstOrDefault();
                     }
                     else
                     {
                         provider = providerManager.GetProvider(options.GitRemoteUrl.AbsoluteUri);
+                    }
+
+                    if (provider == null)
+                    {
+                        Log.Error("Unable to detect the remote git service.");
+                        return false;
                     }
 
                     if (!options.SkipVerify)
@@ -77,7 +83,12 @@ namespace GitLink
                     }
 
                     string commitId;
-                    commitId = repository.Head.Commits.First().Sha;
+                    commitId = repository.Head.Commits.FirstOrDefault()?.Sha;
+                    if (commitId == null)
+                    {
+                        Log.Error("No commit is checked out to HEAD. Have you committed yet?");
+                        return false;
+                    }
 
                     string rawUrl = provider.RawGitUrl;
                     if (!rawUrl.Contains("%var2%") && !rawUrl.Contains("{0}"))
