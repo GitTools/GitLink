@@ -22,9 +22,6 @@ namespace GitLinkTask
         [Required]
         public ITaskItem PdbFile { get; set; }
 
-        [Required]
-        public ITaskItem[] SourceFiles { get; set; }
-
         public bool DownloadWithPowershell { get; set; }
 
         public bool SkipVerify { get; set; }

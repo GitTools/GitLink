@@ -6,7 +6,6 @@
   <Target Name="GitLinkProject" AfterTargets="CopyFilesToOutputDirectory">
     <LinkProject
         PdbFile="$(PdbFile)"
-        SourceFiles="@(Compile);@(ClCompile);@(ClInclude)"
         DownloadWithPowershell="$(GitLinkUsePowerShell)"
         SkipVerify="$(GitLinkSkipVerify)"
         GitRemoteUrl="$(GitLinkGitRemoteUrl)" />
