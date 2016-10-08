@@ -50,15 +50,16 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="GitLink.targets" />
+    <None Include="GitLink.targets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="project.json" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GitLink\GitLink.csproj">
+      <Project>{d68add77-913f-46d2-9a4f-5cc71c4718d8}</Project>
+      <Name>GitLink</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

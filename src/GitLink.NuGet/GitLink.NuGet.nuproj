@@ -22,22 +22,24 @@
     <Title>GitLink</Title>
     <Authors>GeertvanHorrik</Authors>
     <Owners>GeertvanHorrik</Owners>
-    <Summary>GitLink.NuGet</Summary>
     <Description> GitLink let's users step through your code hosted on any Git hosting service! This makes symbol servers obsolete which saves you both time </Description>
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>https://github.com/GitTools/GitLink</ProjectUrl>
     <LicenseUrl>https://github.com/GitTools/GitLink/blob/develop/LICENSE</LicenseUrl>
-    <Tags>GitLink.NuGet</Tags>
+    <Tags>git pdb</Tags>
     <DevelopmentDependency>true</DevelopmentDependency>
     <IconUrl>https://raw.githubusercontent.com/GitTools/GitLink/develop/design/logo/logo_64.png</IconUrl>
+    <PackageOutputGroups>GetDeployableOutputs</PackageOutputGroups>
+    <Summary />
+    <NoDefaultExcludes>true</NoDefaultExcludes>
   </PropertyGroup>
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GitLink\GitLink.csproj">
-      <PackageDirectory>Tools</PackageDirectory>
+    <ProjectReference Include="..\GitLinkTask\GitLinkTask.csproj">
+      <PackageDirectory>Build</PackageDirectory>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
