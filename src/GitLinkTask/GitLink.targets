@@ -3,8 +3,8 @@
 
   <UsingTask TaskName="GitLinkTask.LinkProject" AssemblyFile="$(MSBuildThisFileDirectory)..\..\GitLinkTask.dll" />
 
-  <Target Name="GitLinkProject" AfterTargets="CopyFilesToOutputDirectory">
-    <LinkProject
+  <Target Name="LinkSymbolsToRemoteGitRepo" AfterTargets="Compile">
+    <GitLink
         PdbFile="$(PdbFile)"
         DownloadWithPowershell="$(GitLinkUsePowerShell)"
         SkipVerify="$(GitLinkSkipVerify)"

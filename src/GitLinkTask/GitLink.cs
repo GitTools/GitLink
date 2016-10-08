@@ -10,14 +10,14 @@ namespace GitLinkTask
     using System;
     using System.IO;
     using System.Linq;
-    using GitLink;
-    using GitLink.Pdb;
-    using GitLink.Providers;
+    using global::GitLink;
+    using global::GitLink.Pdb;
+    using global::GitLink.Providers;
     using Catel.Logging;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
 
-    public class LinkProject : Task
+    public class GitLink : Task
     {
         [Required]
         public ITaskItem PdbFile { get; set; }
