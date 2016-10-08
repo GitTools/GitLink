@@ -29,7 +29,7 @@ namespace GitLink
         private static readonly string PdbStrExePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "pdbstr.exe");
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        public static void Link(string pdbPath, LinkOptions options = default(LinkOptions))
+        public static bool Link(string pdbPath, LinkOptions options = default(LinkOptions))
         {
             Argument.IsNotNullOrEmpty(() => pdbPath);
 
@@ -40,6 +40,12 @@ namespace GitLink
                 var sourceFiles = pdb.GetFiles().Select(f => f.Item1).ToList();
 
                 repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(sourceFiles.First()));
+                if (repositoryDirectory == null)
+                {
+                    Log.Error("No source files found that are tracked in a git repo.");
+                    return false;
+                }
+
                 using (var repository = new Repository(repositoryDirectory))
                 {
                     var repoSourceFiles = sourceFiles.ToDictionary(e => e, repository.GetRepoNormalizedPath);
@@ -107,6 +113,7 @@ namespace GitLink
 
             Log.Debug("Created source server link file, updating pdb file '{0}'", Catel.IO.Path.GetRelativePath(pdbPath, repositoryDirectory));
             PdbStrHelper.Execute(PdbStrExePath, pdbPath, projectSrcSrvFile);
+            return true;
         }
     }
 }

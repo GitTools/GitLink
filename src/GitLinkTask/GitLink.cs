@@ -38,9 +38,9 @@ namespace GitLinkTask
                 SkipVerify = this.SkipVerify,
                 GitRemoteUrl = this.GitRemoteUrl != null ? new Uri(this.GitRemoteUrl, UriKind.Absolute) : null,
             };
-            Linker.Link(this.PdbFile.GetMetadata("FullPath"), options);
+            bool success = Linker.Link(this.PdbFile.GetMetadata("FullPath"), options);
 
-            return !this.Log.HasLoggedErrors;
+            return success && !this.Log.HasLoggedErrors;
         }
 
         private void LinkProject_LogMessage(object sender, LogMessageEventArgs e)
