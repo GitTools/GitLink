@@ -36,7 +36,7 @@ namespace GitLinkTask
             {
                 DownloadWithPowerShell = this.DownloadWithPowershell,
                 SkipVerify = this.SkipVerify,
-                GitRemoteUrl = new Uri(this.GitRemoteUrl, UriKind.Absolute),
+                GitRemoteUrl = this.GitRemoteUrl != null ? new Uri(this.GitRemoteUrl, UriKind.Absolute) : null,
             };
             Linker.Link(this.PdbFile.GetMetadata("FullPath"), options);
 
