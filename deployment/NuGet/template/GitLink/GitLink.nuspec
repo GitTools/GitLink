@@ -5,7 +5,7 @@
     <version>[VERSION]</version>
 	<title>GitLink</title>
     <authors>GeertvanHorrik</authors>
-    <developmentDependency>True</developmentDependency>
+    <developmentDependency>true</developmentDependency>
 	
 	<description>
 	  GitLink let's users step through your code hosted on any Git hosting service! This makes symbol servers obsolete which saves you both time 
