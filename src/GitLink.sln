@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DADE411A-78DD-4586-B06C-E3991077DF76}"
 	ProjectSection(SolutionItems) = preProject
 		..\.gitignore = ..\.gitignore
+		..\appveyor.yml = ..\appveyor.yml
 		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
 		nuget.config = nuget.config
 		version.json = version.json
