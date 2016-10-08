@@ -8,12 +8,8 @@
 namespace GitLinkTask
 {
     using System;
-    using System.IO;
-    using System.Linq;
-    using global::GitLink;
-    using global::GitLink.Pdb;
-    using global::GitLink.Providers;
     using Catel.Logging;
+    using global::GitLink;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
 
@@ -30,7 +26,7 @@ namespace GitLinkTask
 
         public override bool Execute()
         {
-            LogManager.GetCurrentClassLogger().LogMessage += this.LinkProject_LogMessage;
+            LogManager.AddListener(new MSBuildListener(this.Log));
 
             var options = new LinkOptions
             {
@@ -43,24 +39,34 @@ namespace GitLinkTask
             return success && !this.Log.HasLoggedErrors;
         }
 
-        private void LinkProject_LogMessage(object sender, LogMessageEventArgs e)
+        private class MSBuildListener : LogListenerBase
         {
-            switch (e.LogEvent)
+            private readonly TaskLoggingHelper log;
+
+            internal MSBuildListener(TaskLoggingHelper log)
             {
-                case LogEvent.Error:
-                    this.Log.LogError(e.Message);
-                    break;
-                case LogEvent.Warning:
-                    this.Log.LogWarning(e.Message);
-                    break;
-                case LogEvent.Info:
-                    this.Log.LogMessage(MessageImportance.Normal, e.Message);
-                    break;
-                case LogEvent.Debug:
-                    this.Log.LogMessage(MessageImportance.Low, e.Message);
-                    break;
-                default:
-                    break;
+                this.log = log;
+            }
+
+            protected override void Write(ILog log, string message, LogEvent logEvent, object extraData, LogData logData, DateTime time)
+            {
+                switch (logEvent)
+                {
+                    case LogEvent.Error:
+                        this.log.LogError(message);
+                        break;
+                    case LogEvent.Warning:
+                        this.log.LogWarning(message);
+                        break;
+                    case LogEvent.Info:
+                        this.log.LogMessage(MessageImportance.Normal, message);
+                        break;
+                    case LogEvent.Debug:
+                        this.log.LogMessage(MessageImportance.Low, message);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
