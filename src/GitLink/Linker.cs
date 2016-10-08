@@ -35,9 +35,11 @@ namespace GitLink
 
             var projectSrcSrvFile = pdbPath + ".srcsrv";
             string repositoryDirectory;
+            IReadOnlyCollection<string> sourceFiles;
+            IReadOnlyDictionary<string, string> repoSourceFiles;
             using (var pdb = new PdbFile(pdbPath))
             {
-                var sourceFiles = pdb.GetFiles().Select(f => f.Item1).ToList();
+                sourceFiles = pdb.GetFiles().Select(f => f.Item1).ToList();
 
                 repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(sourceFiles.First()));
                 if (repositoryDirectory == null)
@@ -48,7 +50,7 @@ namespace GitLink
 
                 using (var repository = new Repository(repositoryDirectory))
                 {
-                    var repoSourceFiles = sourceFiles.ToDictionary(e => e, repository.GetRepoNormalizedPath);
+                    repoSourceFiles = sourceFiles.ToDictionary(e => e, repository.GetRepoNormalizedPath);
 
                     var providerManager = new Providers.ProviderManager();
                     Providers.IProvider provider;
@@ -73,7 +75,7 @@ namespace GitLink
 
                     if (!options.SkipVerify)
                     {
-                        Log.Info("Verifying pdb file");
+                        Log.Debug("Verifying pdb file");
 
                         var missingFiles = pdb.FindMissingOrChangedSourceFiles();
                         foreach (var missingFile in missingFiles)
@@ -124,6 +126,9 @@ namespace GitLink
 
             Log.Debug("Created source server link file, updating pdb file '{0}'", Catel.IO.Path.GetRelativePath(pdbPath, repositoryDirectory));
             PdbStrHelper.Execute(PdbStrExePath, pdbPath, projectSrcSrvFile);
+            var indexedFilesCount = repoSourceFiles.Values.Count(v => v != null);
+            Log.Info($"Remote git source information for {indexedFilesCount}/{sourceFiles.Count} files written to pdb: \"{pdbPath}\"");
+
             return true;
         }
     }
