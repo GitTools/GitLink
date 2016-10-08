@@ -37,12 +37,11 @@ namespace GitLink
 
             var srcsrvFile = GetOutputSrcSrvFile(project);
 
-            CreateSrcSrv(project, srcsrvFile, srcSrvContext);
+            CreateSrcSrv(srcsrvFile, srcSrvContext);
         }
 
-        public static void CreateSrcSrv(this Project project, string srcsrvFile, SrcSrvContext srcSrvContext)
+        public static void CreateSrcSrv(string srcsrvFile, SrcSrvContext srcSrvContext)
         {
-            Argument.IsNotNull(() => project);
             Argument.IsNotNull(() => srcSrvContext);
             Argument.IsNotNullOrWhitespace(() => srcSrvContext.RawUrl);
             Argument.IsNotNullOrWhitespace(() => srcSrvContext.Revision);
@@ -71,10 +70,10 @@ namespace GitLink
 
             var pdbFile = GetOutputPdbFile(project);
 
-            return VerifyPdbFiles(project, files, pdbFile);
+            return VerifyPdbFiles(files, pdbFile);
         }
 
-        public static Dictionary<string, string> VerifyPdbFiles(this Project project, IEnumerable<string> files, string pdbFileFullPath)
+        public static Dictionary<string, string> VerifyPdbFiles(IEnumerable<string> files, string pdbFileFullPath)
         {
             using(var pdb = new PdbFile(pdbFileFullPath))
             {

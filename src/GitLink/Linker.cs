@@ -200,7 +200,7 @@ namespace GitLink
                 {
                     Log.Info("Verifying pdb file");
 
-                    var missingFiles = project.VerifyPdbFiles(compilables, projectPdbFile);
+                    var missingFiles = ProjectExtensions.VerifyPdbFiles(compilables, projectPdbFile);
                     foreach (var missingFile in missingFiles)
                     {
                         Log.Warning("Missing file '{0}' or checksum '{1}' did not match", missingFile.Key, missingFile.Value);
@@ -231,7 +231,7 @@ namespace GitLink
                     srcSrvContext.VstsData["TFS_REPO"] = context.Provider.ProjectName;
                 }
 
-                project.CreateSrcSrv(projectSrcSrvFile, srcSrvContext);
+                ProjectExtensions.CreateSrcSrv(projectSrcSrvFile, srcSrvContext);
 
                 Log.Debug("Created source server link file, updating pdb file '{0}'", context.GetRelativePath(projectPdbFile));
 
