@@ -64,23 +64,6 @@ namespace GitLink
             return project.Items.Where(x => string.Equals(x.ItemType, "Compile") || string.Equals(x.ItemType, "ClCompile") || string.Equals(x.ItemType, "ClInclude"));
         }
 
-        public static Dictionary<string, string> VerifyPdbFiles(this Project project, IEnumerable<string> files)
-        {
-            Argument.IsNotNull(() => project);
-
-            var pdbFile = GetOutputPdbFile(project);
-
-            return VerifyPdbFiles(files, pdbFile);
-        }
-
-        public static Dictionary<string, string> VerifyPdbFiles(IEnumerable<string> files, string pdbFileFullPath)
-        {
-            using(var pdb = new PdbFile(pdbFileFullPath))
-            {
-                return pdb.VerifyPdbFiles(files);
-            }
-        }
-
         public static string GetOutputSrcSrvFile(this Project project)
         {
             Argument.IsNotNull(() => project);
@@ -93,10 +76,9 @@ namespace GitLink
         {
             Argument.IsNotNull(() => project);
 
-            var outputFile = project.GetOutputFile();
-            var pdbFile = Path.ChangeExtension(outputFile, ".pdb");
+            var outputFile = project.GetPropertyValue("PdbFile");
 
-            return pdbFile;
+            return outputFile;
         }
 
         public static string GetOutputFile(this Project project)

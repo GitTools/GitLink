@@ -8,6 +8,9 @@
 namespace GitLink
 {
     using System;
+    using System.CommandLine;
+    using System.Diagnostics;
+    using System.IO;
     using Catel.Logging;
     using Logging;
 
@@ -24,51 +27,51 @@ namespace GitLink
             var consoleLogListener = new OutputLogListener();
             LogManager.AddListener(consoleLogListener);
 
-            try
+            Uri remoteGitUrl = null;
+            string pdbPath = null;
+            bool skipVerify = false;
+            bool downloadWithPowershell = false;
+            var arguments = ArgumentSyntax.Parse(args, syntax =>
             {
-                HelpWriter.WriteAppHeader(s => Log.Write(LogEvent.Info, s));
+                syntax.DefineOption("u|url", ref remoteGitUrl, s => new Uri(s, UriKind.Absolute), "Url to remote git repository.");
+                syntax.DefineOption("s|skipVerify", ref skipVerify, "Verify all source files are available in source control.");
+                syntax.DefineOption("p|powershell", ref downloadWithPowershell, "Use an indexing strategy that won't rely on SRCSRV http support, but use a powershell command for URL download instead.");
+                syntax.DefineParameter("pdb", ref pdbPath, "The PDB to add source indexing to.");
 
-                Log.Info("Arguments: {0}", string.Join(" ", args));
-                Log.Info(string.Empty);
-
-                var context = ArgumentParser.ParseArguments(args);
-                if (context.IsHelp)
+                if (!string.IsNullOrEmpty(pdbPath) && !File.Exists(pdbPath))
                 {
-                    HelpWriter.WriteHelp(s => Log.Write(LogEvent.Info, s));
-
-                    WaitForKeyPress();
-
-                    return 0;
+                    syntax.ReportError($"File not found: \"{pdbPath}\"");
                 }
+            });
 
-                consoleLogListener.IsDebugEnabled = context.IsDebug;
-
-                var result = Linker.Link(context);
-
-#if DEBUG
-                WaitForKeyPress();
-#endif
-
-                return result;
-            }
-            catch (Exception ex)
+            if (string.IsNullOrEmpty(pdbPath))
             {
-                Log.Error(ex, "An unexpected error occurred");
-
-#if DEBUG
-                WaitForKeyPress();
-#endif
-
-                return -1;
+                Log.Error("pdb parameter is required.");
+                return 1;
             }
+
+            var options = new LinkOptions
+            {
+                GitRemoteUrl = remoteGitUrl,
+                SkipVerify = skipVerify,
+                DownloadWithPowerShell = downloadWithPowershell,
+            };
+
+            Linker.Link(pdbPath, options);
+            WaitForKeyPressWhenDebugging();
+            return 0;
         }
 
-        private static void WaitForKeyPress()
+        [Conditional("DEBUG")]
+        private static void WaitForKeyPressWhenDebugging()
         {
-            Log.Info(string.Empty);
-            Log.Info("Press any key to continue");
+            if (Debugger.IsAttached) // VS only closes the window immediately when debugging
+            {
+                Log.Info(string.Empty);
+                Log.Info("Press any key to continue");
 
-            Console.ReadKey();
+                Console.ReadKey();
+            }
         }
     }
 }

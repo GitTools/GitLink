@@ -16,6 +16,8 @@ namespace GitLink
     using Catel;
     using Catel.Logging;
     using GitTools;
+    using GitTools.Git;
+    using LibGit2Sharp;
     using Microsoft.Build.Evaluation;
     using Pdb;
 
@@ -24,231 +26,81 @@ namespace GitLink
     /// </summary>
     public static class Linker
     {
+        private static readonly string PdbStrExePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "pdbstr.exe");
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        public static int Link(Context context)
+        public static void Link(string pdbPath, LinkOptions options = default(LinkOptions))
         {
-            int? exitCode = null;
+            Argument.IsNotNullOrEmpty(() => pdbPath);
 
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
+            var pdb = new PdbFile(pdbPath);
+            var filesAndChecksums = pdb.GetFiles();
+            var sourceFiles = filesAndChecksums.Select(f => f.Item1);
 
-            context.ValidateContext();
-
-            if (!string.IsNullOrEmpty(context.LogFile))
+            string repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(sourceFiles.First()));
+            using (var repository = new Repository(repositoryDirectory))
             {
-                var fileLogListener = new FileLogListener(context.LogFile, 25 * 1024);
-                fileLogListener.IsDebugEnabled = context.IsDebug;
-
-                fileLogListener.IgnoreCatelLogging = true;
-                LogManager.AddListener(fileLogListener);
-            }
-
-            using (var temporaryFilesContext = new TemporaryFilesContext())
-            {
-                var pdbStrFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "pdbstr.exe");
-
-                try
+                var providerManager = new Providers.ProviderManager();
+                Providers.IProvider provider;
+                if (options.GitRemoteUrl == null)
                 {
-                    var projects = new List<Project>();
-                    string[] solutionFiles;
-                    if (string.IsNullOrEmpty(context.SolutionFile))
-                    {
-                        solutionFiles = Directory.GetFiles(context.SolutionDirectory, "*.sln", SearchOption.AllDirectories);
-                    }
-                    else
-                    {
-                        var pathToSolutionFile = Path.Combine(context.SolutionDirectory, context.SolutionFile);
-                        if (!File.Exists(pathToSolutionFile))
-                        {
-                            Log.Error("Could not find solution file: {0}", pathToSolutionFile);
-                            return -1;
-                        }
-
-                        solutionFiles = new[] { pathToSolutionFile };
-                    }
-
-                    foreach (var solutionFile in solutionFiles)
-                    {
-                        var solutionProjects = ProjectHelper.GetProjects(solutionFile, context.ConfigurationName, context.PlatformName);
-                        projects.AddRange(solutionProjects);
-                    }
-
-                    var provider = context.Provider;
-                    if (provider == null)
-                    {
-                        throw Log.ErrorAndCreateException<GitLinkException>("Cannot find a matching provider for '{0}'", context.TargetUrl);
-                    }
-
-                    Log.Info("Using provider '{0}'", provider.GetType().Name);
-
-                    var shaHash = context.Provider.GetShaHashOfCurrentBranch(context, temporaryFilesContext);
-
-                    Log.Info("Using commit sha '{0}' as version stamp", shaHash);
-
-                    var projectCount = projects.Count();
-                    var failedProjects = new List<Project>();
-                    Log.Info("Found '{0}' project(s)", projectCount);
-                    Log.Info(string.Empty);
-
-                    foreach (var project in projects)
-                    {
-                        try
-                        {
-                            var projectName = project.GetProjectName();
-                            if (ProjectHelper.ShouldBeIgnored(projectName, context.IncludedProjects, context.IgnoredProjects))
-                            {
-                                Log.Info("Ignoring '{0}'", project.GetProjectName());
-                                Log.Info(string.Empty);
-                                continue;
-                            }
-
-                            if (context.IsDebug)
-                            {
-                                project.DumpProperties();
-                            }
-
-                            if (!LinkProject(context, project, pdbStrFile, shaHash, context.PdbFilesDirectory))
-                            {
-                                failedProjects.Add(project);
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            failedProjects.Add(project);
-                        }
-                    }
-
-                    Log.Info("All projects are done. {0} of {1} succeeded", projectCount - failedProjects.Count, projectCount);
-
-                    if (failedProjects.Count > 0)
-                    {
-                        Log.Info(string.Empty);
-                        Log.Info("The following projects have failed:");
-                        Log.Indent();
-
-                        foreach (var failedProject in failedProjects)
-                        {
-                            Log.Info("* {0}", context.GetRelativePath(failedProject.GetProjectName()));
-                        }
-
-                        Log.Unindent();
-                    }
-
-                    exitCode = (failedProjects.Count == 0) ? 0 : -1;
+                    var candidateProviders = from remote in repository.Network.Remotes
+                                             let p = providerManager.GetProvider(remote.Url)
+                                             where p != null
+                                             select p;
+                    provider = candidateProviders.First();
                 }
-                catch (GitLinkException ex)
+                else
                 {
-                    Log.Error(ex, "An error occurred");
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, "An unexpected error occurred");
+                    provider = providerManager.GetProvider(options.GitRemoteUrl.AbsoluteUri);
                 }
 
-                stopWatch.Stop();
-            }
+                var projectSrcSrvFile = pdbPath + ".srcsrv";
 
-            Log.Info(string.Empty);
-            Log.Info("Completed in '{0}'", stopWatch.Elapsed);
-
-            exitCode = exitCode ?? -1;
-
-            if (context.ErrorsAsWarnings && exitCode != 0)
-            {
-                Log.Info("One or more errors occurred, but treating it as warning instead");
-
-                exitCode = 0;
-            }
-
-            return exitCode.Value;
-        }
-
-        private static bool LinkProject(Context context, Project project, string pdbStrFile, string shaHash, string pathPdbDirectory = null)
-        {
-            Argument.IsNotNull(() => context);
-            Argument.IsNotNull(() => project);
-
-            try
-            {
-                var projectName = project.GetProjectName();
-
-                Log.Info("Handling project '{0}'", projectName);
-
-                Log.Indent();
-
-                var compilables = project.GetCompilableItems().Select(x => x.GetFullFileName()).ToList();
-
-                var outputPdbFile = project.GetOutputPdbFile();
-                var projectPdbFile = pathPdbDirectory != null ? Path.Combine(pathPdbDirectory, Path.GetFileName(outputPdbFile)) : Path.GetFullPath(outputPdbFile);
-                var projectSrcSrvFile = projectPdbFile + ".srcsrv";
-
-                var srcSrvContext = new SrcSrvContext
-                {
-                    Revision = shaHash,
-                    RawUrl = context.Provider.RawGitUrl,
-                    DownloadWithPowershell = context.DownloadWithPowershell
-                };
-
-                if (!File.Exists(projectPdbFile))
-                {
-                    Log.Warning("No pdb file found for '{0}', is project built in '{1}' mode with pdb files enabled? Expected file is '{2}'", projectName, context.ConfigurationName, projectPdbFile);
-                    return false;
-                }
-
-                if (!context.SkipVerify)
+                if (!options.SkipVerify)
                 {
                     Log.Info("Verifying pdb file");
 
-                    var missingFiles = ProjectExtensions.VerifyPdbFiles(compilables, projectPdbFile);
+                    var missingFiles = pdb.FindMissingOrChangedSourceFiles();
                     foreach (var missingFile in missingFiles)
                     {
-                        Log.Warning("Missing file '{0}' or checksum '{1}' did not match", missingFile.Key, missingFile.Value);
+                        Log.Warning($"File \"{missingFile}\" missing or changed since the PDB was compiled.");
                     }
                 }
 
-                if(!srcSrvContext.RawUrl.Contains("%var2%") && !srcSrvContext.RawUrl.Contains("{0}"))
-                {
-                    srcSrvContext.RawUrl = string.Format("{0}/{{0}}/%var2%", srcSrvContext.RawUrl);
-                }
-				
-                foreach (var compilable in compilables)
-                {
-                    var relativePathForUrl = compilable.Replace(context.SolutionDirectory, string.Empty).Replace("\\", "/");
-                    while (relativePathForUrl.StartsWith("/"))
-                    {
-                        relativePathForUrl = relativePathForUrl.Substring(1, relativePathForUrl.Length - 1);
-                    }
+                string commitId;
+                commitId = repository.Head.Commits.First().Sha;
 
-                    srcSrvContext.Paths.Add(new Tuple<string, string>(compilable, relativePathForUrl));
+                string rawUrl = provider.RawGitUrl;
+                if (!rawUrl.Contains("%var2%") && !rawUrl.Contains("{0}"))
+                {
+                    rawUrl = string.Format("{0}/{{0}}/%var2%", rawUrl);
                 }
 
-                // When using the VisualStudioTeamServicesProvider, add extra infomration to dictionary with VSTS-specific data
-                if (context.Provider.GetType().Name.EqualsIgnoreCase("VisualStudioTeamServicesProvider"))
+                var srcSrvContext = new SrcSrvContext
                 {
-                    srcSrvContext.VstsData["TFS_COLLECTION"] = context.Provider.CompanyUrl;
-                    srcSrvContext.VstsData["TFS_TEAM_PROJECT"] = context.Provider.ProjectName;
-                    srcSrvContext.VstsData["TFS_REPO"] = context.Provider.ProjectName;
+                    RawUrl = rawUrl,
+                    DownloadWithPowershell = options.DownloadWithPowerShell,
+                    Revision = commitId,
+                };
+                foreach (string sourceFile in sourceFiles)
+                {
+                    string repoRelativePath = Catel.IO.Path.GetRelativePath(sourceFile, Path.GetDirectoryName(repositoryDirectory))
+                        .Replace('\\', '/');
+                    srcSrvContext.Paths.Add(Tuple.Create(sourceFile, repoRelativePath));
+                }
+
+                if (provider is Providers.VisualStudioTeamServicesProvider)
+                {
+                    srcSrvContext.VstsData["TFS_COLLECTION"] = provider.CompanyUrl;
+                    srcSrvContext.VstsData["TFS_TEAM_PROJECT"] = provider.ProjectName;
+                    srcSrvContext.VstsData["TFS_REPO"] = provider.ProjectName;
                 }
 
                 ProjectExtensions.CreateSrcSrv(projectSrcSrvFile, srcSrvContext);
-
-                Log.Debug("Created source server link file, updating pdb file '{0}'", context.GetRelativePath(projectPdbFile));
-
-                PdbStrHelper.Execute(pdbStrFile, projectPdbFile, projectSrcSrvFile);
+                Log.Debug("Created source server link file, updating pdb file '{0}'", Catel.IO.Path.GetRelativePath(pdbPath, repositoryDirectory));
+                PdbStrHelper.Execute(PdbStrExePath, pdbPath, projectSrcSrvFile);
             }
-            catch (Exception ex)
-            {
-                Log.Warning(ex, "An error occurred while processing project '{0}'", project.GetProjectName());
-                throw;
-            }
-            finally
-            {
-                Log.Unindent();
-                Log.Info(string.Empty);
-            }
-
-            return true;
         }
     }
 }
