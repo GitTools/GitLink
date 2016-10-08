@@ -12,6 +12,7 @@ namespace GitLink
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using Catel;
     using Catel.Logging;
     using GitTools;
@@ -45,10 +46,7 @@ namespace GitLink
 
             using (var temporaryFilesContext = new TemporaryFilesContext())
             {
-                Log.Info("Extracting embedded pdbstr.exe");
-
-                var pdbStrFile = temporaryFilesContext.GetFile("pdbstr.exe");
-                ResourceHelper.ExtractEmbeddedResource("GitLink.Resources.Files.pdbstr.exe", pdbStrFile);
+                var pdbStrFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "pdbstr.exe");
 
                 try
                 {

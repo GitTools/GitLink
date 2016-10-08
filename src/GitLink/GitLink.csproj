@@ -72,7 +72,6 @@
     <Compile Include="Build\Construction\Interfaces\ISolutionParser.cs" />
     <Compile Include="Helpers\PdbStrHelper.cs" />
     <Compile Include="Helpers\ProjectHelper.cs" />
-    <Compile Include="Helpers\ResourceHelper.cs" />
     <Compile Include="HelpWriter.cs" />
     <Compile Include="Linker.cs" />
     <Compile Include="Logging\OutputLogListener.cs" />
