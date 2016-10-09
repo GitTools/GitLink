@@ -26,7 +26,7 @@
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>https://github.com/GitTools/GitLink</ProjectUrl>
-    <LicenseUrl>https://raw.githubusercontent.com/GitTools/GitLink/$GitCommitIdShort$/LICENSE</LicenseUrl>
+    <LicenseUrl>https://github.com/GitTools/GitLink/blob/$GitCommitIdShort$/LICENSE</LicenseUrl>
     <Tags>git pdb</Tags>
     <DevelopmentDependency>true</DevelopmentDependency>
     <IconUrl>https://raw.githubusercontent.com/GitTools/GitLink/$GitCommitIdShort$/design/logo/logo_64.png</IconUrl>
