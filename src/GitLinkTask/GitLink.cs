@@ -28,6 +28,10 @@ namespace GitLinkTask
 
         public string GitRemoteUrl { get; set; }
 
+        public string GitCommitId { get; set; }
+
+        public string GitWorkingDirectory { get; set; }
+
         private LinkMethod MethodEnum { get; set; }
 
         public override bool Execute()
@@ -39,6 +43,8 @@ namespace GitLinkTask
                 Method = this.MethodEnum,
                 SkipVerify = this.SkipVerify,
                 GitRemoteUrl = this.GitRemoteUrl != null ? new Uri(this.GitRemoteUrl, UriKind.Absolute) : null,
+                CommitId = this.GitCommitId,
+                GitWorkingDirectory = this.GitWorkingDirectory,
             };
             bool success = Linker.Link(this.PdbFile.GetMetadata("FullPath"), options);
 

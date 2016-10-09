@@ -9,6 +9,8 @@
         Method="$(GitLinkMethod)"
         SkipVerify="$(GitLinkSkipVerify)"
         GitRemoteUrl="$(GitLinkGitRemoteUrl)"
+        GitWorkingDirectory="$(GitWorkingDirectory)"
+        GitCommitId="$(GitCommitId)"
         ContinueOnError="true" />
   </Target>
 </Project>
