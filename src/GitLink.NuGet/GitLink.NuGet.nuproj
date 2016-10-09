@@ -20,8 +20,8 @@
   <PropertyGroup Label="Configuration">
     <Id>GitLink</Id>
     <Title>GitLink</Title>
-    <Authors>GeertvanHorrik</Authors>
-    <Owners>GeertvanHorrik</Owners>
+    <Authors>GeertvanHorrik,AArnott</Authors>
+    <Owners>GeertvanHorrik,AArnott</Owners>
     <Description> GitLink let's users step through your code hosted on any Git hosting service! This makes symbol servers obsolete which saves you both time </Description>
     <ReleaseNotes>
     </ReleaseNotes>
