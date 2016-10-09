@@ -17,5 +17,9 @@
         public bool SkipVerify { get; set; }
 
         public Uri GitRemoteUrl { get; set; }
+
+        public string CommitId { get; set; }
+
+        public string GitWorkingDirectory { get; set; }
     }
 }

@@ -28,12 +28,16 @@ namespace GitLink
             LogManager.AddListener(consoleLogListener);
 
             Uri remoteGitUrl = null;
+            string commitId = null;
+            string baseDir = null;
             string pdbPath = null;
             bool skipVerify = false;
             bool downloadWithPowershell = false;
             var arguments = ArgumentSyntax.Parse(args, syntax =>
             {
                 syntax.DefineOption("u|url", ref remoteGitUrl, s => new Uri(s, UriKind.Absolute), "Url to remote git repository.");
+                syntax.DefineOption("commit", ref commitId, "The git ref to assume all the source code belongs to.");
+                syntax.DefineOption("baseDir", ref baseDir, "The path to the root of the git repo.");
                 syntax.DefineOption("s|skipVerify", ref skipVerify, "Verify all source files are available in source control.");
                 syntax.DefineOption("p|powershell", ref downloadWithPowershell, "Use an indexing strategy that won't rely on SRCSRV http support, but use a powershell command for URL download instead.");
                 syntax.DefineParameter("pdb", ref pdbPath, "The PDB to add source indexing to.");
@@ -41,6 +45,11 @@ namespace GitLink
                 if (!string.IsNullOrEmpty(pdbPath) && !File.Exists(pdbPath))
                 {
                     syntax.ReportError($"File not found: \"{pdbPath}\"");
+                }
+
+                if (!string.IsNullOrEmpty(baseDir) && !Directory.Exists(baseDir))
+                {
+                    syntax.ReportError($"Directory not found: \"{baseDir}\"");
                 }
             });
 
@@ -53,6 +62,8 @@ namespace GitLink
             var options = new LinkOptions
             {
                 GitRemoteUrl = remoteGitUrl,
+                GitWorkingDirectory = baseDir != null ? Catel.IO.Path.GetFullPath(baseDir, Environment.CurrentDirectory) : null,
+                CommitId = commitId,
                 SkipVerify = skipVerify,
                 DownloadWithPowerShell = downloadWithPowershell,
             };
