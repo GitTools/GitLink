@@ -27,6 +27,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\bin\Debug\GitLink.Tests\GitLink.Tests.XML</DocumentationFile>
+    <NoWarn>CS1591</NoWarn>
+    <CodeAnalysisRuleSet>GitLink.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,6 +38,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\bin\Release\GitLink.Tests\GitLink.Tests.XML</DocumentationFile>
+    <NoWarn>CS1591</NoWarn>
+    <CodeAnalysisRuleSet>GitLink.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build" />
@@ -85,6 +91,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\GitLink\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
+    <None Include="GitLink.Tests.ruleset" />
     <None Include="project.json" />
   </ItemGroup>
   <Choose>
