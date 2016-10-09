@@ -14,7 +14,7 @@ Contributors
 
 ### How to Build
 
-To build this projeect, first run the init script in the root of the repo,
+To build this project, first run the init script in the root of the repo,
 then simply run "msbuild" from the src directory.
 
 ## Contributing Process
