@@ -68,8 +68,15 @@ namespace GitLink
 
         private static bool AreEqualBuffers(byte[] first, byte[] second)
         {
-            Argument.IsNotNull(nameof(first), first);
-            Argument.IsNotNull(nameof(second), second);
+            if (first == null && second == null)
+            {
+                return true;
+            }
+
+            if (first == null || second == null)
+            {
+                return false;
+            }
 
             if (first.Length != second.Length)
             {
