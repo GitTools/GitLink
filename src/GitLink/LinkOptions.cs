@@ -8,11 +8,7 @@
 
     public struct LinkOptions
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether the source should be downloaded with
-        /// powershell instead of simple HTTP(S) URLs.
-        /// </summary>
-        public bool DownloadWithPowerShell { get; set; }
+        public LinkMethod Method { get; set; }
 
         public bool SkipVerify { get; set; }
 

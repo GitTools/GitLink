@@ -120,7 +120,7 @@ namespace GitLink
                     var srcSrvContext = new SrcSrvContext
                     {
                         RawUrl = rawUrl,
-                        DownloadWithPowershell = options.DownloadWithPowerShell,
+                        DownloadWithPowershell = options.Method == LinkMethod.Powershell,
                         Revision = commitId,
                     };
                     foreach (var sourceFile in repoSourceFiles)

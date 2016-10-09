@@ -18,11 +18,17 @@ namespace GitLinkTask
         [Required]
         public ITaskItem PdbFile { get; set; }
 
-        public bool DownloadWithPowershell { get; set; }
+        public string Method
+        {
+            get { return this.MethodEnum.ToString(); }
+            set { this.MethodEnum = string.IsNullOrEmpty(value) ? LinkMethod.Http : (LinkMethod)Enum.Parse(typeof(LinkMethod), value); }
+        }
 
         public bool SkipVerify { get; set; }
 
         public string GitRemoteUrl { get; set; }
+
+        private LinkMethod MethodEnum { get; set; }
 
         public override bool Execute()
         {
@@ -30,7 +36,7 @@ namespace GitLinkTask
 
             var options = new LinkOptions
             {
-                DownloadWithPowerShell = this.DownloadWithPowershell,
+                Method = this.MethodEnum,
                 SkipVerify = this.SkipVerify,
                 GitRemoteUrl = this.GitRemoteUrl != null ? new Uri(this.GitRemoteUrl, UriKind.Absolute) : null,
             };

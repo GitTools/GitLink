@@ -32,14 +32,14 @@ namespace GitLink
             string baseDir = null;
             string pdbPath = null;
             bool skipVerify = false;
-            bool downloadWithPowershell = false;
+            LinkMethod method = LinkMethod.Http;
             var arguments = ArgumentSyntax.Parse(args, syntax =>
             {
+                syntax.DefineOption("m|method", ref method, v => (LinkMethod)Enum.Parse(typeof(LinkMethod), v, true), "The method for SRCSRV to retrieve source code. One of <" + string.Join("|", Enum.GetNames(typeof(LinkMethod))) + ">. Default is " + method + ".");
                 syntax.DefineOption("u|url", ref remoteGitUrl, s => new Uri(s, UriKind.Absolute), "Url to remote git repository.");
                 syntax.DefineOption("commit", ref commitId, "The git ref to assume all the source code belongs to.");
                 syntax.DefineOption("baseDir", ref baseDir, "The path to the root of the git repo.");
                 syntax.DefineOption("s|skipVerify", ref skipVerify, "Verify all source files are available in source control.");
-                syntax.DefineOption("p|powershell", ref downloadWithPowershell, "Use an indexing strategy that won't rely on SRCSRV http support, but use a powershell command for URL download instead.");
                 syntax.DefineParameter("pdb", ref pdbPath, "The PDB to add source indexing to.");
 
                 if (!string.IsNullOrEmpty(pdbPath) && !File.Exists(pdbPath))
@@ -65,7 +65,7 @@ namespace GitLink
                 GitWorkingDirectory = baseDir != null ? Catel.IO.Path.GetFullPath(baseDir, Environment.CurrentDirectory) : null,
                 CommitId = commitId,
                 SkipVerify = skipVerify,
-                DownloadWithPowerShell = downloadWithPowershell,
+                Method = method,
             };
 
             Linker.Link(pdbPath, options);

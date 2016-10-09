@@ -64,6 +64,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\PdbStrHelper.cs" />
     <Compile Include="Linker.cs" />
+    <Compile Include="LinkMethod.cs" />
     <Compile Include="LinkOptions.cs" />
     <Compile Include="Logging\OutputLogListener.cs" />
     <Compile Include="Pdb\Crypto.cs" />
