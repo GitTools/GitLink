@@ -8,6 +8,7 @@
         PdbFile="$(IntermediateOutputPath)$(TargetName).pdb"
         Method="$(GitLinkMethod)"
         SkipVerify="$(GitLinkSkipVerify)"
-        GitRemoteUrl="$(GitLinkGitRemoteUrl)" />
+        GitRemoteUrl="$(GitLinkGitRemoteUrl)"
+        ContinueOnError="true" />
   </Target>
 </Project>
