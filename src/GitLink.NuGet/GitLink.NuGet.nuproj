@@ -26,10 +26,10 @@
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>https://github.com/GitTools/GitLink</ProjectUrl>
-    <LicenseUrl>https://github.com/GitTools/GitLink/blob/develop/LICENSE</LicenseUrl>
+    <LicenseUrl>https://raw.githubusercontent.com/GitTools/GitLink/$GitCommitIdShort$/LICENSE</LicenseUrl>
     <Tags>git pdb</Tags>
     <DevelopmentDependency>true</DevelopmentDependency>
-    <IconUrl>https://raw.githubusercontent.com/GitTools/GitLink/develop/design/logo/logo_64.png</IconUrl>
+    <IconUrl>https://raw.githubusercontent.com/GitTools/GitLink/$GitCommitIdShort$/design/logo/logo_64.png</IconUrl>
     <PackageOutputGroups>GetDeployableOutputs</PackageOutputGroups>
     <Summary />
     <NoDefaultExcludes>true</NoDefaultExcludes>
@@ -41,6 +41,9 @@
     <ProjectReference Include="..\GitLinkTask\GitLinkTask.csproj">
       <PackageDirectory>Build</PackageDirectory>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tools\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
 </Project>
