@@ -28,7 +28,6 @@ namespace GitLink
 
             _providerManager = providerManager;
 
-            Authentication = new Authentication();
             ConfigurationName = "Release";
             PlatformName = "AnyCPU";
             IncludedProjects = new List<string>();
@@ -57,8 +56,6 @@ namespace GitLink
         public string ConfigurationName { get; set; }
 
         public string PlatformName { get; set; }
-
-        public Authentication Authentication { get; private set; }
 
         public IProvider Provider
         {

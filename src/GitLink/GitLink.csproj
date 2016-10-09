@@ -59,7 +59,6 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\BinaryReaderExtensions.cs" />
-    <Compile Include="Authentication.cs" />
     <Compile Include="Extensions\ContextExtensions.cs" />
     <Compile Include="Extensions\PdbExtensions.cs" />
     <Compile Include="Extensions\ProjectExtensions.cs" />
