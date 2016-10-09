@@ -123,7 +123,7 @@ namespace GitLink
                         }
 
                         rawUrl = rawUrl
-                            .Replace(RevisionPlaceholder, commitId)
+                            .Replace(RevisionPlaceholder, "{0}")
                             .Replace(FilenamePlaceholder, "%var2%");
                     }
                     else
@@ -131,6 +131,7 @@ namespace GitLink
                         rawUrl = $"{rawUrl}/{{0}}/%var2%";
                     }
 
+                    Log.Info($"Using {string.Format(rawUrl, commitId)} for source server URLs.");
                     var srcSrvContext = new SrcSrvContext
                     {
                         RawUrl = rawUrl,
