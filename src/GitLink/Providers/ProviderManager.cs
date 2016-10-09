@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ProviderManager.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink.Providers
 {
@@ -20,7 +19,7 @@ namespace GitLink.Providers
 
             foreach (var providerType in providerTypes)
             {
-                var provider = (ProviderBase) typeFactory.CreateInstance(providerType);
+                var provider = (ProviderBase)typeFactory.CreateInstance(providerType);
                 if (provider.Initialize(url))
                 {
                     return provider;

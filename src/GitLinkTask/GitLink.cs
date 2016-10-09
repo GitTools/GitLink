@@ -1,9 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GitLink.cs" company="Andrew Arnott">
-//   Copyright (c) 2016 Andrew Arnott. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿// Copyright (c) Andrew Arnott. All rights reserved.
 
 namespace GitLinkTask
 {

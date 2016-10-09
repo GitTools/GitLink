@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PdbInfo.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink.Pdb
 {
@@ -15,7 +14,7 @@ namespace GitLink.Pdb
     {
         public PdbInfo()
         {
-            Guid = new Guid();
+            Guid = default(Guid);
             StreamToPdbName = new SortedDictionary<int, PdbName>();
             NameToPdbName = new SortedDictionary<string, PdbName>();
             FlagIndexToPdbName = new SortedDictionary<int, PdbName>();
@@ -25,16 +24,27 @@ namespace GitLink.Pdb
         }
 
         public int Version { get; set; }
+
         public int Signature { get; set; }
+
         public Guid Guid { get; set; }
+
         public int Age { get; set; }
+
         public int FlagIndexMax { get; set; }
+
         public int FlagCount { get; set; }
+
         public IDictionary<int, PdbName> StreamToPdbName { get; private set; }
+
         public IDictionary<string, PdbName> NameToPdbName { get; private set; }
+
         public IDictionary<int, PdbName> FlagIndexToPdbName { get; private set; }
+
         public SortedSet<int> FlagIndexes { get; private set; }
+
         public string[] SrcSrv { get; set; }
+
         public byte[] Tail { get; set; }
 
         public void ClearFlags()

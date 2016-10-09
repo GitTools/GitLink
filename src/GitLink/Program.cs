@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Program.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink
 {
@@ -76,7 +75,8 @@ namespace GitLink
         [Conditional("DEBUG")]
         private static void WaitForKeyPressWhenDebugging()
         {
-            if (Debugger.IsAttached) // VS only closes the window immediately when debugging
+            // VS only closes the window immediately when debugging
+            if (Debugger.IsAttached)
             {
                 Log.Info(string.Empty);
                 Log.Info("Press any key to continue");

@@ -1,4 +1,8 @@
-﻿namespace GitLink.Providers
+﻿// <copyright file="CustomRawUrlProvider.cs" company="CatenaLogic">
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
+// </copyright>
+
+namespace GitLink.Providers
 {
     using System;
     using System.Text.RegularExpressions;

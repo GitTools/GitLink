@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BitBucketProvider.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink.Providers
 {
@@ -15,7 +14,7 @@ namespace GitLink.Providers
     {
         private readonly Regex _gitHubRegex = new Regex(@"(?<url>(?<companyurl>(?:https://)?bitbucket\.org/(?<company>[^/]+))/(?<project>[^/]+))");
 
-        public BitBucketProvider() 
+        public BitBucketProvider()
             : base(new GitPreparer())
         {
         }

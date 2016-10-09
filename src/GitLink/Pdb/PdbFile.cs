@@ -1,4 +1,8 @@
-﻿namespace GitLink.Pdb
+﻿// <copyright file="PdbFile.cs" company="CatenaLogic">
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
+// </copyright>
+
+namespace GitLink.Pdb
 {
     using System;
     using System.Collections.Generic;
@@ -31,7 +35,7 @@
             Argument.IsNotNullOrWhitespace(() => path);
 
             Path = path;
- 
+
             _fs = File.Open(path, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
             _br = new BinaryReader(_fs, Encoding.UTF8, true);
             _bw = new BinaryWriter(_fs, Encoding.UTF8, true);
@@ -88,6 +92,7 @@
         private void ReadPdbHeader()
         {
             // TODO: Create PdbHeader struct
+            //// code here
 
             _pageByteCount = _br.ReadInt32(); // 0x20
             PagesFree = _br.ReadInt32(); // 0x24 TODO not sure meaning
@@ -102,14 +107,20 @@
             var length = _fs.Length;
             if (length % _pageByteCount != 0)
             {
-                throw Log.ErrorAndCreateException<GitLinkException>("pdb length {0} bytes per page <> 0, {1}, {2}", length, _pageByteCount,
+                throw Log.ErrorAndCreateException<GitLinkException>(
+                    "pdb length {0} bytes per page <> 0, {1}, {2}",
+                    length,
+                    _pageByteCount,
                     PageCount);
             }
 
             if (length / _pageByteCount != PageCount)
             {
-                throw Log.ErrorAndCreateException<GitLinkException>("pdb length does not match page count, length: {0}, bytes per page: {1}, page count: {2}",
-                        length, _pageByteCount, PageCount);
+                throw Log.ErrorAndCreateException<GitLinkException>(
+                    "pdb length does not match page count, length: {0}, bytes per page: {1}, page count: {2}",
+                    length,
+                    _pageByteCount,
+                    PageCount);
             }
         }
 
@@ -215,7 +226,7 @@
                 }
 
                 var j = pages.Length - 1;
-                ReadPage(bytes, pages[j], j * _pageByteCount, (stream.ByteCount - j * _pageByteCount));
+                ReadPage(bytes, pages[j], j * _pageByteCount, stream.ByteCount - (j * _pageByteCount));
             }
 
             return bytes;
@@ -240,7 +251,8 @@
             var root = GetRoot();
             if (root.Streams.Count <= 1)
             {
-                throw Log.ErrorAndCreateException<GitLinkException>("Expected at least 2 streams inside the pdb root, but only found '{0}', cannot read pdb info",
+                throw Log.ErrorAndCreateException<GitLinkException>(
+                    "Expected at least 2 streams inside the pdb root, but only found '{0}', cannot read pdb info",
                     root.Streams.Count);
             }
 
@@ -295,7 +307,7 @@
                     }
 
                     var tailByteCount = GetRoot().Streams[1].ByteCount - br.BaseStream.Position;
-                    info.Tail = br.ReadBytes((int) tailByteCount);
+                    info.Tail = br.ReadBytes((int)tailByteCount);
 
                     foreach (var tuple in positions)
                     {

@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PdbRoot.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink.Pdb
 {
@@ -21,6 +20,7 @@ namespace GitLink.Pdb
         }
 
         public PdbStream Stream { get; set; }
+
         public List<PdbStream> Streams { get; private set; }
 
         public int AddStream(PdbStream stream)

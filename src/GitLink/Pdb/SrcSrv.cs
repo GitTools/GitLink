@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SrcSrv.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink.Pdb
 {
@@ -29,12 +28,12 @@ namespace GitLink.Pdb
                 using (var sw = new StreamWriter(ms))
                 {
                     var scheme = new Uri(rawUrl).Scheme;
-                
+
                     sw.WriteLine("SRCSRV: ini ------------------------------------------------");
                     sw.WriteLine("VERSION=2");
-                    sw.WriteLine("SRCSRV: variables ------------------------------------------");                    
+                    sw.WriteLine("SRCSRV: variables ------------------------------------------");
                     sw.WriteLine("RAWURL={0}", CreateTarget(rawUrl, revision));
-                    if(downloadWithPowershell)
+                    if (downloadWithPowershell)
                     {
                         sw.WriteLine("TRGFILE=%fnbksl%(%targ%%var2%)");
                         sw.WriteLine("SRCSRVTRG=%TRGFILE%");
@@ -45,6 +44,7 @@ namespace GitLink.Pdb
                         sw.WriteLine("SRCSRVVERCTRL={0}", scheme);
                         sw.WriteLine("SRCSRVTRG=%RAWURL%");
                     }
+
                     sw.WriteLine("SRCSRV: source files ---------------------------------------");
 
                     foreach (var tuple in paths)
@@ -57,7 +57,6 @@ namespace GitLink.Pdb
                     sw.Flush();
 
                     return ms.ToArray();
-
                 }
             }
         }

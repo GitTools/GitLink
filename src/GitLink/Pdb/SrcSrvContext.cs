@@ -4,7 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace GitLink.Pdb
 {
     using System;
@@ -16,7 +15,6 @@ namespace GitLink.Pdb
         {
             Paths = new List<Tuple<string, string>>();
             VstsData = new Dictionary<string, string>();
-
         }
 
         public string RawUrl { get; set; }
