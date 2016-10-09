@@ -26,6 +26,8 @@ namespace GitLink
     /// </summary>
     public static class Linker
     {
+        private static readonly string FilenamePlaceholder = Uri.EscapeUriString("{filename}");
+        private static readonly string RevisionPlaceholder = Uri.EscapeUriString("{revision}");
         private static readonly string PdbStrExePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "pdbstr.exe");
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
@@ -112,9 +114,21 @@ namespace GitLink
                     }
 
                     string rawUrl = provider.RawGitUrl;
-                    if (!rawUrl.Contains("%var2%") && !rawUrl.Contains("{0}"))
+                    if (rawUrl.Contains(RevisionPlaceholder) || rawUrl.Contains(FilenamePlaceholder))
                     {
-                        rawUrl = string.Format("{0}/{{0}}/%var2%", rawUrl);
+                        if (!rawUrl.Contains(RevisionPlaceholder) || !rawUrl.Contains(FilenamePlaceholder))
+                        {
+                            Log.Error("Supplied custom URL pattern must contain both a revision and a filename placeholder.");
+                            return false;
+                        }
+
+                        rawUrl = rawUrl
+                            .Replace(RevisionPlaceholder, commitId)
+                            .Replace(FilenamePlaceholder, "%var2%");
+                    }
+                    else
+                    {
+                        rawUrl = $"{rawUrl}/{{0}}/%var2%";
                     }
 
                     var srcSrvContext = new SrcSrvContext
