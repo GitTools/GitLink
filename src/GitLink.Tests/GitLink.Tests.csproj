@@ -51,8 +51,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ApprovalTestsConfig.cs" />
-    <Compile Include="ContextFacts.cs" />
-    <Compile Include="Extensions\ContextExtensionsFacts.cs" />
     <Compile Include="IntegrationTests\BitBucketIntegration.cs" />
     <Compile Include="IntegrationTests\GitHubIntegration.cs" />
     <Compile Include="IntegrationTests\IntegrationTestBase.cs" />

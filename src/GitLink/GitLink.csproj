@@ -57,9 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
     <Compile Include="Extensions\BinaryReaderExtensions.cs" />
-    <Compile Include="Extensions\ContextExtensions.cs" />
     <Compile Include="Extensions\PdbExtensions.cs" />
     <Compile Include="Extensions\ProjectExtensions.cs" />
     <Compile Include="Extensions\ProjectItemExtensions.cs" />
@@ -84,7 +82,6 @@
     <Compile Include="Pdb\SrcSrvContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Context.cs" />
     <Compile Include="Providers\BitBucketProvider.cs" />
     <Compile Include="Providers\CustomRawUrlProvider.cs" />
     <Compile Include="Providers\CustomUrlProvider.cs" />

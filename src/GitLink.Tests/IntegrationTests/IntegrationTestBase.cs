@@ -55,13 +55,6 @@ namespace GitLink.Tests.IntegrationTests
         {
             PrepareTestSolution(directory, configurationName);
 
-            var context = new Context(new ProviderManager())
-            {
-                SolutionDirectory = directory,
-                TargetUrl = repositoryUrl,
-                TargetBranch = branchName
-            };
-
             throw new NotImplementedException();
         }
 
