@@ -139,7 +139,7 @@ namespace GitLink
                         srcSrvContext.VstsData["TFS_REPO"] = provider.ProjectName;
                     }
 
-                    ProjectExtensions.CreateSrcSrv(projectSrcSrvFile, srcSrvContext);
+                    CreateSrcSrv(projectSrcSrvFile, srcSrvContext);
                 }
                 catch (RepositoryNotFoundException)
                 {
@@ -161,6 +161,23 @@ namespace GitLink
             Log.Info($"Remote git source information for {indexedFilesCount}/{sourceFiles.Count} files written to pdb: \"{pdbPath}\"");
 
             return true;
+        }
+
+        private static void CreateSrcSrv(string srcsrvFile, SrcSrvContext srcSrvContext)
+        {
+            Argument.IsNotNull(() => srcSrvContext);
+            Argument.IsNotNullOrWhitespace(() => srcSrvContext.RawUrl);
+            Argument.IsNotNullOrWhitespace(() => srcSrvContext.Revision);
+            Argument.IsNotNullOrWhitespace(() => srcsrvFile);
+
+            if (srcSrvContext.VstsData.Count != 0)
+            {
+                File.WriteAllBytes(srcsrvFile, SrcSrv.CreateVsts(srcSrvContext.Revision, srcSrvContext.Paths, srcSrvContext.VstsData));
+            }
+            else
+            {
+                File.WriteAllBytes(srcsrvFile, SrcSrv.Create(srcSrvContext.RawUrl, srcSrvContext.Revision, srcSrvContext.Paths, srcSrvContext.DownloadWithPowershell));
+            }
         }
 
         private static string GetNormalizedPath(string path, string gitRepoRootDir)

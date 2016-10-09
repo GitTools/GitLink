@@ -54,8 +54,6 @@
     <Compile Include="IntegrationTests\BitBucketIntegration.cs" />
     <Compile Include="IntegrationTests\GitHubIntegration.cs" />
     <Compile Include="IntegrationTests\IntegrationTestBase.cs" />
-    <Compile Include="ProjectExtensionsFacts.cs" />
-    <Compile Include="ProjectHelperFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GlobalInitialization.cs" />
     <Compile Include="Providers\BitBucketProviderFacts.cs" />

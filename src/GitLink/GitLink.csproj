@@ -59,16 +59,10 @@
   <ItemGroup>
     <Compile Include="Extensions\BinaryReaderExtensions.cs" />
     <Compile Include="Extensions\PdbExtensions.cs" />
-    <Compile Include="Extensions\ProjectExtensions.cs" />
-    <Compile Include="Extensions\ProjectItemExtensions.cs" />
     <Compile Include="Exceptions\GitLinkException.cs" />
     <Compile Include="Extensions\RepositoryExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Build\Construction\Interfaces\IProjectConfigurationInSolution.cs" />
-    <Compile Include="Build\Construction\Interfaces\IProjectInSolution.cs" />
-    <Compile Include="Build\Construction\Interfaces\ISolutionParser.cs" />
     <Compile Include="Helpers\PdbStrHelper.cs" />
-    <Compile Include="Helpers\ProjectHelper.cs" />
     <Compile Include="Linker.cs" />
     <Compile Include="LinkOptions.cs" />
     <Compile Include="Logging\OutputLogListener.cs" />
@@ -106,7 +100,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Icons\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
