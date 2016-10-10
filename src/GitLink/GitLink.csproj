@@ -62,14 +62,11 @@
     <Compile Include="Extensions\BinaryReaderExtensions.cs" />
     <Compile Include="Extensions\PdbExtensions.cs" />
     <Compile Include="Exceptions\GitLinkException.cs" />
-    <Compile Include="Extensions\RepositoryExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\PdbStrHelper.cs" />
     <Compile Include="Linker.cs" />
     <Compile Include="LinkMethod.cs" />
     <Compile Include="LinkOptions.cs" />
     <Compile Include="Logging\OutputLogListener.cs" />
-    <Compile Include="Pdb\Crypto.cs" />
     <Compile Include="Pdb\PdbFile.cs" />
     <Compile Include="Pdb\PdbInfo.cs" />
     <Compile Include="Pdb\PdbName.cs" />
@@ -102,9 +99,7 @@
   <ItemGroup>
     <Content Include="Logo.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Icons\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>

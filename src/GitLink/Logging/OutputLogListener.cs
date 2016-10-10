@@ -9,9 +9,9 @@ namespace GitLink.Logging
     using System;
     using Catel.Logging;
 
-    public class OutputLogListener : ConsoleLogListener
+    internal class OutputLogListener : ConsoleLogListener
     {
-        public OutputLogListener()
+        internal OutputLogListener()
         {
             IgnoreCatelLogging = true;
             IsDebugEnabled = true;
