@@ -11,7 +11,7 @@ namespace GitLink.Providers
     {
         private const string FileNamePlaceHolder = "{filename}";
         private const string RevisionPlaceHolder = "{revision}";
-        private readonly Regex _regexUrl = new Regex(@"https?://.+");
+        private static readonly Regex HostingUrlPattern = new Regex(@"https?://.+");
 
         private string _rawUrl;
 
@@ -30,7 +30,7 @@ namespace GitLink.Providers
 
         public override bool Initialize(string url)
         {
-            if (string.IsNullOrEmpty(url) || !_regexUrl.IsMatch(url) ||
+            if (string.IsNullOrEmpty(url) || !HostingUrlPattern.IsMatch(url) ||
                (!url.Contains(FileNamePlaceHolder) && !url.Contains(RevisionPlaceHolder)))
             {
                 return false;

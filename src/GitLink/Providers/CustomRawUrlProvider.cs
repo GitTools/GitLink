@@ -10,7 +10,7 @@ namespace GitLink.Providers
 
     public sealed class CustomRawUrlProvider : ProviderBase
     {
-        private readonly Regex _regex = new Regex(@"https?://.+");
+        private static readonly Regex HostingUrlPattern = new Regex(@"https?://.+");
 
         private string _rawUrl;
 
@@ -29,7 +29,7 @@ namespace GitLink.Providers
 
         public override bool Initialize(string url)
         {
-            if (string.IsNullOrEmpty(url) || !_regex.IsMatch(url))
+            if (string.IsNullOrEmpty(url) || !HostingUrlPattern.IsMatch(url))
             {
                 return false;
             }
