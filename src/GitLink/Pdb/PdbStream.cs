@@ -6,10 +6,10 @@
 
 namespace GitLink.Pdb
 {
-    public class PdbStream
+    internal class PdbStream
     {
-        public int ByteCount { get; set; }
+        internal int ByteCount { get; set; }
 
-        public int[] Pages { get; set; }
+        internal int[] Pages { get; set; }
     }
 }

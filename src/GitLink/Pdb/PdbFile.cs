@@ -12,7 +12,7 @@ namespace GitLink.Pdb
     using Catel;
     using Catel.Logging;
 
-    public class PdbFile : IDisposable
+    internal class PdbFile : IDisposable
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
@@ -30,7 +30,7 @@ namespace GitLink.Pdb
         private readonly SortedSet<int> _freePages;
         private readonly byte[] _zerosPage;
 
-        public PdbFile(string path)
+        internal PdbFile(string path)
         {
             Argument.IsNotNullOrWhitespace(() => path);
 
@@ -49,35 +49,35 @@ namespace GitLink.Pdb
             _zerosPage = new byte[_pageByteCount];
         }
 
-        public string Path { get; private set; }
+        internal string Path { get; private set; }
 
-        public string PathSrcSrv
+        internal string PathSrcSrv
         {
             get { return Path + ".srcsrv"; }
         }
 
-        public bool HasSrcSrv
+        internal bool HasSrcSrv
         {
             get { return Info.NameToPdbName.ContainsKey(SrcSrvContent); }
         }
 
-        public int SrcSrv
+        internal int SrcSrv
         {
             get { return Info.NameToPdbName[SrcSrvContent].Stream; }
         }
 
-        public int RootPage { get; private set; }
+        internal int RootPage { get; private set; }
 
-        public PdbRoot Root { get; private set; }
+        internal PdbRoot Root { get; private set; }
 
-        public PdbRoot Stream0
+        internal PdbRoot Stream0
         {
             get { return ReadRoot(Root.Streams[0]); }
         }
 
-        public int PagesFree { get; private set; }
+        internal int PagesFree { get; private set; }
 
-        public int PageCount { get; private set; }
+        internal int PageCount { get; private set; }
 
         private void CheckPdbHeader()
         {
@@ -161,7 +161,7 @@ namespace GitLink.Pdb
             return root;
         }
 
-        public PdbStream GetRootPdbStream()
+        internal PdbStream GetRootPdbStream()
         {
             var pdbStream = new PdbStream();
             pdbStream.ByteCount = _rootByteCount;
@@ -350,19 +350,19 @@ namespace GitLink.Pdb
             return pages;
         }
 
-        public byte[] ReadPdbStreamBytes(PdbStream pdbStream)
+        internal byte[] ReadPdbStreamBytes(PdbStream pdbStream)
         {
             Argument.IsNotNull(() => pdbStream);
 
             return ReadStreamBytes(pdbStream);
         }
 
-        public byte[] ReadStreamBytes(int stream)
+        internal byte[] ReadStreamBytes(int stream)
         {
             return ReadStreamBytes(Root.Streams[stream]);
         }
 
-        public PdbInfo Info
+        internal PdbInfo Info
         {
             get { return _info ?? (_info = InternalInfo()); }
         }

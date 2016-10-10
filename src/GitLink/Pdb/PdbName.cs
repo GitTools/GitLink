@@ -6,17 +6,17 @@
 
 namespace GitLink.Pdb
 {
-    public class PdbName
+    internal class PdbName
     {
-        public PdbName(string name = "")
+        internal PdbName(string name = "")
         {
             Name = name;
         }
 
-        public int Stream { get; set; }
+        internal int Stream { get; set; }
 
-        public string Name { get; set; }
+        internal string Name { get; set; }
 
-        public int FlagIndex { get; set; }
+        internal int FlagIndex { get; set; }
     }
 }

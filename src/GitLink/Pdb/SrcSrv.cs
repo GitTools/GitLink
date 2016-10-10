@@ -11,14 +11,14 @@ namespace GitLink.Pdb
     using System.IO;
     using Catel;
 
-    public static class SrcSrv
+    internal static class SrcSrv
     {
         private static string CreateTarget(string rawUrl, string revision)
         {
             return string.Format(rawUrl, revision);
         }
 
-        public static byte[] Create(string rawUrl, string revision, IEnumerable<Tuple<string, string>> paths, bool downloadWithPowershell)
+        internal static byte[] Create(string rawUrl, string revision, IEnumerable<Tuple<string, string>> paths, bool downloadWithPowershell)
         {
             Argument.IsNotNullOrWhitespace(() => rawUrl);
             Argument.IsNotNullOrWhitespace(() => revision);
@@ -61,7 +61,7 @@ namespace GitLink.Pdb
             }
         }
 
-        public static byte[] CreateVsts(string revision, IEnumerable<Tuple<string, string>> paths, Dictionary<string, string> vstsData = null)
+        internal static byte[] CreateVsts(string revision, IEnumerable<Tuple<string, string>> paths, Dictionary<string, string> vstsData = null)
         {
             Argument.IsNotNullOrWhitespace(() => revision);
 

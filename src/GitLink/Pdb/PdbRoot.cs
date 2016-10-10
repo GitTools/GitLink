@@ -9,9 +9,9 @@ namespace GitLink.Pdb
     using System.Collections.Generic;
     using Catel;
 
-    public class PdbRoot
+    internal class PdbRoot
     {
-        public PdbRoot(PdbStream stream)
+        internal PdbRoot(PdbStream stream)
         {
             Argument.IsNotNull(() => stream);
 
@@ -19,11 +19,11 @@ namespace GitLink.Pdb
             Streams = new List<PdbStream>();
         }
 
-        public PdbStream Stream { get; set; }
+        internal PdbStream Stream { get; set; }
 
-        public List<PdbStream> Streams { get; private set; }
+        internal List<PdbStream> Streams { get; private set; }
 
-        public int AddStream(PdbStream stream)
+        internal int AddStream(PdbStream stream)
         {
             Streams.Add(stream);
 
