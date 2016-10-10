@@ -20,10 +20,7 @@ namespace GitLink.Providers
         {
         }
 
-        public override string RawGitUrl
-        {
-            get { return string.Empty; }
-        }
+        public override string RawGitUrl => string.Empty;
 
         public override bool Initialize(string url)
         {

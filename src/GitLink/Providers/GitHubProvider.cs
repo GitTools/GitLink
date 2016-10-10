@@ -19,10 +19,7 @@ namespace GitLink.Providers
         {
         }
 
-        public override string RawGitUrl
-        {
-            get { return String.Format("https://raw.github.com/{0}/{1}", CompanyName, ProjectName); }
-        }
+        public override string RawGitUrl => $"https://raw.github.com/{CompanyName}/{ProjectName}";
 
         public override bool Initialize(string url)
         {
