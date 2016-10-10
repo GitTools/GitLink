@@ -13,9 +13,12 @@ namespace GitLink.Tests
     [TestFixture]
     public class ProjectHelperFacts
     {
-        private static readonly string SolutionFile = Path.Combine(
-            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-            @"TestSolution\TestSolution.sln");
+        // Full path with executing assembly required for NUnit 3+		
+        private const string SolutionFile = @"TestSolution\TestSolution.sln";
+        // private static readonly string SolutionFile = Path.Combine(
+            // Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+            // @"TestSolution\TestSolution.sln");
+
 
         [Test]
         public void GettingProjectsFromSolution()
