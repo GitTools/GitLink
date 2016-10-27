@@ -1,0 +1,22 @@
+﻿{
+  "dependencies": {
+    "Catel.Core": "4.3.0",
+    "GitTools.Core": "1.0.0-unstable0021",
+    "ImpromptuInterface": "6.2.2",
+    "LibGit2Sharp": "0.21.0.176",
+    "ReadOnlySourceTree": {
+      "version": "0.1.37-beta",
+      "suppressParent": "none"
+    },
+    "Nerdbank.GitVersioning": {
+      "version": "1.5.46",
+      "suppressParent": "none"
+    }
+  },
+  "frameworks": {
+    "net45": {}
+  },
+  "runtimes": {
+    "win": {}
+  }
+}

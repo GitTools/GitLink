@@ -5,22 +5,15 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitLink", "GitLink\GitLink.csproj", "{D68ADD77-913F-46D2-9A4F-5CC71C4718D8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A6694C2C-1A8A-49F0-B404-1BBB4D081808}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A5FCE4FA-083A-4814-B38C-2AED9C37647F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D435DFD9-F741-4FCA-A65A-28B7D251983D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitLink.Tests", "GitLink.Tests\GitLink.Tests.csproj", "{ED2B9579-59D2-40F2-BC5E-F4DC3DAB9A56}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Task", "Task", "{EA23F854-946E-4B2A-B3D6-03456D0B8FC5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitLinkTask", "GitLinkTask\GitLinkTask.csproj", "{38BFDD5A-8CC2-43B8-96CE-BC572E3DFEF5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{FEF533E8-3081-4913-8375-281F8670AF23}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DADE411A-78DD-4586-B06C-E3991077DF76}"
 	ProjectSection(SolutionItems) = preProject
-		..\doc\history.txt = ..\doc\history.txt
-		SolutionAssemblyInfo.cs = SolutionAssemblyInfo.cs
+		..\.gitignore = ..\.gitignore
+		nuget.config = nuget.config
+		version.json = version.json
 	EndProjectSection
 EndProject
 Global
@@ -44,13 +37,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{D68ADD77-913F-46D2-9A4F-5CC71C4718D8} = {A5FCE4FA-083A-4814-B38C-2AED9C37647F}
-		{A5FCE4FA-083A-4814-B38C-2AED9C37647F} = {A6694C2C-1A8A-49F0-B404-1BBB4D081808}
-		{D435DFD9-F741-4FCA-A65A-28B7D251983D} = {A6694C2C-1A8A-49F0-B404-1BBB4D081808}
-		{ED2B9579-59D2-40F2-BC5E-F4DC3DAB9A56} = {D435DFD9-F741-4FCA-A65A-28B7D251983D}
-		{EA23F854-946E-4B2A-B3D6-03456D0B8FC5} = {A6694C2C-1A8A-49F0-B404-1BBB4D081808}
-		{38BFDD5A-8CC2-43B8-96CE-BC572E3DFEF5} = {EA23F854-946E-4B2A-B3D6-03456D0B8FC5}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,12 @@
+﻿{
+  "dependencies": {
+    "ApprovalTests": "3.0.8",
+    "NUnit": "2.6.4"
+  },
+  "frameworks": {
+    "net45": {}
+  },
+  "runtimes": {
+    "win": {}
+  }
+}
