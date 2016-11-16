@@ -2,9 +2,7 @@ GitLink
 ==========
 
 [![Join the chat at https://gitter.im/GitTools/GitLink](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/GitTools/GitLink?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ![License](https://img.shields.io/github/license/gittools/gitlink.svg)
-![NuGet downloads](https://img.shields.io/nuget/dt/gitlink.svg)
 ![Version](https://img.shields.io/nuget/v/gitlink.svg)
 ![Pre-release version](https://img.shields.io/nuget/vpre/gitlink.svg)
 ![Chocolatey count](https://img.shields.io/chocolatey/dt/gitlink.svg)
