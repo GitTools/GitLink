@@ -44,6 +44,8 @@ namespace GitLink.Providers
                 ProjectName = match.Groups["repo"].Value;
             }
 
+            RepositoryName = match.Groups["repo"].Value;
+
             ProjectUrl = match.Groups["companyurl"].Value + ProjectName + "/";
 
             if (!CompanyUrl.StartsWithIgnoreCase("https://"))

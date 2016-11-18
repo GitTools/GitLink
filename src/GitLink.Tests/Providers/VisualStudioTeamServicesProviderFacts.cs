@@ -50,7 +50,7 @@ namespace GitLink.Tests.Providers
                     var provider = new VisualStudioTeamServicesProvider();
                     provider.Initialize("https://CatenaLogic.visualstudio.com/_git/main-repo");
 
-                    Assert.AreEqual("https://CatenaLogic.visualstudio.com/DefaultCollection/", provider.CompanyUrl);
+                    Assert.AreEqual("https://CatenaLogic.visualstudio.com/", provider.CompanyUrl);
                 }
 
                 [TestCase]
@@ -87,6 +87,15 @@ namespace GitLink.Tests.Providers
                     provider.Initialize("https://CatenaLogic.visualstudio.com/Big.Project/_git/main.repo");
 
                     Assert.AreEqual("https://CatenaLogic.visualstudio.com/Big.Project/", provider.ProjectUrl);
+                }
+
+                [TestCase]
+                public void ReturnsValidRepositoryName()
+                {
+                    var provider = new VisualStudioTeamServicesProvider();
+                    provider.Initialize("https://CatenaLogic.visualstudio.com/SomeBigProject/_git/main-repo");
+
+                    Assert.AreEqual("main-repo", provider.RepositoryName);
                 }
 
                 [TestCase]
