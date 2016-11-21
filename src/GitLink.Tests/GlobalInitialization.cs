@@ -11,7 +11,7 @@ using NUnit.Framework;
 [SetUpFixture]
 public class GlobalInitialization
 {
-    [SetUp]
+    //[SetUp]
     public static void SetUp()
     {
 #if DEBUG

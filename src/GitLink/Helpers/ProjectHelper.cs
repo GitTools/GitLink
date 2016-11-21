@@ -29,7 +29,7 @@ namespace GitLink
 
         static ProjectHelper()
         {
-            SolutionParserType = TypeCache.GetType("Microsoft.Build.Construction.SolutionParser");
+            SolutionParserType = TypeCache.GetType("Microsoft.Build.Construction.SolutionParser, Microsoft.Build, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
 
             var solutionProjectTypeType = TypeCache.GetType("Microsoft.Build.Construction.SolutionProjectType");
             if (solutionProjectTypeType != null)

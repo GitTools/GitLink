@@ -1,6 +1,8 @@
 GitLink
 ==========
 
+[![Build status](https://ci.appveyor.com/api/projects/status/g56b4xyl4q0ean8i/branch/develop?svg=true)](https://ci.appveyor.com/project/AArnott/gitlink/branch/develop)
+
 [![Join the chat at https://gitter.im/GitTools/GitLink](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/GitTools/GitLink?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ![License](https://img.shields.io/github/license/gittools/gitlink.svg)

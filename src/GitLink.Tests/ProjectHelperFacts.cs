@@ -5,13 +5,17 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace GitLink.Tests
 {
+    using System.IO;
     using System.Linq;
+    using System.Reflection;
     using NUnit.Framework;
 
     [TestFixture]
     public class ProjectHelperFacts
     {
-        private const string SolutionFile = @"TestSolution\TestSolution.sln";
+        private static readonly string SolutionFile = Path.Combine(
+            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+            @"TestSolution\TestSolution.sln");
 
         [Test]
         public void GettingProjectsFromSolution()
