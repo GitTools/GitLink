@@ -57,7 +57,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArgumentParser.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\BinaryReaderExtensions.cs" />
     <Compile Include="Authentication.cs" />
@@ -72,9 +71,8 @@
     <Compile Include="Build\Construction\Interfaces\ISolutionParser.cs" />
     <Compile Include="Helpers\PdbStrHelper.cs" />
     <Compile Include="Helpers\ProjectHelper.cs" />
-    <Compile Include="Helpers\ResourceHelper.cs" />
-    <Compile Include="HelpWriter.cs" />
     <Compile Include="Linker.cs" />
+    <Compile Include="LinkOptions.cs" />
     <Compile Include="Logging\OutputLogListener.cs" />
     <Compile Include="Pdb\Crypto.cs" />
     <Compile Include="Pdb\Hex.cs" />

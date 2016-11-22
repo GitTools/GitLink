@@ -15,32 +15,21 @@ namespace GitLink
 
     public static class PdbExtensions
     {
-        public static Dictionary<string, string> VerifyPdbFiles(this PdbFile pdbFile, IEnumerable<string> files)
+        public static IEnumerable<string> FindMissingOrChangedSourceFiles(this PdbFile pdbFile)
         {
             Argument.IsNotNull(() => pdbFile);
 
-            var missing = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            var actualFileChecksums = (from x in files
-                                       select new KeyValuePair<string, string>(Hex.Encode(Crypto.GetMd5HashForFiles(new[] { x }).First().Item1), x)).ToDictionary(x => x.Value, x => x.Key);
-
             foreach (var checksumInfo in pdbFile.GetChecksums())
             {
-                var file = checksumInfo.Key;
-                var checksum = checksumInfo.Value;
+                string file = checksumInfo.Key;
+                string expectedChecksum = checksumInfo.Value;
+                string actualChecksum = Hex.Encode(Crypto.GetMd5HashForFile(file));
 
-                if (!actualFileChecksums.ContainsValue(checksum))
+                if (expectedChecksum != actualChecksum)
                 {
-                    if (file.EndsWith(".xaml"))
-                    {
-                        // #64 ignore xaml files, not important
-                        continue;
-                    }
-
-                    missing[file] = checksum;
+                    yield return file;
                 }
             }
-
-            return missing;
         }
 
         public static Dictionary<string, string> GetChecksums(this PdbFile pdbFile)
@@ -69,7 +58,7 @@ namespace GitLink
             var results = new List<Tuple<string, byte[]>>();
             foreach (var value in values)
             {
-                if (!value.Name.Contains(FileIndicator))
+                if (!value.Name.StartsWith(FileIndicator))
                 {
                     continue;
                 }
@@ -77,20 +66,11 @@ namespace GitLink
                 var num = value.Stream;
                 var name = value.Name.Substring(FileIndicator.Length);
 
-                var bytes = pdbFile.ReadStreamBytes(num);
-                if (bytes.Length != 88)
-                {
-                    continue;
-                }
-
                 // Get last 16 bytes for checksum
-                var buffer = new byte[16];
-                for (int i = 72; i < 88; i++)
-                {
-                    buffer[i-72] = bytes[i];
-                }
-
-                results.Add(new Tuple<string, byte[]>(name, buffer));
+                var bytes = pdbFile.ReadStreamBytes(num);
+                var checksum = new byte[16];
+                Array.Copy(bytes, bytes.Length - 16, checksum, 0, 16);
+                results.Add(Tuple.Create(name, checksum));
             }
 
             return results;

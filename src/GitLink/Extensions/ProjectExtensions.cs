@@ -37,12 +37,11 @@ namespace GitLink
 
             var srcsrvFile = GetOutputSrcSrvFile(project);
 
-            CreateSrcSrv(project, srcsrvFile, srcSrvContext);
+            CreateSrcSrv(srcsrvFile, srcSrvContext);
         }
 
-        public static void CreateSrcSrv(this Project project, string srcsrvFile, SrcSrvContext srcSrvContext)
+        public static void CreateSrcSrv(string srcsrvFile, SrcSrvContext srcSrvContext)
         {
-            Argument.IsNotNull(() => project);
             Argument.IsNotNull(() => srcSrvContext);
             Argument.IsNotNullOrWhitespace(() => srcSrvContext.RawUrl);
             Argument.IsNotNullOrWhitespace(() => srcSrvContext.Revision);
@@ -65,23 +64,6 @@ namespace GitLink
             return project.Items.Where(x => string.Equals(x.ItemType, "Compile") || string.Equals(x.ItemType, "ClCompile") || string.Equals(x.ItemType, "ClInclude"));
         }
 
-        public static Dictionary<string, string> VerifyPdbFiles(this Project project, IEnumerable<string> files)
-        {
-            Argument.IsNotNull(() => project);
-
-            var pdbFile = GetOutputPdbFile(project);
-
-            return VerifyPdbFiles(project, files, pdbFile);
-        }
-
-        public static Dictionary<string, string> VerifyPdbFiles(this Project project, IEnumerable<string> files, string pdbFileFullPath)
-        {
-            using(var pdb = new PdbFile(pdbFileFullPath))
-            {
-                return pdb.VerifyPdbFiles(files);
-            }
-        }
-
         public static string GetOutputSrcSrvFile(this Project project)
         {
             Argument.IsNotNull(() => project);
@@ -94,10 +76,9 @@ namespace GitLink
         {
             Argument.IsNotNull(() => project);
 
-            var outputFile = project.GetOutputFile();
-            var pdbFile = Path.ChangeExtension(outputFile, ".pdb");
+            var outputFile = project.GetPropertyValue("PdbFile");
 
-            return pdbFile;
+            return outputFile;
         }
 
         public static string GetOutputFile(this Project project)

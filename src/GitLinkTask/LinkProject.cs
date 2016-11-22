@@ -7,22 +7,63 @@
 
 namespace GitLinkTask
 {
+    using System;
     using System.IO;
+    using System.Linq;
+    using GitLink;
+    using GitLink.Pdb;
+    using GitLink.Providers;
+    using Catel.Logging;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
 
-    public class LinkProject : ToolTask
+    public class LinkProject : Task
     {
         [Required]
-        public ITaskItem SolutionDirectory { get; set; }
+        public ITaskItem PdbFile { get; set; }
 
         [Required]
-        public string ProjectName { get; set; }
+        public ITaskItem[] SourceFiles { get; set; }
 
-        protected override string ToolName => "GitLink.exe";
+        public bool DownloadWithPowershell { get; set; }
 
-        protected override string GenerateFullPathToTool() => Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), "GitLink.exe");
+        public bool SkipVerify { get; set; }
 
-        protected override string GenerateCommandLineCommands() => $"{SolutionDirectory.FullPath()} -include {ProjectName}";
+        public string GitRemoteUrl { get; set; }
+
+        public override bool Execute()
+        {
+            LogManager.GetCurrentClassLogger().LogMessage += this.LinkProject_LogMessage;
+
+            Linker.Link(
+                this.PdbFile.GetMetadata("FullPath"),
+                this.SourceFiles.Select(i => i.GetMetadata("FullPath")),
+                this.DownloadWithPowershell,
+                this.SkipVerify,
+                this.GitRemoteUrl);
+
+            return !this.Log.HasLoggedErrors;
+        }
+
+        private void LinkProject_LogMessage(object sender, LogMessageEventArgs e)
+        {
+            switch (e.LogEvent)
+            {
+                case LogEvent.Error:
+                    this.Log.LogError(e.Message);
+                    break;
+                case LogEvent.Warning:
+                    this.Log.LogWarning(e.Message);
+                    break;
+                case LogEvent.Info:
+                    this.Log.LogMessage(MessageImportance.Normal, e.Message);
+                    break;
+                case LogEvent.Debug:
+                    this.Log.LogMessage(MessageImportance.Low, e.Message);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
