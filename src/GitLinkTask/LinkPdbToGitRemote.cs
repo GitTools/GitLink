@@ -8,7 +8,7 @@ namespace GitLinkTask
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
 
-    public class GitLink : Task
+    public class LinkPdbToGitRemote : Task
     {
         [Required]
         public ITaskItem PdbFile { get; set; }

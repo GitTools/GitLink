@@ -48,7 +48,14 @@ namespace GitLink
                 }
                 else
                 {
-                    repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(sourceFiles.First()));
+                    string someSourceFile = sourceFiles.FirstOrDefault();
+                    if (someSourceFile == null)
+                    {
+                        Log.Error("No source files were found in the PDB.");
+                        return false;
+                    }
+
+                    repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(someSourceFile));
                     if (repositoryDirectory == null)
                     {
                         Log.Error("No source files found that are tracked in a git repo.");

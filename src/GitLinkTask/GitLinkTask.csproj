@@ -44,7 +44,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GitLink.cs" />
+    <Compile Include="LinkPdbToGitRemote.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Catel.Core">
