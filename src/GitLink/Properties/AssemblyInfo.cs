@@ -8,8 +8,6 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-// All other assembly info is defined in SharedAssembly.cs
-
 [assembly: AssemblyTitle("GitLink")]
 [assembly: AssemblyProduct("GitLink")]
 [assembly: AssemblyDescription("GitLink library")]

@@ -65,6 +65,7 @@
     <Compile Include="Extensions\ProjectExtensions.cs" />
     <Compile Include="Extensions\ProjectItemExtensions.cs" />
     <Compile Include="Exceptions\GitLinkException.cs" />
+    <Compile Include="Extensions\RepositoryExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Build\Construction\Interfaces\IProjectConfigurationInSolution.cs" />
     <Compile Include="Build\Construction\Interfaces\IProjectInSolution.cs" />

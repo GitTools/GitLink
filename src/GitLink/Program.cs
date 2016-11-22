@@ -46,7 +46,7 @@ namespace GitLink
 
             if (string.IsNullOrEmpty(pdbPath))
             {
-                Log.Error("pdb parameter is required.");
+                Log.Info(arguments.GetHelpText());
                 return 1;
             }
 

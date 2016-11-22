@@ -10,20 +10,17 @@ namespace GitLinkTask
     using System;
     using System.IO;
     using System.Linq;
-    using GitLink;
-    using GitLink.Pdb;
-    using GitLink.Providers;
+    using global::GitLink;
+    using global::GitLink.Pdb;
+    using global::GitLink.Providers;
     using Catel.Logging;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
 
-    public class LinkProject : Task
+    public class GitLink : Task
     {
         [Required]
         public ITaskItem PdbFile { get; set; }
-
-        [Required]
-        public ITaskItem[] SourceFiles { get; set; }
 
         public bool DownloadWithPowershell { get; set; }
 
@@ -35,12 +32,13 @@ namespace GitLinkTask
         {
             LogManager.GetCurrentClassLogger().LogMessage += this.LinkProject_LogMessage;
 
-            Linker.Link(
-                this.PdbFile.GetMetadata("FullPath"),
-                this.SourceFiles.Select(i => i.GetMetadata("FullPath")),
-                this.DownloadWithPowershell,
-                this.SkipVerify,
-                this.GitRemoteUrl);
+            var options = new LinkOptions
+            {
+                DownloadWithPowerShell = this.DownloadWithPowershell,
+                SkipVerify = this.SkipVerify,
+                GitRemoteUrl = this.GitRemoteUrl != null ? new Uri(this.GitRemoteUrl, UriKind.Absolute) : null,
+            };
+            Linker.Link(this.PdbFile.GetMetadata("FullPath"), options);
 
             return !this.Log.HasLoggedErrors;
         }

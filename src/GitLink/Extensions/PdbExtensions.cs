@@ -9,6 +9,7 @@ namespace GitLink
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using Catel;
     using Pdb;
@@ -23,7 +24,7 @@ namespace GitLink
             {
                 string file = checksumInfo.Key;
                 string expectedChecksum = checksumInfo.Value;
-                string actualChecksum = Hex.Encode(Crypto.GetMd5HashForFile(file));
+                string actualChecksum = File.Exists(file) ? Hex.Encode(Crypto.GetMd5HashForFile(file)) : string.Empty;
 
                 if (expectedChecksum != actualChecksum)
                 {

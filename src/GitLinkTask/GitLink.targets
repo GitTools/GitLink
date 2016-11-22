@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <UsingTask TaskName="GitLinkTask.LinkProject" AssemblyFile="$(MSBuildThisFileDirectory)..\..\GitLinkTask.dll" />
+  <UsingTask TaskName="GitLink" AssemblyFile="$(MSBuildThisFileDirectory)GitLinkTask.dll" />
 
-  <Target Name="GitLinkProject" AfterTargets="CopyFilesToOutputDirectory">
-    <LinkProject
-        PdbFile="$(PdbFile)"
-        SourceFiles="@(Compile);@(ClCompile);@(ClInclude)"
+  <Target Name="LinkSymbolsToRemoteGitRepo" AfterTargets="Compile">
+    <GitLink Condition=" Exists('$(IntermediateOutputPath)$(TargetName).pdb') "
+        PdbFile="$(IntermediateOutputPath)$(TargetName).pdb"
         DownloadWithPowershell="$(GitLinkUsePowerShell)"
         SkipVerify="$(GitLinkSkipVerify)"
         GitRemoteUrl="$(GitLinkGitRemoteUrl)" />
