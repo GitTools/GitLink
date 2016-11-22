@@ -29,20 +29,28 @@ namespace GitLink
         private static readonly string PdbStrExePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "pdbstr.exe");
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        public static void Link(string pdbPath, LinkOptions options = default(LinkOptions))
+        public static bool Link(string pdbPath, LinkOptions options = default(LinkOptions))
         {
             Argument.IsNotNullOrEmpty(() => pdbPath);
 
             var projectSrcSrvFile = pdbPath + ".srcsrv";
             string repositoryDirectory;
+            IReadOnlyCollection<string> sourceFiles;
+            IReadOnlyDictionary<string, string> repoSourceFiles;
             using (var pdb = new PdbFile(pdbPath))
             {
-                var sourceFiles = pdb.GetFiles().Select(f => f.Item1).ToList();
+                sourceFiles = pdb.GetFiles().Select(f => f.Item1).ToList();
 
                 repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(sourceFiles.First()));
+                if (repositoryDirectory == null)
+                {
+                    Log.Error("No source files found that are tracked in a git repo.");
+                    return false;
+                }
+
                 using (var repository = new Repository(repositoryDirectory))
                 {
-                    var repoSourceFiles = sourceFiles.ToDictionary(e => e, repository.GetRepoNormalizedPath);
+                    repoSourceFiles = sourceFiles.ToDictionary(e => e, repository.GetRepoNormalizedPath);
 
                     var providerManager = new Providers.ProviderManager();
                     Providers.IProvider provider;
@@ -52,16 +60,22 @@ namespace GitLink
                                                  let p = providerManager.GetProvider(remote.Url)
                                                  where p != null
                                                  select p;
-                        provider = candidateProviders.First();
+                        provider = candidateProviders.FirstOrDefault();
                     }
                     else
                     {
                         provider = providerManager.GetProvider(options.GitRemoteUrl.AbsoluteUri);
                     }
 
+                    if (provider == null)
+                    {
+                        Log.Error("Unable to detect the remote git service.");
+                        return false;
+                    }
+
                     if (!options.SkipVerify)
                     {
-                        Log.Info("Verifying pdb file");
+                        Log.Debug("Verifying pdb file");
 
                         var missingFiles = pdb.FindMissingOrChangedSourceFiles();
                         foreach (var missingFile in missingFiles)
@@ -71,7 +85,12 @@ namespace GitLink
                     }
 
                     string commitId;
-                    commitId = repository.Head.Commits.First().Sha;
+                    commitId = repository.Head.Commits.FirstOrDefault()?.Sha;
+                    if (commitId == null)
+                    {
+                        Log.Error("No commit is checked out to HEAD. Have you committed yet?");
+                        return false;
+                    }
 
                     string rawUrl = provider.RawGitUrl;
                     if (!rawUrl.Contains("%var2%") && !rawUrl.Contains("{0}"))
@@ -107,6 +126,10 @@ namespace GitLink
 
             Log.Debug("Created source server link file, updating pdb file '{0}'", Catel.IO.Path.GetRelativePath(pdbPath, repositoryDirectory));
             PdbStrHelper.Execute(PdbStrExePath, pdbPath, projectSrcSrvFile);
+            var indexedFilesCount = repoSourceFiles.Values.Count(v => v != null);
+            Log.Info($"Remote git source information for {indexedFilesCount}/{sourceFiles.Count} files written to pdb: \"{pdbPath}\"");
+
+            return true;
         }
     }
 }

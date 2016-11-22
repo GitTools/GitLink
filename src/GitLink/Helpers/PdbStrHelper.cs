@@ -30,8 +30,22 @@ namespace GitLink
             };
 
             var process = new Process();
-            process.OutputDataReceived += (s, e) => Log.Info(e.Data);
-            process.ErrorDataReceived += (s, e) => Log.Error(e.Data);
+            bool errorsPrinted = false;
+            process.OutputDataReceived += (s, e) =>
+            {
+                if (e.Data != null)
+                {
+                    Log.Info(e.Data);
+                }
+            };
+            process.ErrorDataReceived += (s, e) =>
+            {
+                if (e.Data != null)
+                {
+                    Log.Error(e.Data);
+                    errorsPrinted = true;
+                }
+            };
             process.EnableRaisingEvents = true;
             process.StartInfo = processStartInfo;
             process.Start();
@@ -43,6 +57,12 @@ namespace GitLink
             if (processExitCode != 0)
             {
                 throw Log.ErrorAndCreateException<GitLinkException>("PdbStr exited with unexpected error code '{0}'", processExitCode);
+            }
+
+            // PdbStr can print errors and still return 0 for its exit code.
+            if (errorsPrinted)
+            {
+                throw Log.ErrorAndCreateException<GitLinkException>("PdbStr printed errors.");
             }
         }
     }
