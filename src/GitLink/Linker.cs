@@ -146,6 +146,7 @@ namespace GitLink
                         }
                     }
 
+                    // When using the VisualStudioTeamServicesProvider, add extra infomration to dictionary with VSTS-specific data
                     if (provider is Providers.VisualStudioTeamServicesProvider)
                     {
                         srcSrvContext.VstsData["TFS_COLLECTION"] = provider.CompanyUrl;
@@ -169,7 +170,7 @@ namespace GitLink
                 }
             }
 
-            Log.Debug("Created source server link file, updating pdb file '{0}'", Catel.IO.Path.GetRelativePath(pdbPath, repositoryDirectory));
+            Log.Debug("Created source server link file, updating pdb file \"{0}\"", Catel.IO.Path.GetRelativePath(pdbPath, repositoryDirectory));
             PdbStrHelper.Execute(PdbStrExePath, pdbPath, projectSrcSrvFile);
             var indexedFilesCount = repoSourceFiles.Values.Count(v => v != null);
             Log.Info($"Remote git source information for {indexedFilesCount}/{sourceFiles.Count} files written to pdb: \"{pdbPath}\"");
