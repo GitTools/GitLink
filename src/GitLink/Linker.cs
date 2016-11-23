@@ -230,7 +230,7 @@ namespace GitLink
                 {
                     srcSrvContext.VstsData["TFS_COLLECTION"] = context.Provider.CompanyUrl;
                     srcSrvContext.VstsData["TFS_TEAM_PROJECT"] = context.Provider.ProjectName;
-                    srcSrvContext.VstsData["TFS_REPO"] = context.Provider.ProjectName;
+                    srcSrvContext.VstsData["TFS_REPO"] = context.Provider.ProjectUrl;
                 }
 
                 project.CreateSrcSrv(projectSrcSrvFile, srcSrvContext);

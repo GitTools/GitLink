@@ -98,6 +98,7 @@
     <Compile Include="Providers\CustomUrlProviderFacts.cs" />
     <Compile Include="Providers\GitHubProviderFacts.cs" />
     <Compile Include="Providers\ProviderManagerFacts.cs" />
+    <Compile Include="Providers\VisualStudioTeamServicesProviderFacts.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GitLink\GitLink.csproj">

@@ -50,7 +50,7 @@ namespace GitLink.Tests.Providers
                     var provider = new VisualStudioTeamServicesProvider();
                     provider.Initialize("https://CatenaLogic.visualstudio.com/_git/main-repo");
 
-                    Assert.AreEqual("https://CatenaLogic.visualstudio.com/DefaultCollection/", provider.CompanyUrl);
+                    Assert.AreEqual("https://CatenaLogic.visualstudio.com/", provider.CompanyUrl);
                 }
 
                 [TestCase]
@@ -72,30 +72,21 @@ namespace GitLink.Tests.Providers
                 }
 
                 [TestCase]
-                public void ReturnsValidProjectUrl()
+                public void ReturnsValidRepositoryName()
                 {
                     var provider = new VisualStudioTeamServicesProvider();
                     provider.Initialize("https://CatenaLogic.visualstudio.com/Project/_git/main-repo");
 
-                    Assert.AreEqual("https://CatenaLogic.visualstudio.com/Project/", provider.ProjectUrl);
+                    Assert.AreEqual("main-repo", provider.ProjectUrl);
                 }
 
                 [TestCase]
-                public void ReturnsValidProjectUrlWhenContainsPeriod()
+                public void ReturnsValidRepositoryNameWhenContainsPeriod()
                 {
                     var provider = new VisualStudioTeamServicesProvider();
                     provider.Initialize("https://CatenaLogic.visualstudio.com/Big.Project/_git/main.repo");
 
-                    Assert.AreEqual("https://CatenaLogic.visualstudio.com/Big.Project/", provider.ProjectUrl);
-                }
-
-                [TestCase]
-                public void ReturnsValidCompanyUrlWhenContainsPeriod()
-                {
-                    var provider = new VisualStudioTeamServicesProvider();
-                    provider.Initialize("https://Catena.Logic.visualstudio.com/BigProject/_git/main-repo");
-
-                    Assert.AreEqual("https://Catena.Logic.visualstudio.com/BigProject/", provider.ProjectUrl);
+                    Assert.AreEqual("main.repo", provider.ProjectUrl);
                 }
 
             }

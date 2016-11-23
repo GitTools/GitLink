@@ -44,16 +44,13 @@ namespace GitLink.Providers
                 ProjectName = match.Groups["repo"].Value;
             }
 
-            ProjectUrl = match.Groups["companyurl"].Value + ProjectName + "/";
+            // In the VSTS provider, the ProjectUrl will represent 
+            // the repository's name.
+            ProjectUrl = match.Groups["repo"].Value;
 
             if (!CompanyUrl.StartsWithIgnoreCase("https://"))
             {
                 CompanyUrl = String.Concat("https://", CompanyUrl);
-            }
-
-            if (!ProjectUrl.StartsWithIgnoreCase("https://"))
-            {
-                ProjectUrl = String.Concat("https://", ProjectUrl);
             }
 
             return true;
