@@ -76,7 +76,6 @@
     <Compile Include="LinkOptions.cs" />
     <Compile Include="Logging\OutputLogListener.cs" />
     <Compile Include="Pdb\Crypto.cs" />
-    <Compile Include="Pdb\Hex.cs" />
     <Compile Include="Pdb\PdbFile.cs" />
     <Compile Include="Pdb\PdbInfo.cs" />
     <Compile Include="Pdb\PdbName.cs" />
