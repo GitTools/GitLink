@@ -48,11 +48,11 @@ namespace GitLinkTask
 
         private class MSBuildListener : LogListenerBase
         {
-            private readonly TaskLoggingHelper log;
+            private readonly TaskLoggingHelper _log;
 
             internal MSBuildListener(TaskLoggingHelper log)
             {
-                this.log = log;
+                _log = log;
             }
 
             protected override void Write(ILog log, string message, LogEvent logEvent, object extraData, LogData logData, DateTime time)
@@ -60,16 +60,16 @@ namespace GitLinkTask
                 switch (logEvent)
                 {
                     case LogEvent.Error:
-                        this.log.LogError(message);
+                        _log.LogError(message);
                         break;
                     case LogEvent.Warning:
-                        this.log.LogWarning(message);
+                        _log.LogWarning(message);
                         break;
                     case LogEvent.Info:
-                        this.log.LogMessage(MessageImportance.Normal, message);
+                        _log.LogMessage(MessageImportance.Normal, message);
                         break;
                     case LogEvent.Debug:
-                        this.log.LogMessage(MessageImportance.Low, message);
+                        _log.LogMessage(MessageImportance.Low, message);
                         break;
                     default:
                         break;
