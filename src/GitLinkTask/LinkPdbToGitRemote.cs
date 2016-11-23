@@ -15,8 +15,8 @@ namespace GitLinkTask
 
         public string Method
         {
-            get { return this.MethodEnum.ToString(); }
-            set { this.MethodEnum = string.IsNullOrEmpty(value) ? LinkMethod.Http : (LinkMethod)Enum.Parse(typeof(LinkMethod), value); }
+            get { return MethodEnum.ToString(); }
+            set { MethodEnum = string.IsNullOrEmpty(value) ? LinkMethod.Http : (LinkMethod)Enum.Parse(typeof(LinkMethod), value); }
         }
 
         public bool SkipVerify { get; set; }
@@ -31,19 +31,19 @@ namespace GitLinkTask
 
         public override bool Execute()
         {
-            LogManager.AddListener(new MSBuildListener(this.Log));
+            LogManager.AddListener(new MSBuildListener(Log));
 
             var options = new LinkOptions
             {
-                Method = this.MethodEnum,
-                SkipVerify = this.SkipVerify,
-                GitRemoteUrl = this.GitRemoteUrl != null ? new Uri(this.GitRemoteUrl, UriKind.Absolute) : null,
-                CommitId = this.GitCommitId,
-                GitWorkingDirectory = this.GitWorkingDirectory,
+                Method = MethodEnum,
+                SkipVerify = SkipVerify,
+                GitRemoteUrl = GitRemoteUrl != null ? new Uri(GitRemoteUrl, UriKind.Absolute) : null,
+                CommitId = GitCommitId,
+                GitWorkingDirectory = GitWorkingDirectory,
             };
-            bool success = Linker.Link(this.PdbFile.GetMetadata("FullPath"), options);
+            bool success = Linker.Link(PdbFile.GetMetadata("FullPath"), options);
 
-            return success && !this.Log.HasLoggedErrors;
+            return success && !Log.HasLoggedErrors;
         }
 
         private class MSBuildListener : LogListenerBase
