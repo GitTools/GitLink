@@ -54,12 +54,6 @@ namespace GitLink.Providers
         public string ProjectUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the repository
-        /// </summary>
-        /// <value>The name of the repository.</value>
-        public string RepositoryName { get; set; }
-
-        /// <summary>
         /// Gets the raw git URL.
         /// </summary>
         /// <value>The raw git URL.</value>
