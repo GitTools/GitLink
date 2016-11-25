@@ -187,13 +187,14 @@ namespace GitLink
 
         private static void CreateSrcSrv(string srcsrvFile, SrcSrvContext srcSrvContext)
         {
-            Argument.IsNotNull(() => srcSrvContext);
-            Argument.IsNotNullOrWhitespace(() => srcSrvContext.RawUrl);
-            Argument.IsNotNullOrWhitespace(() => srcSrvContext.Revision);
-            Argument.IsNotNullOrWhitespace(() => srcsrvFile);
+            Argument.IsNotNull(nameof(srcSrvContext), srcSrvContext);
+            Argument.IsNotNullOrWhitespace(nameof(srcSrvContext) + "." + nameof(srcSrvContext.RawUrl), srcSrvContext.RawUrl);
+            Argument.IsNotNullOrWhitespace(nameof(srcSrvContext) + "." + nameof(srcSrvContext.Revision), srcSrvContext.Revision);
+            Argument.IsNotNullOrWhitespace(nameof(srcsrvFile), srcsrvFile);
 
             if (srcSrvContext.VstsData.Count != 0)
             {
+                Log.Debug("Writing VSTS specific bytes to srcsrv file because VstsData was not empty.");
                 File.WriteAllBytes(srcsrvFile, SrcSrv.CreateVsts(srcSrvContext.Revision, srcSrvContext.Paths, srcSrvContext.VstsData));
             }
             else
@@ -224,6 +225,12 @@ namespace GitLink
             {
                 string segment = segments[i];
                 var next = currentDir.GetFileSystemInfos(segment).FirstOrDefault();
+                if (next == null)
+                {
+                    Log.Error($"Unable to find path \"{path}\" on disk.");
+                    return path;
+                }
+
                 segments[i] = next.Name; // get canonical capitalization
                 currentDir = next as DirectoryInfo;
             }
