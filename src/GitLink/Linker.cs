@@ -41,22 +41,37 @@ namespace GitLink
             {
                 sourceFiles = pdb.GetFilesAndChecksums().Keys.ToList();
 
-                repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(sourceFiles.First()));
-                if (repositoryDirectory == null)
+                if (options.GitWorkingDirectory != null)
                 {
-                    Log.Error("No source files found that are tracked in a git repo.");
-                    return false;
+                    repositoryDirectory = Path.Combine(options.GitWorkingDirectory, ".git");
+                }
+                else
+                {
+                    repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(sourceFiles.First()));
+                    if (repositoryDirectory == null)
+                    {
+                        Log.Error("No source files found that are tracked in a git repo.");
+                        return false;
+                    }
                 }
 
-                using (var repository = new Repository(repositoryDirectory))
+                string workingDirectory = Path.GetDirectoryName(repositoryDirectory);
+
+                var repository = new Lazy<Repository>(() => new Repository(repositoryDirectory));
+                try
                 {
-                    repoSourceFiles = sourceFiles.ToDictionary(e => e, repository.GetRepoNormalizedPath);
+                    string commitId = options.CommitId ?? repository.Value.Head.Commits.FirstOrDefault()?.Sha;
+                    if (commitId == null)
+                    {
+                        Log.Error("No commit is checked out to HEAD. Have you committed yet?");
+                        return false;
+                    }
 
                     var providerManager = new Providers.ProviderManager();
                     Providers.IProvider provider;
                     if (options.GitRemoteUrl == null)
                     {
-                        var candidateProviders = from remote in repository.Network.Remotes
+                        var candidateProviders = from remote in repository.Value.Network.Remotes
                                                  let p = providerManager.GetProvider(remote.Url)
                                                  where p != null
                                                  select p;
@@ -73,6 +88,18 @@ namespace GitLink
                         return false;
                     }
 
+                    try
+                    {
+                        Repository repo = repository.Value;
+                        repoSourceFiles = sourceFiles.ToDictionary(e => e, repo.GetRepoNormalizedPath);
+                    }
+                    catch (RepositoryNotFoundException)
+                    {
+                        // Normalize using file system since we can't find the git repo.
+                        Log.Warning($"Unable to find git repo at \"{options.GitWorkingDirectory}\". Using file system to find canonical capitalization of file paths.");
+                        repoSourceFiles = sourceFiles.ToDictionary(e => e, e => GetNormalizedPath(e, workingDirectory));
+                    }
+
                     if (!options.SkipVerify)
                     {
                         Log.Debug("Verifying pdb file");
@@ -84,14 +111,6 @@ namespace GitLink
                         }
                     }
 
-                    string commitId;
-                    commitId = repository.Head.Commits.FirstOrDefault()?.Sha;
-                    if (commitId == null)
-                    {
-                        Log.Error("No commit is checked out to HEAD. Have you committed yet?");
-                        return false;
-                    }
-
                     string rawUrl = provider.RawGitUrl;
                     if (!rawUrl.Contains("%var2%") && !rawUrl.Contains("{0}"))
                     {
@@ -101,7 +120,7 @@ namespace GitLink
                     var srcSrvContext = new SrcSrvContext
                     {
                         RawUrl = rawUrl,
-                        DownloadWithPowershell = options.DownloadWithPowerShell,
+                        DownloadWithPowershell = options.Method == LinkMethod.Powershell,
                         Revision = commitId,
                     };
                     foreach (var sourceFile in repoSourceFiles)
@@ -120,7 +139,19 @@ namespace GitLink
                         srcSrvContext.VstsData["TFS_REPO"] = provider.ProjectName;
                     }
 
-                    ProjectExtensions.CreateSrcSrv(projectSrcSrvFile, srcSrvContext);
+                    CreateSrcSrv(projectSrcSrvFile, srcSrvContext);
+                }
+                catch (RepositoryNotFoundException)
+                {
+                    Log.Error($"Unable to find git repo at \"{options.GitWorkingDirectory}\".");
+                    return false;
+                }
+                finally
+                {
+                    if (repository.IsValueCreated)
+                    {
+                        repository.Value.Dispose();
+                    }
                 }
             }
 
@@ -130,6 +161,42 @@ namespace GitLink
             Log.Info($"Remote git source information for {indexedFilesCount}/{sourceFiles.Count} files written to pdb: \"{pdbPath}\"");
 
             return true;
+        }
+
+        private static void CreateSrcSrv(string srcsrvFile, SrcSrvContext srcSrvContext)
+        {
+            Argument.IsNotNull(() => srcSrvContext);
+            Argument.IsNotNullOrWhitespace(() => srcSrvContext.RawUrl);
+            Argument.IsNotNullOrWhitespace(() => srcSrvContext.Revision);
+            Argument.IsNotNullOrWhitespace(() => srcsrvFile);
+
+            if (srcSrvContext.VstsData.Count != 0)
+            {
+                File.WriteAllBytes(srcsrvFile, SrcSrv.CreateVsts(srcSrvContext.Revision, srcSrvContext.Paths, srcSrvContext.VstsData));
+            }
+            else
+            {
+                File.WriteAllBytes(srcsrvFile, SrcSrv.Create(srcSrvContext.RawUrl, srcSrvContext.Revision, srcSrvContext.Paths, srcSrvContext.DownloadWithPowershell));
+            }
+        }
+
+        private static string GetNormalizedPath(string path, string gitRepoRootDir)
+        {
+            Argument.IsNotNullOrEmpty(nameof(path), path);
+            Argument.IsNotNullOrEmpty(nameof(gitRepoRootDir), gitRepoRootDir);
+
+            string relativePath = Catel.IO.Path.GetRelativePath(path, gitRepoRootDir);
+            string[] segments = relativePath.Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
+            DirectoryInfo currentDir = new DirectoryInfo(gitRepoRootDir);
+            for (int i = 0; i < segments.Length; i++)
+            {
+                string segment = segments[i];
+                var next = currentDir.GetFileSystemInfos(segment).FirstOrDefault();
+                segments[i] = next.Name; // get canonical capitalization
+                currentDir = next as DirectoryInfo;
+            }
+
+            return Path.Combine(segments);
         }
     }
 }

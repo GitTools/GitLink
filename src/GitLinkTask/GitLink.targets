@@ -6,8 +6,11 @@
   <Target Name="LinkSymbolsToRemoteGitRepo" AfterTargets="Compile">
     <GitLink Condition=" Exists('$(IntermediateOutputPath)$(TargetName).pdb') "
         PdbFile="$(IntermediateOutputPath)$(TargetName).pdb"
-        DownloadWithPowershell="$(GitLinkUsePowerShell)"
+        Method="$(GitLinkMethod)"
         SkipVerify="$(GitLinkSkipVerify)"
-        GitRemoteUrl="$(GitLinkGitRemoteUrl)" />
+        GitRemoteUrl="$(GitLinkGitRemoteUrl)"
+        GitWorkingDirectory="$(GitWorkingDirectory)"
+        GitCommitId="$(GitCommitId)"
+        ContinueOnError="true" />
   </Target>
 </Project>

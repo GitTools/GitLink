@@ -57,22 +57,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
     <Compile Include="Extensions\BinaryReaderExtensions.cs" />
-    <Compile Include="Authentication.cs" />
-    <Compile Include="Extensions\ContextExtensions.cs" />
     <Compile Include="Extensions\PdbExtensions.cs" />
-    <Compile Include="Extensions\ProjectExtensions.cs" />
-    <Compile Include="Extensions\ProjectItemExtensions.cs" />
     <Compile Include="Exceptions\GitLinkException.cs" />
     <Compile Include="Extensions\RepositoryExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Build\Construction\Interfaces\IProjectConfigurationInSolution.cs" />
-    <Compile Include="Build\Construction\Interfaces\IProjectInSolution.cs" />
-    <Compile Include="Build\Construction\Interfaces\ISolutionParser.cs" />
     <Compile Include="Helpers\PdbStrHelper.cs" />
-    <Compile Include="Helpers\ProjectHelper.cs" />
     <Compile Include="Linker.cs" />
+    <Compile Include="LinkMethod.cs" />
     <Compile Include="LinkOptions.cs" />
     <Compile Include="Logging\OutputLogListener.cs" />
     <Compile Include="Pdb\Crypto.cs" />
@@ -85,7 +77,6 @@
     <Compile Include="Pdb\SrcSrvContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Context.cs" />
     <Compile Include="Providers\BitBucketProvider.cs" />
     <Compile Include="Providers\CustomRawUrlProvider.cs" />
     <Compile Include="Providers\CustomUrlProvider.cs" />
@@ -110,7 +101,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Icons\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
