@@ -157,11 +157,18 @@ namespace GitLink
 
             if (string.IsNullOrEmpty(context.TargetUrl))
             {
-                Log.Info("No target url was specified, trying to determine the target url automatically");
+                Log.Info($"No target url was specified, trying to determine the target url automatically based on directory '{context.SolutionDirectory}'");
 
                 var gitDir = GitDirFinder.TreeWalkForGitDir(context.SolutionDirectory);
-                if (gitDir != null)
+
+                if (gitDir == null)
                 {
+                    Log.Warning("Could not find a .git directory by walking up the directory tree");
+                }
+                else
+                {
+                    Log.Debug($"Found git directory at '{gitDir}', opening repository");
+
                     using (var repo = RepositoryLoader.GetRepo(gitDir))
                     {
                         var currentBranch = repo.Head;
@@ -169,11 +176,15 @@ namespace GitLink
                         if (string.IsNullOrEmpty(context.ShaHash))
                         {
                             context.ShaHash = currentBranch.Tip.Sha;
+
+                            Log.Debug($"Automatically determined sha '{context.ShaHash}'");
                         }
 
                         if (currentBranch.Remote == null || currentBranch.IsDetachedHead())
                         {
                             currentBranch = repo.GetBranchesContainingCommit(context.ShaHash).FirstOrDefault(b => b.Remote != null);
+
+                            Log.Debug($"Automatically determined branch '{currentBranch}'");
                         }
 
                         if (currentBranch != null && currentBranch.Remote != null)
