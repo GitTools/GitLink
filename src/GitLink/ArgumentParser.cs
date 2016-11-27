@@ -173,6 +173,8 @@ namespace GitLink
                     {
                         var currentBranch = repo.Head;
 
+                        Log.Debug($"Current branch is '{currentBranch.CanonicalName}', remote: '{currentBranch.Remote?.Url}', isDetachedHead: '{currentBranch.IsDetachedHead()}'");
+
                         if (string.IsNullOrEmpty(context.ShaHash))
                         {
                             context.ShaHash = currentBranch.Tip.Sha;
