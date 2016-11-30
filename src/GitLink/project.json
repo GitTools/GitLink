@@ -1,6 +1,6 @@
 ﻿{
   "dependencies": {
-    "Catel.Core": "4.3.0",
+    "Catel.Core": "4.5.3",
     "GitTools.Core": "1.0.0-unstable0021",
     "ImpromptuInterface": "6.2.2",
     "LibGit2Sharp": "0.21.0.176",
