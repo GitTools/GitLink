@@ -262,6 +262,7 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="https://github.com/MetacoSA/QBitNinja" target="_blank">QBitNinja</a>
 - <a href="http://reactiveui.net" target="_blank">ReactiveUI</a>
 - <a href="http://romanticweb.net" target="_blank">Romantic Web</a>
+- <a href="https://github.com/dotnet/roslyn" target="_blank">Roslyn</a>
 - <a href="https://github.com/xunit/xunit" target="_blank">xUnit.net</a>
 - <a href="https://github.com/xunit/visualstudio.xunit" target="_blank">xUnit.net Visual Studio Runner</a>
 
