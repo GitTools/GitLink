@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Linker.cs" company="Andrew Arnott">
-//   Copyright (c) 2016 Andrew Arnott. All rights reserved.
+// <copyright file="Linker.cs" company="CatenaLogic">
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink
 {
@@ -93,7 +92,7 @@ namespace GitLink
                     try
                     {
                         Repository repo = repository.Value;
-                        repoSourceFiles = sourceFiles.ToDictionary(e => e, repo.GetRepoNormalizedPath);
+                        repoSourceFiles = sourceFiles.ToDictionary(e => e, e => GetNormalizedPath(e, repo));
                     }
                     catch (RepositoryNotFoundException)
                     {
@@ -193,6 +192,16 @@ namespace GitLink
             {
                 File.WriteAllBytes(srcsrvFile, SrcSrv.Create(srcSrvContext.RawUrl, srcSrvContext.Revision, srcSrvContext.Paths, srcSrvContext.DownloadWithPowershell));
             }
+        }
+
+        private static string GetNormalizedPath(string path, Repository repository)
+        {
+            Argument.IsNotNull(nameof(repository), repository);
+            Argument.IsNotNullOrEmpty(nameof(path), path);
+
+            string relativePath = Catel.IO.Path.GetRelativePath(path, repository.Info.WorkingDirectory);
+            var repoFile = repository.Index.FirstOrDefault(e => string.Equals(e.Path, relativePath, StringComparison.OrdinalIgnoreCase));
+            return repoFile?.Path;
         }
 
         private static string GetNormalizedPath(string path, string gitRepoRootDir)

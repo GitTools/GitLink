@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PdbExtensions.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink
 {
@@ -15,9 +14,9 @@ namespace GitLink
     using Catel;
     using Pdb;
 
-    public static class PdbExtensions
+    internal static class PdbExtensions
     {
-        public static IEnumerable<string> FindMissingOrChangedSourceFiles(this PdbFile pdbFile)
+        internal static IEnumerable<string> FindMissingOrChangedSourceFiles(this PdbFile pdbFile)
         {
             Argument.IsNotNull(() => pdbFile);
 
@@ -26,7 +25,7 @@ namespace GitLink
                 string file = checksumInfo.Key;
                 byte[] expectedChecksum = checksumInfo.Value;
                 HashAlgorithm hasher = expectedChecksum.Length == 16 ? (HashAlgorithm)MD5.Create() : SHA1.Create();
-                byte[] actualChecksum = File.Exists(file) ? Crypto.HashFile(hasher, file) : null;
+                byte[] actualChecksum = File.Exists(file) ? HashFile(hasher, file) : null;
 
                 if (!AreEqualBuffers(expectedChecksum, actualChecksum))
                 {
@@ -35,11 +34,11 @@ namespace GitLink
             }
         }
 
-        public static IReadOnlyDictionary<string, byte[]> GetFilesAndChecksums(this PdbFile pdbFile)
+        internal static IReadOnlyDictionary<string, byte[]> GetFilesAndChecksums(this PdbFile pdbFile)
         {
             Argument.IsNotNull(() => pdbFile);
 
-            //const int LastInterestingByte = 47;
+            // const int LastInterestingByte = 47;
             const string FileIndicator = "/src/files/";
 
             var values = pdbFile.Info.NameToPdbName.Values;
@@ -64,6 +63,14 @@ namespace GitLink
             }
 
             return results;
+        }
+
+        private static byte[] HashFile(HashAlgorithm ha, string file)
+        {
+            using (var fs = File.OpenRead(file))
+            {
+                return ha.ComputeHash(fs);
+            }
         }
 
         private static bool AreEqualBuffers(byte[] first, byte[] second)

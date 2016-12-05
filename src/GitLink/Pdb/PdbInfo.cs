@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PdbInfo.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink.Pdb
 {
@@ -11,11 +10,11 @@ namespace GitLink.Pdb
     using System.Collections.Generic;
     using Catel;
 
-    public class PdbInfo
+    internal class PdbInfo
     {
-        public PdbInfo()
+        internal PdbInfo()
         {
-            Guid = new Guid();
+            Guid = default(Guid);
             StreamToPdbName = new SortedDictionary<int, PdbName>();
             NameToPdbName = new SortedDictionary<string, PdbName>();
             FlagIndexToPdbName = new SortedDictionary<int, PdbName>();
@@ -24,26 +23,37 @@ namespace GitLink.Pdb
             Tail = new byte[0];
         }
 
-        public int Version { get; set; }
-        public int Signature { get; set; }
-        public Guid Guid { get; set; }
-        public int Age { get; set; }
-        public int FlagIndexMax { get; set; }
-        public int FlagCount { get; set; }
-        public IDictionary<int, PdbName> StreamToPdbName { get; private set; }
-        public IDictionary<string, PdbName> NameToPdbName { get; private set; }
-        public IDictionary<int, PdbName> FlagIndexToPdbName { get; private set; }
-        public SortedSet<int> FlagIndexes { get; private set; }
-        public string[] SrcSrv { get; set; }
-        public byte[] Tail { get; set; }
+        internal int Version { get; set; }
 
-        public void ClearFlags()
+        internal int Signature { get; set; }
+
+        internal Guid Guid { get; set; }
+
+        internal int Age { get; set; }
+
+        internal int FlagIndexMax { get; set; }
+
+        internal int FlagCount { get; set; }
+
+        internal IDictionary<int, PdbName> StreamToPdbName { get; private set; }
+
+        internal IDictionary<string, PdbName> NameToPdbName { get; private set; }
+
+        internal IDictionary<int, PdbName> FlagIndexToPdbName { get; private set; }
+
+        internal SortedSet<int> FlagIndexes { get; private set; }
+
+        internal string[] SrcSrv { get; set; }
+
+        internal byte[] Tail { get; set; }
+
+        internal void ClearFlags()
         {
             FlagIndexes.Clear();
             FlagIndexToPdbName.Clear();
         }
 
-        public void AddFlag(PdbName name)
+        internal void AddFlag(PdbName name)
         {
             Argument.IsNotNull(() => name);
 
@@ -51,7 +61,7 @@ namespace GitLink.Pdb
             FlagIndexToPdbName.Add(name.FlagIndex, name);
         }
 
-        public void AddName(PdbName name)
+        internal void AddName(PdbName name)
         {
             Argument.IsNotNull(() => name);
 

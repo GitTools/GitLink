@@ -23,8 +23,9 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\..\bin\Debug\GitLink\GitLink.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>GitLink.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,8 +36,9 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>..\..\bin\Release\GitLink\GitLink.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>GitLink.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>GitLink.Program</StartupObject>
@@ -60,14 +62,11 @@
     <Compile Include="Extensions\BinaryReaderExtensions.cs" />
     <Compile Include="Extensions\PdbExtensions.cs" />
     <Compile Include="Exceptions\GitLinkException.cs" />
-    <Compile Include="Extensions\RepositoryExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\PdbStrHelper.cs" />
     <Compile Include="Linker.cs" />
     <Compile Include="LinkMethod.cs" />
     <Compile Include="LinkOptions.cs" />
     <Compile Include="Logging\OutputLogListener.cs" />
-    <Compile Include="Pdb\Crypto.cs" />
     <Compile Include="Pdb\PdbFile.cs" />
     <Compile Include="Pdb\PdbInfo.cs" />
     <Compile Include="Pdb\PdbName.cs" />
@@ -88,19 +87,21 @@
     <Compile Include="Providers\VisualStudioTeamServicesProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GitLink.ruleset" />
     <None Include="pdbstr.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="winsdk.redist.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="Logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Icons\" />
+    <Content Include="Logo.ico" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

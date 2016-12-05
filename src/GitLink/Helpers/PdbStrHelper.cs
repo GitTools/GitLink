@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PdbStrHelper.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink
 {
@@ -11,11 +10,11 @@ namespace GitLink
     using Catel;
     using Catel.Logging;
 
-    public static class PdbStrHelper
+    internal static class PdbStrHelper
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        public static void Execute(string pdbStrFileName, string projectPdbFile, string pdbStrFile)
+        internal static void Execute(string pdbStrFileName, string projectPdbFile, string pdbStrFile)
         {
             Argument.IsNotNullOrWhitespace(() => projectPdbFile);
             Argument.IsNotNullOrWhitespace(() => pdbStrFile);
