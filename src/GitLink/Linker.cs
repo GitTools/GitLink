@@ -17,6 +17,7 @@ namespace GitLink
     using GitTools;
     using Microsoft.Build.Evaluation;
     using Pdb;
+    using Providers;
 
     /// <summary>
     /// Class Linker.
@@ -209,14 +210,14 @@ namespace GitLink
                     }
                 }
 
-                if(!srcSrvContext.RawUrl.Contains("%var2%") && !srcSrvContext.RawUrl.Contains("{0}"))
+                if (!srcSrvContext.RawUrl.Contains("%var2%") && !srcSrvContext.RawUrl.Contains("{0}"))
                 {
                     srcSrvContext.RawUrl = string.Format("{0}/{{0}}/%var2%", srcSrvContext.RawUrl);
                 }
-				
+
                 foreach (var compilable in compilables)
                 {
-                    var relativePathForUrl = compilable.Replace(context.SolutionDirectory, string.Empty).Replace("\\", "/");
+                    var relativePathForUrl = ReplaceSlashes(context.Provider, compilable.Replace(context.SolutionDirectory, string.Empty));
                     while (relativePathForUrl.StartsWith("/"))
                     {
                         relativePathForUrl = relativePathForUrl.Substring(1, relativePathForUrl.Length - 1);
@@ -251,6 +252,23 @@ namespace GitLink
             }
 
             return true;
+        }
+
+        private static string ReplaceSlashes(IProvider provider, string relativePathForUrl)
+        {
+            bool isBackSlashSupported = false;
+
+            // Check if provider is capable of determining whether to use back slashes or forward slashes.
+            IBackSlashSupport backSlashSupport = provider as IBackSlashSupport;
+            if (backSlashSupport != null)
+                isBackSlashSupported = backSlashSupport.IsBackSlashSupported;
+
+            if (isBackSlashSupported)
+                relativePathForUrl = relativePathForUrl.Replace("/", "\\");
+            else
+                relativePathForUrl = relativePathForUrl.Replace("\\", "/");
+
+            return relativePathForUrl;
         }
     }
 }
