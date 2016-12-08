@@ -63,13 +63,13 @@ Using GitLink via the command line is very simple:
 
 When working with a content proxy or an alternative git VCS system that supports direct HTTP access to specific file revisions use the `-u` parameter with the custom raw content root URL
 
-    GitLink.exe -u https://raw.githubusercontent.com/catel/catel <pdbfile>
+    GitLink.exe <pdbfile> -u https://raw.githubusercontent.com/catel/catel
     
 The custom url will be used to fill in the following pattern `{customUrl}/{revision}/{relativeFilePath}` when generating the source mapping.
 
 When working with a repository using uncommon URL you can use placeholders to specify where the filename and revision hash should be, use `-u` parameter with the custom URL
 
-    GitLink.exe -u "https://host/projects/catel/repos/catel/browse/{filename}?at={revision}&raw" <pdbfile>
+    GitLink.exe <pdbfile> -u "https://host/projects/catel/repos/catel/browse/{filename}?at={revision}&raw"
 
 The custom url will be used to fill the placeholders with the relative file path and the revision hash.
 
@@ -77,7 +77,7 @@ The custom url will be used to fill the placeholders with the relative file path
 
 When you need to log the information to a file, use the following command line:
 
-    GitLink.exe -l GitLinkLog.log <pdbfile>
+    GitLink.exe <pdbfile> -l GitLinkLog.log
 
 ### More options
 
