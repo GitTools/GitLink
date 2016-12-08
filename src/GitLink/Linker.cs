@@ -48,7 +48,14 @@ namespace GitLink
                 }
                 else
                 {
-                    repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(sourceFiles.First()));
+                    string someSourceFile = sourceFiles.FirstOrDefault();
+                    if (someSourceFile == null)
+                    {
+                        Log.Error("No source files were found in the PDB.");
+                        return false;
+                    }
+
+                    repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(someSourceFile));
                     if (repositoryDirectory == null)
                     {
                         Log.Error("No source files found that are tracked in a git repo.");
@@ -146,6 +153,7 @@ namespace GitLink
                         }
                     }
 
+                    // When using the VisualStudioTeamServicesProvider, add extra infomration to dictionary with VSTS-specific data
                     if (provider is Providers.VisualStudioTeamServicesProvider)
                     {
                         srcSrvContext.VstsData["TFS_COLLECTION"] = provider.CompanyUrl;
@@ -169,7 +177,7 @@ namespace GitLink
                 }
             }
 
-            Log.Debug("Created source server link file, updating pdb file '{0}'", Catel.IO.Path.GetRelativePath(pdbPath, repositoryDirectory));
+            Log.Debug("Created source server link file, updating pdb file \"{0}\"", Catel.IO.Path.GetRelativePath(pdbPath, repositoryDirectory));
             PdbStrHelper.Execute(PdbStrExePath, pdbPath, projectSrcSrvFile);
             var indexedFilesCount = repoSourceFiles.Values.Count(v => v != null);
             Log.Info($"Remote git source information for {indexedFilesCount}/{sourceFiles.Count} files written to pdb: \"{pdbPath}\"");
@@ -179,13 +187,14 @@ namespace GitLink
 
         private static void CreateSrcSrv(string srcsrvFile, SrcSrvContext srcSrvContext)
         {
-            Argument.IsNotNull(() => srcSrvContext);
-            Argument.IsNotNullOrWhitespace(() => srcSrvContext.RawUrl);
-            Argument.IsNotNullOrWhitespace(() => srcSrvContext.Revision);
-            Argument.IsNotNullOrWhitespace(() => srcsrvFile);
+            Argument.IsNotNull(nameof(srcSrvContext), srcSrvContext);
+            Argument.IsNotNullOrWhitespace(nameof(srcSrvContext) + "." + nameof(srcSrvContext.RawUrl), srcSrvContext.RawUrl);
+            Argument.IsNotNullOrWhitespace(nameof(srcSrvContext) + "." + nameof(srcSrvContext.Revision), srcSrvContext.Revision);
+            Argument.IsNotNullOrWhitespace(nameof(srcsrvFile), srcsrvFile);
 
             if (srcSrvContext.VstsData.Count != 0)
             {
+                Log.Debug("Writing VSTS specific bytes to srcsrv file because VstsData was not empty.");
                 File.WriteAllBytes(srcsrvFile, SrcSrv.CreateVsts(srcSrvContext.Revision, srcSrvContext.Paths, srcSrvContext.VstsData));
             }
             else
@@ -216,6 +225,12 @@ namespace GitLink
             {
                 string segment = segments[i];
                 var next = currentDir.GetFileSystemInfos(segment).FirstOrDefault();
+                if (next == null)
+                {
+                    Log.Error($"Unable to find path \"{path}\" on disk.");
+                    return path;
+                }
+
                 segments[i] = next.Name; // get canonical capitalization
                 currentDir = next as DirectoryInfo;
             }

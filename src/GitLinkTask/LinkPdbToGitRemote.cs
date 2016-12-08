@@ -8,15 +8,15 @@ namespace GitLinkTask
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
 
-    public class GitLink : Task
+    public class LinkPdbToGitRemote : Task
     {
         [Required]
         public ITaskItem PdbFile { get; set; }
 
         public string Method
         {
-            get { return this.MethodEnum.ToString(); }
-            set { this.MethodEnum = string.IsNullOrEmpty(value) ? LinkMethod.Http : (LinkMethod)Enum.Parse(typeof(LinkMethod), value); }
+            get { return MethodEnum.ToString(); }
+            set { MethodEnum = string.IsNullOrEmpty(value) ? LinkMethod.Http : (LinkMethod)Enum.Parse(typeof(LinkMethod), value); }
         }
 
         public bool SkipVerify { get; set; }
@@ -31,28 +31,28 @@ namespace GitLinkTask
 
         public override bool Execute()
         {
-            LogManager.AddListener(new MSBuildListener(this.Log));
+            LogManager.AddListener(new MSBuildListener(Log));
 
             var options = new LinkOptions
             {
-                Method = this.MethodEnum,
-                SkipVerify = this.SkipVerify,
-                GitRemoteUrl = this.GitRemoteUrl != null ? new Uri(this.GitRemoteUrl, UriKind.Absolute) : null,
-                CommitId = this.GitCommitId,
-                GitWorkingDirectory = this.GitWorkingDirectory,
+                Method = MethodEnum,
+                SkipVerify = SkipVerify,
+                GitRemoteUrl = GitRemoteUrl != null ? new Uri(GitRemoteUrl, UriKind.Absolute) : null,
+                CommitId = GitCommitId,
+                GitWorkingDirectory = GitWorkingDirectory,
             };
-            bool success = Linker.Link(this.PdbFile.GetMetadata("FullPath"), options);
+            bool success = Linker.Link(PdbFile.GetMetadata("FullPath"), options);
 
-            return success && !this.Log.HasLoggedErrors;
+            return success && !Log.HasLoggedErrors;
         }
 
         private class MSBuildListener : LogListenerBase
         {
-            private readonly TaskLoggingHelper log;
+            private readonly TaskLoggingHelper _log;
 
             internal MSBuildListener(TaskLoggingHelper log)
             {
-                this.log = log;
+                _log = log;
             }
 
             protected override void Write(ILog log, string message, LogEvent logEvent, object extraData, LogData logData, DateTime time)
@@ -60,16 +60,16 @@ namespace GitLinkTask
                 switch (logEvent)
                 {
                     case LogEvent.Error:
-                        this.log.LogError(message);
+                        _log.LogError(message);
                         break;
                     case LogEvent.Warning:
-                        this.log.LogWarning(message);
+                        _log.LogWarning(message);
                         break;
                     case LogEvent.Info:
-                        this.log.LogMessage(MessageImportance.Normal, message);
+                        _log.LogMessage(MessageImportance.Normal, message);
                         break;
                     case LogEvent.Debug:
-                        this.log.LogMessage(MessageImportance.Low, message);
+                        _log.LogMessage(MessageImportance.Low, message);
                         break;
                     default:
                         break;

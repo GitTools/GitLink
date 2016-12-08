@@ -14,7 +14,10 @@
       "version": "0.1.37-beta",
       "suppressParent": "none"
     },
-    "StyleCop.Analyzers": "1.0.0",
+    "StyleCop.Analyzers": {
+      "version": "1.0.0",
+      "type": "build"
+    },
     "Nerdbank.GitVersioning": {
       "version": "1.5.46",
       "suppressParent": "none"

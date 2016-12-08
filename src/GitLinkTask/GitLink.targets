@@ -1,16 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <UsingTask TaskName="GitLink" AssemblyFile="$(MSBuildThisFileDirectory)GitLinkTask.dll" />
+  <UsingTask TaskName="LinkPdbToGitRemote" AssemblyFile="$(MSBuildThisFileDirectory)GitLinkTask.dll" />
 
-  <Target Name="LinkSymbolsToRemoteGitRepo" AfterTargets="Compile">
-    <GitLink Condition=" Exists('$(IntermediateOutputPath)$(TargetName).pdb') "
+  <Target Name="LinkPdbToGitRemote"
+          AfterTargets="Compile"
+          Condition=" '$(GitLinkEnabled)' == 'true' ">
+    <LinkPdbToGitRemote Condition=" Exists('$(IntermediateOutputPath)$(TargetName).pdb') "
         PdbFile="$(IntermediateOutputPath)$(TargetName).pdb"
         Method="$(GitLinkMethod)"
         SkipVerify="$(GitLinkSkipVerify)"
         GitRemoteUrl="$(GitLinkGitRemoteUrl)"
         GitWorkingDirectory="$(GitWorkingDirectory)"
         GitCommitId="$(GitCommitId)"
-        ContinueOnError="true" />
+        ContinueOnError="$(GitLinkContinueOnError)" />
   </Target>
 </Project>

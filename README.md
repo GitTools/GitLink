@@ -6,7 +6,6 @@ GitLink
 [![Join the chat at https://gitter.im/GitTools/GitLink](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/GitTools/GitLink?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ![License](https://img.shields.io/github/license/gittools/gitlink.svg)
-[![NuGet downloads](https://img.shields.io/nuget/dt/gitlink.svg)][NuGetDownload]
 [![Version](https://img.shields.io/nuget/v/gitlink.svg)][NuGetDownload]
 [![Pre-release version](https://img.shields.io/nuget/vpre/gitlink.svg)][NuGetDownload]
 ![Chocolatey count](https://img.shields.io/chocolatey/dt/gitlink.svg)
@@ -64,13 +63,13 @@ Using GitLink via the command line is very simple:
 
 When working with a content proxy or an alternative git VCS system that supports direct HTTP access to specific file revisions use the `-u` parameter with the custom raw content root URL
 
-    GitLink.exe c:\source\catel -u https://raw.githubusercontent.com/catel/catel
+    GitLink.exe <pdbfile> -u https://raw.githubusercontent.com/catel/catel
     
 The custom url will be used to fill in the following pattern `{customUrl}/{revision}/{relativeFilePath}` when generating the source mapping.
 
 When working with a repository using uncommon URL you can use placeholders to specify where the filename and revision hash should be, use `-u` parameter with the custom URL
 
-    GitLink.exe c:\source\catel -u "https://host/projects/catel/repos/catel/browse/{filename}?at={revision}&raw"
+    GitLink.exe <pdbfile> -u "https://host/projects/catel/repos/catel/browse/{filename}?at={revision}&raw"
 
 The custom url will be used to fill the placeholders with the relative file path and the revision hash.
 
@@ -78,7 +77,7 @@ The custom url will be used to fill the placeholders with the relative file path
 
 When you need to log the information to a file, use the following command line:
 
-    GitLink.exe c:\source\catel -u https://github.com/catel/catel -b develop -l GitLinkLog.log
+    GitLink.exe <pdbfile> -l GitLinkLog.log
 
 ### More options
 
@@ -99,7 +98,7 @@ It then searches for a git repo that contains those source files and looks up th
 It also searches your remotes for a URL pattern that it recognizes (e.g. https://github.com/name/repo).
 It combines the URL and the commit ID to create a unique URL for each source file of this exact version, and adds this information to your PDB.
 
-When you share your PDB alongside your DLL, your users who debug with Source Server support enabled will automatically be able to step into your source code. 
+When you share your PDB alongside your assembly, your users who debug with Source Server support enabled will automatically be able to step into your source code. 
 
 # Troubleshooting
 
@@ -134,7 +133,7 @@ GitLink supports the following providers out of the box (will auto-detect based 
 * <a href="https://github.com/" target="_blank">GitHub</a>
 * Custom Provider (custom urls)
 
-Providers currently being worked on:
+Providers that could be supported with the help of the community:
 
 * <a href="https://www.assembla.com/home" target="_blank">Assembla</a>
 * <a href="http://beanstalkapp.com/" target="_blank">Beanstalk</a>
