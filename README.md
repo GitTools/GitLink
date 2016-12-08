@@ -73,12 +73,6 @@ When working with a repository using uncommon URL you can use placeholders to sp
 
 The custom url will be used to fill the placeholders with the relative file path and the revision hash.
 
-### Logging to a file
-
-When you need to log the information to a file, use the following command line:
-
-    GitLink.exe <pdbfile> -l GitLinkLog.log
-
 ### More options
 
 There are many more parameters you can use. Display the usage doc with the following command line:
