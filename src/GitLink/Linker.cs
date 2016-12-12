@@ -99,7 +99,7 @@ namespace GitLink
                     try
                     {
                         Repository repo = repository.Value;
-                        repoSourceFiles = sourceFiles.ToDictionary(e => e, e => GetNormalizedPath(e, repo));
+                        repoSourceFiles = sourceFiles.ToDictionary(e => e, e => repo.GetNormalizedPath(e));
                     }
                     catch (RepositoryNotFoundException)
                     {
@@ -201,16 +201,6 @@ namespace GitLink
             {
                 File.WriteAllBytes(srcsrvFile, SrcSrv.Create(srcSrvContext.RawUrl, srcSrvContext.Revision, srcSrvContext.Paths, srcSrvContext.DownloadWithPowershell));
             }
-        }
-
-        private static string GetNormalizedPath(string path, Repository repository)
-        {
-            Argument.IsNotNull(nameof(repository), repository);
-            Argument.IsNotNullOrEmpty(nameof(path), path);
-
-            string relativePath = Catel.IO.Path.GetRelativePath(path, repository.Info.WorkingDirectory);
-            var repoFile = repository.Index.FirstOrDefault(e => string.Equals(e.Path, relativePath, StringComparison.OrdinalIgnoreCase));
-            return repoFile?.Path;
         }
 
         private static string GetNormalizedPath(string path, string gitRepoRootDir)

@@ -62,6 +62,7 @@
     <Compile Include="Extensions\BinaryReaderExtensions.cs" />
     <Compile Include="Extensions\PdbExtensions.cs" />
     <Compile Include="Exceptions\GitLinkException.cs" />
+    <Compile Include="Extensions\RepositoryExtensions.cs" />
     <Compile Include="Helpers\PdbStrHelper.cs" />
     <Compile Include="Linker.cs" />
     <Compile Include="LinkMethod.cs" />

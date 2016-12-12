@@ -56,7 +56,11 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="..\GitLink\Extensions\RepositoryExtensions.cs">
+      <Link>Extensions\RepositoryExtensions.cs</Link>
+    </Compile>
     <Compile Include="ApprovalTestsConfig.cs" />
+    <Compile Include="Extensions\RepositoryExtensionFacts.cs" />
     <Compile Include="IntegrationTests\BitBucketIntegration.cs" />
     <Compile Include="IntegrationTests\GitHubIntegration.cs" />
     <Compile Include="IntegrationTests\IntegrationTestBase.cs" />
