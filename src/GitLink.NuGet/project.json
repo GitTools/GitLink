@@ -1,9 +1,5 @@
 ﻿{
   "dependencies": {
-    "ReadOnlySourceTree": {
-      "version": "0.1.37-beta",
-      "suppressParent": "none"
-    },
     "Nerdbank.GitVersioning": {
       "version": "1.5.46",
       "suppressParent": "none"

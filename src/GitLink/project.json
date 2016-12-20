@@ -10,10 +10,6 @@
       "version": "1.0.4",
       "suppressParent": "none"
     },
-    "ReadOnlySourceTree": {
-      "version": "0.1.37-beta",
-      "suppressParent": "none"
-    },
     "StyleCop.Analyzers": {
       "version": "1.0.0",
       "type": "build"
