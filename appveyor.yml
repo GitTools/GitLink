@@ -14,5 +14,5 @@ build:
   parallel: true
   verbosity: minimal
 artifacts:
-- path: bin\**\*.nupkg
+- path: '**\bin\**\*.nupkg'
   name: NuGet Package
