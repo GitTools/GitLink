@@ -1,13 +1,15 @@
-﻿using GitLink.Providers;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="UncProviderFacts.cs" company="CatenaLogic">
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 
 namespace GitLink.Tests.Providers
 {
+    using GitLink.Providers;
+    using NUnit.Framework;
+
     /// <summary>
     /// Test cases for <see cref="UncProvider"/>.
     /// </summary>

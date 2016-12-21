@@ -259,14 +259,20 @@ namespace GitLink
             bool isBackSlashSupported = false;
 
             // Check if provider is capable of determining whether to use back slashes or forward slashes.
-            IBackSlashSupport backSlashSupport = provider as IBackSlashSupport;
+            var backSlashSupport = provider as IBackSlashSupport;
             if (backSlashSupport != null)
+            {
                 isBackSlashSupported = backSlashSupport.IsBackSlashSupported;
+            }
 
             if (isBackSlashSupported)
+            {
                 relativePathForUrl = relativePathForUrl.Replace("/", "\\");
+            }
             else
+            {
                 relativePathForUrl = relativePathForUrl.Replace("\\", "/");
+            }
 
             return relativePathForUrl;
         }
