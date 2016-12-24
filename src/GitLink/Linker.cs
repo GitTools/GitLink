@@ -19,6 +19,7 @@ namespace GitLink
     using LibGit2Sharp;
     using Microsoft.Build.Evaluation;
     using Pdb;
+    using Providers;
 
     /// <summary>
     /// Class Linker.
@@ -149,7 +150,8 @@ namespace GitLink
                         // Skip files that aren't tracked by source control.
                         if (sourceFile.Value != null)
                         {
-                            srcSrvContext.Paths.Add(Tuple.Create(sourceFile.Key, sourceFile.Value.Replace('\\', '/')));
+                            string relativePathForUrl = ReplaceSlashes(provider, sourceFile.Value);
+                            srcSrvContext.Paths.Add(Tuple.Create(sourceFile.Key, relativePathForUrl));
                         }
                     }
 
@@ -158,7 +160,7 @@ namespace GitLink
                     {
                         srcSrvContext.VstsData["TFS_COLLECTION"] = provider.CompanyUrl;
                         srcSrvContext.VstsData["TFS_TEAM_PROJECT"] = provider.ProjectName;
-                        srcSrvContext.VstsData["TFS_REPO"] = provider.ProjectName;
+                        srcSrvContext.VstsData["TFS_REPO"] = provider.ProjectUrl;
                     }
 
                     CreateSrcSrv(projectSrcSrvFile, srcSrvContext);
@@ -226,6 +228,29 @@ namespace GitLink
             }
 
             return Path.Combine(segments);
+        }
+
+        private static string ReplaceSlashes(IProvider provider, string relativePathForUrl)
+        {
+            bool isBackSlashSupported = false;
+
+            // Check if provider is capable of determining whether to use back slashes or forward slashes.
+            var backSlashSupport = provider as IBackSlashSupport;
+            if (backSlashSupport != null)
+            {
+                isBackSlashSupported = backSlashSupport.IsBackSlashSupported;
+            }
+
+            if (isBackSlashSupported)
+            {
+                relativePathForUrl = relativePathForUrl.Replace("/", "\\");
+            }
+            else
+            {
+                relativePathForUrl = relativePathForUrl.Replace("\\", "/");
+            }
+
+            return relativePathForUrl;
         }
     }
 }

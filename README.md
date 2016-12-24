@@ -4,7 +4,6 @@ GitLink
 [![Build status](https://ci.appveyor.com/api/projects/status/g56b4xyl4q0ean8i/branch/develop?svg=true)](https://ci.appveyor.com/project/AArnott/gitlink/branch/develop)
 
 [![Join the chat at https://gitter.im/GitTools/GitLink](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/GitTools/GitLink?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ![License](https://img.shields.io/github/license/gittools/gitlink.svg)
 [![Version](https://img.shields.io/nuget/v/gitlink.svg)][NuGetDownload]
 [![Pre-release version](https://img.shields.io/nuget/vpre/gitlink.svg)][NuGetDownload]
@@ -181,6 +180,8 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="https://github.com/MetacoSA/QBitNinja" target="_blank">QBitNinja</a>
 - <a href="http://reactiveui.net" target="_blank">ReactiveUI</a>
 - <a href="http://romanticweb.net" target="_blank">Romantic Web</a>
+- <a href="https://github.com/dotnet/roslyn" target="_blank">Roslyn</a>
+- <a href="https://github.com/volkanceylan/serenity" target="_blank">Serenity</a>
 - <a href="https://github.com/xunit/xunit" target="_blank">xUnit.net</a>
 - <a href="https://github.com/xunit/visualstudio.xunit" target="_blank">xUnit.net Visual Studio Runner</a>
 
