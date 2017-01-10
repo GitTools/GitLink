@@ -75,6 +75,8 @@ namespace GitLink.Providers
                 repositoryDirectory = _repositoryPreparer.Prepare(context, temporaryFilesContext);
             }
 
+            repositoryDirectory = GitDirFinder.TreeWalkForGitDir(repositoryDirectory);
+
             using (var repository = new Repository(repositoryDirectory))
             {
                 if (string.IsNullOrEmpty(context.ShaHash))

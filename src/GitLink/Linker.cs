@@ -16,6 +16,8 @@ namespace GitLink
     using Catel.Logging;
     using GitTools;
     using Microsoft.Build.Evaluation;
+    using Pdb;
+    using Providers;
 
     /// <summary>
     /// Class Linker.
@@ -183,6 +185,14 @@ namespace GitLink
                 var outputPdbFile = project.GetOutputPdbFile();
                 var projectPdbFile = pathPdbDirectory != null ? Path.Combine(pathPdbDirectory, Path.GetFileName(outputPdbFile)) : Path.GetFullPath(outputPdbFile);
                 var projectSrcSrvFile = projectPdbFile + ".srcsrv";
+
+                var srcSrvContext = new SrcSrvContext
+                {
+                    Revision = shaHash,
+                    RawUrl = context.Provider.RawGitUrl,
+                    DownloadWithPowershell = context.DownloadWithPowershell
+                };
+
                 if (!File.Exists(projectPdbFile))
                 {
                     Log.Warning("No pdb file found for '{0}', is project built in '{1}' mode with pdb files enabled? Expected file is '{2}'", projectName, context.ConfigurationName, projectPdbFile);
@@ -200,26 +210,31 @@ namespace GitLink
                     }
                 }
 
-				var rawUrl = context.Provider.RawGitUrl;
-
-                if(!rawUrl.Contains("%var2%") && !rawUrl.Contains("{0}"))
-                { 
-                    rawUrl= string.Format("{0}/{{0}}/%var2%", rawUrl);
+                if (!srcSrvContext.RawUrl.Contains("%var2%") && !srcSrvContext.RawUrl.Contains("{0}"))
+                {
+                    srcSrvContext.RawUrl = string.Format("{0}/{{0}}/%var2%", srcSrvContext.RawUrl);
                 }
-				
-                var paths = new Dictionary<string, string>();
+
                 foreach (var compilable in compilables)
                 {
-                    var relativePathForUrl = compilable.Replace(context.SolutionDirectory, string.Empty).Replace("\\", "/");
+                    var relativePathForUrl = ReplaceSlashes(context.Provider, compilable.Replace(context.SolutionDirectory, string.Empty));
                     while (relativePathForUrl.StartsWith("/"))
                     {
                         relativePathForUrl = relativePathForUrl.Substring(1, relativePathForUrl.Length - 1);
                     }
 
-                    paths.Add(compilable, relativePathForUrl);
+                    srcSrvContext.Paths.Add(new Tuple<string, string>(compilable, relativePathForUrl));
                 }
 
-                project.CreateSrcSrv(rawUrl, shaHash, paths, projectSrcSrvFile, context.DownloadWithPowershell);
+                // When using the VisualStudioTeamServicesProvider, add extra infomration to dictionary with VSTS-specific data
+                if (context.Provider.GetType().Name.EqualsIgnoreCase("VisualStudioTeamServicesProvider"))
+                {
+                    srcSrvContext.VstsData["TFS_COLLECTION"] = context.Provider.CompanyUrl;
+                    srcSrvContext.VstsData["TFS_TEAM_PROJECT"] = context.Provider.ProjectName;
+                    srcSrvContext.VstsData["TFS_REPO"] = context.Provider.ProjectUrl;
+                }
+
+                project.CreateSrcSrv(projectSrcSrvFile, srcSrvContext);
 
                 Log.Debug("Created source server link file, updating pdb file '{0}'", context.GetRelativePath(projectPdbFile));
 
@@ -237,6 +252,29 @@ namespace GitLink
             }
 
             return true;
+        }
+
+        private static string ReplaceSlashes(IProvider provider, string relativePathForUrl)
+        {
+            bool isBackSlashSupported = false;
+
+            // Check if provider is capable of determining whether to use back slashes or forward slashes.
+            var backSlashSupport = provider as IBackSlashSupport;
+            if (backSlashSupport != null)
+            {
+                isBackSlashSupported = backSlashSupport.IsBackSlashSupported;
+            }
+
+            if (isBackSlashSupported)
+            {
+                relativePathForUrl = relativePathForUrl.Replace("/", "\\");
+            }
+            else
+            {
+                relativePathForUrl = relativePathForUrl.Replace("\\", "/");
+            }
+
+            return relativePathForUrl;
         }
     }
 }

@@ -8,46 +8,28 @@
 namespace GitLink
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using Catel;
     using Catel.Logging;
     using Catel.Reflection;
     using Microsoft.Build.Evaluation;
     using System.IO;
     using System.Text.RegularExpressions;
+    using Build.Construction;
+    using ImpromptuInterface;
 
     public static class ProjectHelper
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         private static readonly Type SolutionParserType;
-        private static readonly PropertyInfo SolutionReaderPropertyInfo;
-        private static readonly PropertyInfo ProjectsPropertyInfo;
-        private static readonly MethodInfo ParseSolutionMethodInfo;
-        private static readonly PropertyInfo RelativePathPropertyInfo;
-        private static readonly PropertyInfo ProjectTypePropertyInfo;
         private static readonly object KnownToBeMsBuildFormat;
 
         static ProjectHelper()
         {
-            const BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy;
-
-            SolutionParserType = TypeCache.GetType("Microsoft.Build.Construction.SolutionParser");
-            if (SolutionParserType != null)
-            {
-                SolutionReaderPropertyInfo = SolutionParserType.GetProperty("SolutionReader", bindingFlags);
-                ProjectsPropertyInfo = SolutionParserType.GetProperty("Projects", bindingFlags);
-                ParseSolutionMethodInfo = SolutionParserType.GetMethod("ParseSolution", bindingFlags);
-            }
-
-            var projectInSolutionType = TypeCache.GetType("Microsoft.Build.Construction.ProjectInSolution");
-            if (projectInSolutionType != null)
-            {
-                RelativePathPropertyInfo = projectInSolutionType.GetProperty("RelativePath", bindingFlags);
-                ProjectTypePropertyInfo = projectInSolutionType.GetProperty("ProjectType", bindingFlags);
-            }
+            SolutionParserType = TypeCache.GetType("Microsoft.Build.Construction.SolutionParser, Microsoft.Build");
 
             var solutionProjectTypeType = TypeCache.GetType("Microsoft.Build.Construction.SolutionProjectType");
             if (solutionProjectTypeType != null)
@@ -59,23 +41,24 @@ namespace GitLink
         public static IEnumerable<Project> GetProjects(string solutionFile, string configurationName, string platformName)
         {
             var projects = new List<Project>();
-            var solutionParser = SolutionParserType.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic).First().Invoke(null);
+            var solutionParser = ((object)Impromptu.InvokeConstructor(SolutionParserType)).ActLike<ISolutionParser>();
 
             using (var streamReader = new StreamReader(solutionFile))
             {
-                SolutionReaderPropertyInfo.SetValue(solutionParser, streamReader, null);
-                ParseSolutionMethodInfo.Invoke(solutionParser, null);
+                solutionParser.SolutionReader = streamReader;
+                solutionParser.ParseSolution();
                 var solutionDirectory = Path.GetDirectoryName(solutionFile);
-                var array = (Array)ProjectsPropertyInfo.GetValue(solutionParser, null);
-                for (int i = 0; i < array.Length; i++)
+                var projectsInSolution = solutionParser.Projects.AllActLike<IProjectInSolution>();
+                foreach (var projectInSolution in projectsInSolution)
                 {
-                    var projectInSolution = array.GetValue(i);
-                    if (!ObjectHelper.AreEqual(ProjectTypePropertyInfo.GetValue(projectInSolution), KnownToBeMsBuildFormat))
+                    var isKnownToBeMsBuildFormat = ObjectHelper.AreEqual(projectInSolution.ProjectType, KnownToBeMsBuildFormat);
+                    var isSelectedForBuild = ProjectIsSelectedForBuild(projectInSolution, configurationName, platformName);
+                    if (!isKnownToBeMsBuildFormat || !isSelectedForBuild)
                     {
                         continue;
                     }
 
-                    var relativePath = (string)RelativePathPropertyInfo.GetValue(projectInSolution);
+                    var relativePath = projectInSolution.RelativePath;
                     var projectFile = Path.Combine(solutionDirectory, relativePath);
 
                     var project = LoadProject(projectFile, configurationName, platformName, solutionDirectory);
@@ -155,6 +138,21 @@ namespace GitLink
                 }
             }
             return string.Equals(projectName, pattern, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static bool ProjectIsSelectedForBuild(IProjectInSolution project, string configurationName, string platformName)
+        {
+            var configurationPlatformKey = configurationName + "|" + platformName;
+
+            var configurationsDictionary = (IDictionary)project.ProjectConfigurations;
+            if (configurationsDictionary.Contains(configurationPlatformKey))
+            {
+                var cis = configurationsDictionary[configurationPlatformKey].ActLike<IProjectConfigurationInSolution>();
+
+                return cis.IncludeInBuild;
+            }
+
+            return true;
         }
     }
 }

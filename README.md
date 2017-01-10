@@ -2,9 +2,7 @@ GitLink
 ==========
 
 [![Join the chat at https://gitter.im/GitTools/GitLink](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/GitTools/GitLink?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ![License](https://img.shields.io/github/license/gittools/gitlink.svg)
-![NuGet downloads](https://img.shields.io/nuget/dt/gitlink.svg)
 ![Version](https://img.shields.io/nuget/v/gitlink.svg)
 ![Pre-release version](https://img.shields.io/nuget/vpre/gitlink.svg)
 ![Chocolatey count](https://img.shields.io/chocolatey/dt/gitlink.svg)
@@ -18,11 +16,13 @@ GitLink let's users step through your code hosted on GitHub! **Help make .NET op
 
 -- 
 
-**Important note** 
+**Important** 
 
 *GitLink* was formerly named *GitHubLink*. By adding support to more Git hosting services the name seemed not covering the whole package. The old GitHubLink packages on NuGet and Chocolatey will no longer be updated or maintained.
 
--- 
+*Private git repositories* might be problematic. [More info](#source-stepping-returns-html).
+
+--
 
 GitLink makes symbol servers obsolete which saves you both time with uploading source files with symbols and the user no longer has to specify custom symbol servers (such as symbolsource.org).
 
@@ -46,11 +46,22 @@ When using GitLink, the user no longer has to specify symbol servers. The only r
 
 ![Enabling source server support](doc/images/visualstudio_symbolslocation.png)
 
+* Verify that there is not a case mismatch in git folder names vs. references in the .csproj that was used during packaging. E.g. GitHub will not serve /Folder/Somefile.cs if Visual Studio requests /FOLdeR/Somefile.cs.
+
 ## Source Stepping returns HTML
 If your repository is private, you are likely seeing the logon HTML from your git host.
 
 * Log onto your git host in Internet Explorer
-* Purge your local symbol cache 
+* Purge your local symbol cache
+
+Note that this approach is not guaranteed to work.  Visual Studio needs to authenticate to retrieve the source files
+but does not ask the user for credentials to do so.  There are ways to work around this, but no mechanism is currently
+provided out-of-the-box in *GitLink*.
+
+Possible workarounds
+* Include a mechanism in the pdb to retrieve credentials (using PowerShell and Windows credentials store) (see [#37](https://github.com/GitTools/GitLink/issues/37))
+* Use a proxy service that does not require authentication (see [#66](https://github.com/GitTools/GitLink/issues/66) and [Source server with Git repository](https://shonnlyga.wordpress.com/2016/05/28/source-server-with-git-repository))
+
 
 # Supported git providers
 
@@ -218,6 +229,7 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 
 - <a href="http://www.catelproject.com" target="_blank">Catel</a>
 - <a href="http://www.expandframework.com/" target="_blank">eXpand</a>
+- <a href="https://fakeiteasy.github.io/" target="_blank">FakeItEasy</a>
 - <a href="https://github.com/fluentribbon/Fluent.Ribbon" target="_blank">Fluent.Ribbon</a>
 - <a href="https://github.com/GitTools/GitLink" target="_blank">GitLink</a>
 - <a href="https://github.com/MahApps/MahApps.Metro" target="_blank">MahApps.Metro</a>
@@ -250,6 +262,8 @@ Below is a list of projects already using GitLink (alphabetically ordered).
 - <a href="https://github.com/MetacoSA/QBitNinja" target="_blank">QBitNinja</a>
 - <a href="http://reactiveui.net" target="_blank">ReactiveUI</a>
 - <a href="http://romanticweb.net" target="_blank">Romantic Web</a>
+- <a href="https://github.com/dotnet/roslyn" target="_blank">Roslyn</a>
+- <a href="https://github.com/volkanceylan/serenity" target="_blank">Serenity</a>
 - <a href="https://github.com/xunit/xunit" target="_blank">xUnit.net</a>
 - <a href="https://github.com/xunit/visualstudio.xunit" target="_blank">xUnit.net Visual Studio Runner</a>
 

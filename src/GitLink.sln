@@ -1,24 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitLink", "GitLink\GitLink.csproj", "{D68ADD77-913F-46D2-9A4F-5CC71C4718D8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A6694C2C-1A8A-49F0-B404-1BBB4D081808}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{16B74389-D647-4CF8-90D3-38E5D5256BC5}"
-	ProjectSection(SolutionItems) = preProject
-		..\lib\repositories.config = ..\lib\repositories.config
-		..\lib\RestorePackages.bat = ..\lib\RestorePackages.bat
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deployment", "deployment", "{99836492-466A-44E3-A92B-72CE3744F61C}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{88214CBE-4B92-4E22-8854-CC21543EE703}"
-	ProjectSection(SolutionItems) = preProject
-		..\doc\history.txt = ..\doc\history.txt
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A5FCE4FA-083A-4814-B38C-2AED9C37647F}"
 EndProject
@@ -26,43 +13,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D435DFD9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitLink.Tests", "GitLink.Tests\GitLink.Tests.csproj", "{ED2B9579-59D2-40F2-BC5E-F4DC3DAB9A56}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{2A773B1D-106C-4583-8021-9AC0BB3E5408}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Task", "Task", "{EA23F854-946E-4B2A-B3D6-03456D0B8FC5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "design", "design", "{0A177E6C-1C04-416D-9473-82EE9A9ACFB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitLinkTask", "GitLinkTask\GitLinkTask.csproj", "{38BFDD5A-8CC2-43B8-96CE-BC572E3DFEF5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FinalBuilder", "FinalBuilder", "{8EABCB0D-E792-4700-BDF9-E488CF2AB4A2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{FEF533E8-3081-4913-8375-281F8670AF23}"
 	ProjectSection(SolutionItems) = preProject
-		..\deployment\FinalBuilder\GitLink.CreatePackages.fbp7 = ..\deployment\FinalBuilder\GitLink.CreatePackages.fbp7
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chocolatey", "Chocolatey", "{9765817D-03DD-4879-8A43-CB3086B6743F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "template", "template", "{BEEC31FD-7021-47BA-AB54-A5B4C7C23F7E}"
-	ProjectSection(SolutionItems) = preProject
-		..\deployment\Chocolatey\template\GitLink.nuspec = ..\deployment\Chocolatey\template\GitLink.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "template", "template", "{75559B70-907C-4375-A44B-8195B5027B3C}"
-	ProjectSection(SolutionItems) = preProject
-		..\deployment\NuGet\template\GitLink.nuspec = ..\deployment\NuGet\template\GitLink.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{5BC2D5A6-10B0-425B-BAB3-5AB3DFDC24B2}"
-	ProjectSection(SolutionItems) = preProject
-		..\deployment\Chocolatey\template\tools\chocolateyInstall.ps1 = ..\deployment\Chocolatey\template\tools\chocolateyInstall.ps1
-		..\deployment\Chocolatey\template\tools\chocolateyUninstall.ps1 = ..\deployment\Chocolatey\template\tools\chocolateyUninstall.ps1
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "logo", "logo", "{CADD04D7-0CC0-48BB-B3EC-F82E34895982}"
-	ProjectSection(SolutionItems) = preProject
-		..\design\logo\logo.ico = ..\design\logo\logo.ico
-		..\design\logo\logo_1024.png = ..\design\logo\logo_1024.png
-		..\design\logo\logo_128.png = ..\design\logo\logo_128.png
-		..\design\logo\logo_16.png = ..\design\logo\logo_16.png
-		..\design\logo\logo_256.png = ..\design\logo\logo_256.png
-		..\design\logo\logo_32.png = ..\design\logo\logo_32.png
-		..\design\logo\logo_512.png = ..\design\logo\logo_512.png
-		..\design\logo\logo_64.png = ..\design\logo\logo_64.png
+		..\doc\history.txt = ..\doc\history.txt
+		SolutionAssemblyInfo.cs = SolutionAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Global
@@ -79,6 +37,10 @@ Global
 		{ED2B9579-59D2-40F2-BC5E-F4DC3DAB9A56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED2B9579-59D2-40F2-BC5E-F4DC3DAB9A56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED2B9579-59D2-40F2-BC5E-F4DC3DAB9A56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38BFDD5A-8CC2-43B8-96CE-BC572E3DFEF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38BFDD5A-8CC2-43B8-96CE-BC572E3DFEF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38BFDD5A-8CC2-43B8-96CE-BC572E3DFEF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38BFDD5A-8CC2-43B8-96CE-BC572E3DFEF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,12 +50,7 @@ Global
 		{A5FCE4FA-083A-4814-B38C-2AED9C37647F} = {A6694C2C-1A8A-49F0-B404-1BBB4D081808}
 		{D435DFD9-F741-4FCA-A65A-28B7D251983D} = {A6694C2C-1A8A-49F0-B404-1BBB4D081808}
 		{ED2B9579-59D2-40F2-BC5E-F4DC3DAB9A56} = {D435DFD9-F741-4FCA-A65A-28B7D251983D}
-		{2A773B1D-106C-4583-8021-9AC0BB3E5408} = {99836492-466A-44E3-A92B-72CE3744F61C}
-		{8EABCB0D-E792-4700-BDF9-E488CF2AB4A2} = {99836492-466A-44E3-A92B-72CE3744F61C}
-		{9765817D-03DD-4879-8A43-CB3086B6743F} = {99836492-466A-44E3-A92B-72CE3744F61C}
-		{BEEC31FD-7021-47BA-AB54-A5B4C7C23F7E} = {9765817D-03DD-4879-8A43-CB3086B6743F}
-		{75559B70-907C-4375-A44B-8195B5027B3C} = {2A773B1D-106C-4583-8021-9AC0BB3E5408}
-		{5BC2D5A6-10B0-425B-BAB3-5AB3DFDC24B2} = {BEEC31FD-7021-47BA-AB54-A5B4C7C23F7E}
-		{CADD04D7-0CC0-48BB-B3EC-F82E34895982} = {0A177E6C-1C04-416D-9473-82EE9A9ACFB4}
+		{EA23F854-946E-4B2A-B3D6-03456D0B8FC5} = {A6694C2C-1A8A-49F0-B404-1BBB4D081808}
+		{38BFDD5A-8CC2-43B8-96CE-BC572E3DFEF5} = {EA23F854-946E-4B2A-B3D6-03456D0B8FC5}
 	EndGlobalSection
 EndGlobal
