@@ -13,7 +13,7 @@ namespace GitLink.Providers
 
     public class GitHubProvider : ProviderBase
     {
-        private readonly Regex _gitHubRegex = new Regex(@"(?<url>(?<companyurl>(?:https://)?github\.com/(?<company>[^/]+))/(?<project>[^/]+))");
+        private readonly Regex _gitHubRegex = new Regex(@"^(?<url>(?<companyurl>(?:https://)?github\.com/(?<company>[^/]+))/(?<project>[^/]+?)(\.git)?)$");
 
         public GitHubProvider() 
             : base(new GitPreparer())
