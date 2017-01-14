@@ -12,7 +12,7 @@ namespace GitLink.Providers
 
     public class GitHubProvider : ProviderBase
     {
-        private static readonly Regex HostingUrlPattern = new Regex(@"(?<url>(?<companyurl>(?:https://)?github\.com/(?<company>[^/]+))/(?<project>[^/]+))");
+        private static readonly Regex HostingUrlPattern = new Regex(@"^(?<url>(?<companyurl>(?:https://)?github\.com/(?<company>[^/]+))/(?<project>[^/]+?)(\.git)?)$");
 
         public GitHubProvider()
             : base(new GitPreparer())
