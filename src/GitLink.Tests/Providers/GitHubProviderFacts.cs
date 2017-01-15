@@ -25,7 +25,7 @@ namespace GitLink.Tests.Providers
             }
 
             [TestCase]
-            public void ReturnsInValidInitialization()
+            public void ReturnsInvalidInitialization()
             {
                 var provider = new GitHubProvider();
                 var valid = provider.Initialize("https://bitbucket.org/CatenaLogic/GitLink");
@@ -78,6 +78,15 @@ namespace GitLink.Tests.Providers
             {
                 var provider = new GitHubProvider();
                 provider.Initialize("https://github.com/CatenaLogic/GitLink");
+
+                Assert.AreEqual("https://raw.github.com/CatenaLogic/GitLink", provider.RawGitUrl);
+            }
+
+            [TestCase]
+            public void ReturnsValidRawGitUrlWhenDotGitSuffixIsPresent()
+            {
+                var provider = new GitHubProvider();
+                provider.Initialize("https://github.com/CatenaLogic/GitLink.git");
 
                 Assert.AreEqual("https://raw.github.com/CatenaLogic/GitLink", provider.RawGitUrl);
             }
