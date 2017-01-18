@@ -20,7 +20,10 @@ namespace GitLink.Tests.Extensions
         [SetUp]
         public void SetUp()
         {
-            string repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
+            var assemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var assemblyDirectory = Path.GetDirectoryName(assemblyLocation);
+
+            string repositoryDirectory = GitDirFinder.TreeWalkForGitDir(assemblyDirectory);
             repo = new Repository(repositoryDirectory);
         }
 
