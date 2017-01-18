@@ -1,0 +1,3 @@
+mode: ContinuousDeployment
+assembly-versioning-scheme: MajorMinorPatch 
+next-version: 3.0.0
