@@ -3,7 +3,7 @@
     "NuProj.Common": "0.11.14-beta"
   },
   "frameworks": {
-    "net45": {}
+    "net462": {}
   },
   "runtimes": {
     "win": {}
