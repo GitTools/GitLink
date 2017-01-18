@@ -1,0 +1,11 @@
+{
+  "version": "3.0-beta",
+  "publicReleaseRefSpec": [
+    "^refs/heads/master$"
+  ],
+  "cloudBuild": {
+    "buildNumber": {
+      "enabled": true
+    }
+  }
+}

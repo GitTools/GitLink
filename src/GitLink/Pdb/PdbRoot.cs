@@ -1,18 +1,17 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PdbRoot.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink.Pdb
 {
     using System.Collections.Generic;
     using Catel;
 
-    public class PdbRoot
+    internal class PdbRoot
     {
-        public PdbRoot(PdbStream stream)
+        internal PdbRoot(PdbStream stream)
         {
             Argument.IsNotNull(() => stream);
 
@@ -20,10 +19,11 @@ namespace GitLink.Pdb
             Streams = new List<PdbStream>();
         }
 
-        public PdbStream Stream { get; set; }
-        public List<PdbStream> Streams { get; private set; }
+        internal PdbStream Stream { get; set; }
 
-        public int AddStream(PdbStream stream)
+        internal List<PdbStream> Streams { get; private set; }
+
+        internal int AddStream(PdbStream stream)
         {
             Streams.Add(stream);
 

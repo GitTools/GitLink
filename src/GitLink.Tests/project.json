@@ -1,0 +1,14 @@
+﻿{
+  "dependencies": {
+    "ApprovalTests": "3.0.8",
+    "ApprovalUtilities": "3.0.8",
+    "NUnit": "3.5.0",
+    "NUnit3TestAdapter": "3.4.1"
+  },
+  "frameworks": {
+    "net45": {}
+  },
+  "runtimes": {
+    "win": {}
+  }
+}

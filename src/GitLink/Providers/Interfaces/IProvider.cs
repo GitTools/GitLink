@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IProvider.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink.Providers
 {
@@ -42,7 +41,5 @@ namespace GitLink.Providers
         string RawGitUrl { get; }
 
         bool Initialize(string url);
-
-        string GetShaHashOfCurrentBranch(Context context, TemporaryFilesContext temporaryFilesContext);
     }
 }

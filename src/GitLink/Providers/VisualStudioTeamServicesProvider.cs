@@ -4,7 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace GitLink.Providers
 {
     using System;
@@ -14,21 +13,18 @@ namespace GitLink.Providers
 
     public class VisualStudioTeamServicesProvider : ProviderBase
     {
-        private readonly Regex _visualStudioTeamServicesRegex = new Regex(@"(?<url>(?<companyurl>(?:https://)?(?<accountname>([a-zA-Z0-9\-\.]*)?)\.visualstudio\.com/)(?<project>[a-zA-Z0-9\-\.]*)/?_git/(?<repo>[^/]+))");
+        private static readonly Regex HostingUrlPattern = new Regex(@"(?<url>(?<companyurl>(?:https://)?(?<accountname>([a-zA-Z0-9\-\.]*)?)\.visualstudio\.com/)(?<project>[a-zA-Z0-9\-\.]*)/?_git/(?<repo>[^/]+))");
 
         public VisualStudioTeamServicesProvider()
             : base(new GitPreparer())
         {
         }
 
-        public override string RawGitUrl
-        {
-            get { return string.Empty; }
-        }
+        public override string RawGitUrl => string.Empty;
 
         public override bool Initialize(string url)
         {
-            var match = _visualStudioTeamServicesRegex.Match(url);
+            var match = HostingUrlPattern.Match(url);
 
             if (!match.Success)
             {
@@ -44,7 +40,7 @@ namespace GitLink.Providers
                 ProjectName = match.Groups["repo"].Value;
             }
 
-            // In the VSTS provider, the ProjectUrl will represent 
+            // In the VSTS provider, the ProjectUrl will represent
             // the repository's name.
             ProjectUrl = match.Groups["repo"].Value;
 

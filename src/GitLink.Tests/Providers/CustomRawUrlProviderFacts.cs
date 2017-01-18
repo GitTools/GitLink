@@ -1,4 +1,10 @@
-﻿namespace GitLink.Tests.Providers
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CustomRawUrlProviderFacts.cs" company="CatenaLogic">
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace GitLink.Tests.Providers
 {
     using GitLink.Providers;
     using NUnit.Framework;

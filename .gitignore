@@ -7,6 +7,9 @@
 *.sln.docstates
 
 .nuget/
+project.lock.json
+*.nuget.targets
+*.nuget.props
 tools/FAKE/
 build-log.xml
 Nuget.key
@@ -42,6 +45,7 @@ obj
 *.vspscc
 *.xap
 .builds
+*.log
 
 # Visual C++ cache files
 ipch/
@@ -103,7 +107,6 @@ sql
 TestResults
 *.Cache
 ClientBin
-stylecop.*
 ~$*
 *.dbmdl
 Generated_Code #added for RIA/Silverlight projects
@@ -122,4 +125,4 @@ Desktop.ini
 
 # mstest test results
 TestResults
-/.vs
+.vs/

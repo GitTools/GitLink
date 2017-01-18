@@ -1,0 +1,15 @@
+﻿{
+  "dependencies": {
+    "Nerdbank.GitVersioning": {
+      "version": "1.5.46",
+      "suppressParent": "none"
+    },
+    "NuProj": "0.11.14-beta"
+  },
+  "frameworks": {
+    "net451": {}
+  },
+  "runtimes": {
+    "win": {}
+  }
+}

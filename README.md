@@ -1,10 +1,12 @@
 GitLink
 ==========
 
+[![Build status](https://ci.appveyor.com/api/projects/status/g56b4xyl4q0ean8i/branch/develop?svg=true)](https://ci.appveyor.com/project/AArnott/gitlink/branch/develop)
+
 [![Join the chat at https://gitter.im/GitTools/GitLink](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/GitTools/GitLink?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ![License](https://img.shields.io/github/license/gittools/gitlink.svg)
-![Version](https://img.shields.io/nuget/v/gitlink.svg)
-![Pre-release version](https://img.shields.io/nuget/vpre/gitlink.svg)
+[![Version](https://img.shields.io/nuget/v/gitlink.svg)][NuGetDownload]
+[![Pre-release version](https://img.shields.io/nuget/vpre/gitlink.svg)][NuGetDownload]
 ![Chocolatey count](https://img.shields.io/chocolatey/dt/gitlink.svg)
 ![Chocolatey version](https://img.shields.io/chocolatey/v/gitlink.svg)
 
@@ -36,6 +38,61 @@ When using GitLink, the user no longer has to specify symbol servers. The only r
 
 ![Enabling source server support](doc/images/visualstudio_enablesourceserversupport.png)  
 
+# How to use GitLink to enable source stepping on your own projects
+
+## NuGet/MSBuild integration
+
+The simplest way to use GitLink is to [install its NuGet package][NuGetDownload] into your project.
+
+    Install-Package GitLink
+
+Once installed, it automatically integrates with MSBuild to add source download instructions to your PDB.
+
+## Command line tool
+
+If you want to install the tool on your (build) computer, the package is available via <a href="https://chocolatey.org/" target="_blank">Chocolatey</a>. To install, use the following command:
+
+    choco install gitlink
+
+Using GitLink via the command line is very simple:
+
+    gitlink.exe <pdbfile>
+
+### Running for a custom raw content URL
+
+When working with a content proxy or an alternative git VCS system that supports direct HTTP access to specific file revisions use the `-u` parameter with the custom raw content root URL
+
+    GitLink.exe <pdbfile> -u https://raw.githubusercontent.com/catel/catel
+    
+The custom url will be used to fill in the following pattern `{customUrl}/{revision}/{relativeFilePath}` when generating the source mapping.
+
+When working with a repository using uncommon URL you can use placeholders to specify where the filename and revision hash should be, use `-u` parameter with the custom URL
+
+    GitLink.exe <pdbfile> -u "https://host/projects/catel/repos/catel/browse/{filename}?at={revision}&raw"
+
+The custom url will be used to fill the placeholders with the relative file path and the revision hash.
+
+### More options
+
+There are many more parameters you can use. Display the usage doc with the following command line:
+
+    GitLink.exe -h
+
+# How does it work
+
+The SrcSrv tool (Srcsrv.dll) enables a client to retrieve the exact version of the source files that were used to build an application. Because the source code for a module can change between versions and over the course of years, it is important to look at the source code as it existed when the version of the module in question was built.
+
+For more information, see the <a href="http://msdn.microsoft.com/en-us/library/windows/hardware/ff558791(v=vs.85).aspx" target="_blank">official documentation of SrcSrv</a>.
+
+GitLink creates a source index file and updates the PDB file so it will retrieve the files from the Git host file handler.
+To do this, GitLink must be aware of the public URL from which the source files you compiled with can be retrieved.
+GitLink.exe reads your compiler-generated PDB, which already contains full paths to your local source files.
+It then searches for a git repo that contains those source files and looks up the commit that HEAD points to.
+It also searches your remotes for a URL pattern that it recognizes (e.g. https://github.com/name/repo).
+It combines the URL and the commit ID to create a unique URL for each source file of this exact version, and adds this information to your PDB.
+
+When you share your PDB alongside your assembly, your users who debug with Source Server support enabled will automatically be able to step into your source code. 
+
 # Troubleshooting
 
 ## Source Stepping isn't working
@@ -45,8 +102,6 @@ When using GitLink, the user no longer has to specify symbol servers. The only r
 * Specify a value for Visual Studio -> Options -> Debugging -> Symbols -> `Cache Symbols in this directory`
 
 ![Enabling source server support](doc/images/visualstudio_symbolslocation.png)
-
-* Verify that there is not a case mismatch in git folder names vs. references in the .csproj that was used during packaging. E.g. GitHub will not serve /Folder/Somefile.cs if Visual Studio requests /FOLdeR/Somefile.cs.
 
 ## Source Stepping returns HTML
 If your repository is private, you are likely seeing the logon HTML from your git host.
@@ -71,7 +126,7 @@ GitLink supports the following providers out of the box (will auto-detect based 
 * <a href="https://github.com/" target="_blank">GitHub</a>
 * Custom Provider (custom urls)
 
-Providers currently being worked on:
+Providers that could be supported with the help of the community:
 
 * <a href="https://www.assembla.com/home" target="_blank">Assembla</a>
 * <a href="http://beanstalkapp.com/" target="_blank">Beanstalk</a>
@@ -84,143 +139,6 @@ Providers currently being worked on:
 * <a href="https://unfuddle.com/" target="_blank">Unfuddle</a>   
 
 It is also possible to specify a custom url provider.
-
-# Using GitLink as command line tool
-
-Using GitLink via the command line is very simple:
-
-1. Build the solution - in release mode with pdb files enabled
-2. Run the console application with the right command line parameters
-3. Include the PDB in your nuget package
-
-See [Oren Novotony's blog post](https://oren.codes/2015/09/23/enabling-source-code-debugging-for-your-nuget-packages-with-gitlink/) for even more detail and examples on build integration.
-
-## Most simple usage
-
-This is the most simple usage available **starting from 2.2.0**. It will automatically determine the url and commit based on a local *.git* directory.
-
-	GitLink.exe c:\source\catel
-
-## Running for the default branch
-
-    GitLink.exe c:\source\catel -u https://github.com/catel/catel 
-
-This will use the default branch (which is in most cases **master**). You can find out the default branch by checking what branch is loaded by default on the GitHub page.
-
-## Running for a specific branch
-
-    GitLink.exe c:\source\catel -u https://github.com/catel/catel -b develop
-
-This will use the develop branch.
-
-## Running for a specific branch and configuration
-
-    GitLink.exe c:\source\catel -u https://github.com/catel/catel -b develop -c debug
-
-This will use the develop branch and the debug configuration.
-
-## Running for a specific solution only
-
-Sometimes a repository contains more than 1 solution file. By default, all solutions will be processed. To only process a single solution file, use the *-f* option: 
-
-	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln
-
-## Ignoring projects and explicitly including them
-
-When specific projects should be ignored, use the *-ignore* option. This option accepts a comma separated list of patterns to ignore. Each pattern is either a literal project name (case-insensitive) or a regex enclosed in slashes. For example: 
-
-	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -ignore Catel.Core.WP80,Catel.MVVM.WP80
-	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -ignore /^.+\.WP80$/,Catel.Core
-
-In case you want to ignore most of your projects, you can explicitly *-include* only the projects you need - others will be ignored automatically. Same as *-ignore* it accepts list of patterns. For example:
-
-	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -include Catel.Core
-	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -include /Catel\..*$/,SomeOtherProject
-
-Finally, you can set both *-ignore* and *-include* options. In this case only projects matching one of *-include* patterns will be taken, but if and only if they don't match one of *-ignore*s. For example, the following command line will include only Catel.* projects, except "Catel.Core":
-
-	GitLink.exe c:\source\catel -u https://github.com/catel/catel -f Catel.sln -include /Catel\..*$/ -ignore Catel.Core
- 
-## Running for an uncommon / customized URL
-
-When working with a repository using uncommon URL you can use placeholders to specifiy where the filename and revision hash should be, use `-u` parameter with the custom URL
-
-    GitLink.exe c:\source\catel -u "https://host/projects/catel/repos/catel/browse/{filename}?at={revision}&raw"
-    
-The custom url will be used to fill the placeholders with the relative file path and the revision hash.
-
-## Running for a custom raw content URL
-
-When working with a content proxy or an alternative git VCS system that supports direct HTTP access to specific file revisions use the `-u` parameter with the custom raw content root URL
-
-    GitLink.exe c:\source\catel -u https://raw.githubusercontent.com/catel/catel
-    
-The custom url will be used to fill in the following pattern `{customUrl}/{revision}/{relativeFilePath}` when generating the source mapping.
-
-## Getting help
-
-When you need help about GitLink, use the following command line:
-
-    GitLink.exe -help
-
-## Logging to a file
-
-When you need to log the information to a file, use the following command line:
-
-    GitLink.exe c:\source\catel -u https://github.com/catel/catel -b develop -l GitLinkLog.log
-
-# Using GitLink in code
-
-GitLink is built with 2 usages in mind: command line and code reference. Though most people will use the command line version, it is possible to reference the executable and use the logic in code.
-
-The command line implementation uses the same available API. 
-
-## Creating a context
-
-To link files to a Git project, a context must be created. The command line version does this by using the *ArgumentParser* class. It is also possible to create a context from scratch as shown in the example below:
-
-	var context = new GitLink.Context(new ProviderManager());
-	context.SolutionDirectory = @"c:\source\catel";
-	context.TargetUrl = "https://github.com/catel/catel";
-	context.TargetBranch = "develop";
-
-It is possible to create a context based on command line arguments:
-
-	var context = ArgumentParser.Parse(@"c:\source\catel -u https://github.com/catel/catel -b develop");
-
-## Linking a context
-
-Once a context is created, the *Linker* class can be used to actually link the files:
-
-    Linker.Link(context);
-
-# How to get
-
-There are three general ways to get GitLink:
-
-## Get it from GitHub
-
-The releases will be available as separate executable download on the [releases tab](https://github.com/GitTools/GitLink/releases) of the project.
-
-## Get it via Chocolatey
-
-If you want to install the tool on your (build) computer, the package is available via <a href="https://chocolatey.org/" target="_blank">Chocolatey</a>. To install, use the following command:
-
-    choco install gitlink
-
-## Get it via NuGet
-
-If you want to reference the assembly to use it in code, the recommended way to get it is via <a href="http://www.nuget.org/" target="_blank">NuGet</a>. 
-
-**Note that getting GitLink via NuGet will add it as a reference to the project**
-
-# How does it work
-
-The SrcSrv tool (Srcsrv.dll) enables a client to retrieve the exact version of the source files that were used to build an application. Because the source code for a module can change between versions and over the course of years, it is important to look at the source code as it existed when the version of the module in question was built.
-
-For more information, see the <a href="http://msdn.microsoft.com/en-us/library/windows/hardware/ff558791(v=vs.85).aspx" target="_blank">official documentation of SrcSrv</a>.
-
-GitLink creates a source index file and updates the PDB file so it will retrieve the files from the Git host file handler.
 
 <a name="projects-using-gitlink"></a>
 # Projects using GitLink
@@ -271,7 +189,8 @@ Are you using GitLink in your projects? Let us know and we will add your project
 
 *Note that you can also create a pull request on this document and add it yourself.* 
  
-
 # Icon
 
 Link by Dominic Whittle from The Noun Project
+
+[NuGetDownload]: https://www.nuget.org/packages/gitlink

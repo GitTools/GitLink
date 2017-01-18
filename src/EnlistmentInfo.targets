@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <Target Name="GetDeployableOutputs"
+          DependsOnTargets="ResolveReferences;GetCopyToOutputDirectoryItems;BuiltProjectOutputGroup;SatelliteDllsProjectOutputGroup;SatelliteDllsProjectOutputGroupDependencies"
+          Returns="@(DeployableOutputs)">
+    <ItemGroup>
+      <DeployableOutputs Include="
+                            @(ReferenceCopyLocalPaths);
+                            @(AllItemsFullPathWithTargetPath);
+                            @(BuiltProjectOutputGroupOutput->'%(FinalOutputPath)');
+                            "
+                         Condition=" '%(Extension)' != '.pdb' and '%(Extension)' != '.xml' ">
+        <RequiringProjectFullPath>$(MSBuildProjectFullPath)</RequiringProjectFullPath>
+        <MSBuildSourceTargetName>GetDeployableOutputs</MSBuildSourceTargetName>
+      </DeployableOutputs>
+      <DeployableOutputs Include="
+                            @(SatelliteDllsProjectOutputGroupOutput);
+                            @(SatelliteDllsProjectOutputGroupDependency);
+                            "
+                         Condition=" '%(SatelliteDllsProjectOutputGroupOutput.WithCulture)' == 'true' or  '%(SatelliteDllsProjectOutputGroupDependency.WithCulture)' == 'true' ">
+        <RequiringProjectFullPath>$(MSBuildProjectFullPath)</RequiringProjectFullPath>
+        <MSBuildSourceTargetName>GetDeployableOutputs</MSBuildSourceTargetName>
+      </DeployableOutputs>
+    </ItemGroup>
+  </Target>
+</Project>

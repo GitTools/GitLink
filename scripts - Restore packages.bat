@@ -1,4 +1,3 @@
-for /f %%a in ('dir /b src\*.sln') do call tools\nuget\nuget.exe restore src\%%a -PackagesDirectory .\lib
+call "%~dp0init.cmd"
 
-
-pause
+@pause

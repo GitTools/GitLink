@@ -1,75 +1,52 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PdbExtensions.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
+    using System.Security.Cryptography;
     using Catel;
     using Pdb;
 
-    public static class PdbExtensions
+    internal static class PdbExtensions
     {
-        public static Dictionary<string, string> VerifyPdbFiles(this PdbFile pdbFile, IEnumerable<string> files)
+        internal static IEnumerable<string> FindMissingOrChangedSourceFiles(this PdbFile pdbFile)
         {
             Argument.IsNotNull(() => pdbFile);
 
-            var missing = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            var actualFileChecksums = (from x in files
-                                       select new KeyValuePair<string, string>(Hex.Encode(Crypto.GetMd5HashForFiles(new[] { x }).First().Item1), x)).ToDictionary(x => x.Value, x => x.Key);
-
-            foreach (var checksumInfo in pdbFile.GetChecksums())
+            foreach (var checksumInfo in pdbFile.GetFilesAndChecksums())
             {
-                var file = checksumInfo.Key;
-                var checksum = checksumInfo.Value;
+                string file = checksumInfo.Key;
+                byte[] expectedChecksum = checksumInfo.Value;
+                HashAlgorithm hasher = expectedChecksum.Length == 16 ? (HashAlgorithm)MD5.Create() : SHA1.Create();
+                byte[] actualChecksum = File.Exists(file) ? HashFile(hasher, file) : null;
 
-                if (!actualFileChecksums.ContainsValue(checksum))
+                if (!AreEqualBuffers(expectedChecksum, actualChecksum))
                 {
-                    if (file.EndsWith(".xaml"))
-                    {
-                        // #64 ignore xaml files, not important
-                        continue;
-                    }
-
-                    missing[file] = checksum;
+                    yield return file;
                 }
             }
-
-            return missing;
         }
 
-        public static Dictionary<string, string> GetChecksums(this PdbFile pdbFile)
+        internal static IReadOnlyDictionary<string, byte[]> GetFilesAndChecksums(this PdbFile pdbFile)
         {
             Argument.IsNotNull(() => pdbFile);
 
-            var checksums = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
-            foreach (var file in pdbFile.GetFiles())
-            {
-                checksums.Add(file.Item1, Hex.Encode(file.Item2));
-            }
-
-            return checksums;
-        }
-
-        public static IEnumerable<Tuple<string, byte[]>> GetFiles(this PdbFile pdbFile)
-        {
-            Argument.IsNotNull(() => pdbFile);
-
-            //const int LastInterestingByte = 47;
+            // const int LastInterestingByte = 47;
             const string FileIndicator = "/src/files/";
 
             var values = pdbFile.Info.NameToPdbName.Values;
 
-            var results = new List<Tuple<string, byte[]>>();
+            var results = new Dictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
             foreach (var value in values)
             {
-                if (!value.Name.Contains(FileIndicator))
+                if (!value.Name.StartsWith(FileIndicator))
                 {
                     continue;
                 }
@@ -77,23 +54,51 @@ namespace GitLink
                 var num = value.Stream;
                 var name = value.Name.Substring(FileIndicator.Length);
 
+                // Get last bytes for checksum (it may be MD5 or SHA1)
                 var bytes = pdbFile.ReadStreamBytes(num);
-                if (bytes.Length != 88)
-                {
-                    continue;
-                }
-
-                // Get last 16 bytes for checksum
-                var buffer = new byte[16];
-                for (int i = 72; i < 88; i++)
-                {
-                    buffer[i-72] = bytes[i];
-                }
-
-                results.Add(new Tuple<string, byte[]>(name, buffer));
+                int hashLength = bytes.Length - 72;
+                var checksum = new byte[hashLength];
+                Array.Copy(bytes, bytes.Length - hashLength, checksum, 0, hashLength);
+                results.Add(name, checksum);
             }
 
             return results;
+        }
+
+        private static byte[] HashFile(HashAlgorithm ha, string file)
+        {
+            using (var fs = File.OpenRead(file))
+            {
+                return ha.ComputeHash(fs);
+            }
+        }
+
+        private static bool AreEqualBuffers(byte[] first, byte[] second)
+        {
+            if (first == null && second == null)
+            {
+                return true;
+            }
+
+            if (first == null || second == null)
+            {
+                return false;
+            }
+
+            if (first.Length != second.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < first.Length; i++)
+            {
+                if (first[i] != second[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
