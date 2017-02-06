@@ -17,7 +17,7 @@
     "System.CommandLine": "0.1.0-e161008-1"
   },
   "frameworks": {
-    "net462": {}
+    "net45": {}
   },
   "runtimes": {
     "win": {}
