@@ -35,9 +35,16 @@ namespace GitLink.Pdb
                     sw.WriteLine("RAWURL={0}", CreateTarget(rawUrl, revision));
                     if (downloadWithPowershell)
                     {
-                        sw.WriteLine("TRGFILE=%fnbksl%(%targ%%var2%)");
+                        if (rawUrl.Contains("?") && !string.IsNullOrEmpty(revision))
+                        {
+                            sw.WriteLine(string.Format("TRGFILE=%targ%\\{0}\\%fnbksl%(%var2%)", revision));
+                        }
+                        else
+                        {
+                            sw.WriteLine("TRGFILE=%fnbksl%(%targ%%var2%)");
+                        }
                         sw.WriteLine("SRCSRVTRG=%TRGFILE%");
-                        sw.WriteLine("SRCSRVCMD=powershell invoke-command -scriptblock {param($url='%RAWURL%', $output='%TRGFILE%'); (New-Object System.Net.WebClient).DownloadFile($url, $output)}");
+                        sw.WriteLine("SRCSRVCMD=powershell invoke-command -scriptblock {param($url='%RAWURL%', $output='%TRGFILE%'); $webClient = New-Object System.Net.WebClient; $webClient.UseDefaultCredentials = $true; $webClient.DownloadFile($url, $output);}");
                     }
                     else
                     {
