@@ -19,7 +19,6 @@ cache:
 
 before_build:
   - ps: .\init.ps1
-  - nuget restore
   - ps: gitversion /l console /output buildserver /updateAssemblyInfo
 
 build:
