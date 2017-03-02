@@ -39,7 +39,7 @@ namespace GitLink
 
                 if (entry == null)
                 {
-                    Log.Warning("Unable to find file in git.");
+                    Log.Warning($"Unable to find file in git: \"{path}\".");
                     return path;
                 }
 
@@ -51,7 +51,7 @@ namespace GitLink
                 {
                     if (i < relativePathSegments.Length - 1)
                     {
-                        Log.Error("Found a file where we expected to find a directory.");
+                        Log.Error($"Found a file where we expected to find a directory: \"{path}\".");
                         return path;
                     }
                 }
