@@ -67,7 +67,11 @@ namespace GitLink
                 Method = method,
             };
 
-            Linker.Link(pdbPath, options);
+            if (!Linker.Link(pdbPath, options))
+            {
+                return 1;
+            }
+
             WaitForKeyPressWhenDebugging();
             return 0;
         }
