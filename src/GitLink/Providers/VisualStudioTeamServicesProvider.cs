@@ -13,7 +13,7 @@ namespace GitLink.Providers
 
     public class VisualStudioTeamServicesProvider : ProviderBase
     {
-        private static readonly Regex HostingUrlPattern = new Regex(@"(?<url>(?<companyurl>(?:https://)?(?<accountname>([a-zA-Z0-9\-\.]*)?)\.visualstudio\.com/)(?<project>[a-zA-Z0-9\-\.]*)/?_git/(?<repo>[^/]+))");
+        private static readonly Regex HostingUrlPattern = new Regex(@"(?<url>(?<companyurl>(?:https://)?(?<accountname>([a-zA-Z0-9\-\.]*)?)\.visualstudio\.com/)(?<project>[a-zA-Z0-9\-\.]*)/?_git//?(?<repo>[^/]+))");
 
         public VisualStudioTeamServicesProvider()
             : base(new GitPreparer())
