@@ -74,7 +74,7 @@ namespace GitLink
 
             Uri baseUri = new Uri(relativeTo, UriKind.Absolute);
             Uri targetUri = new Uri(target, UriKind.Absolute);
-            return baseUri.MakeRelativeUri(targetUri).ToString();
+            return Uri.UnescapeDataString(baseUri.MakeRelativeUri(targetUri).ToString());
         }
     }
 }
