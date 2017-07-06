@@ -14,7 +14,9 @@
     <ProjectGuid>29e78909-b7fb-472c-a9a0-1749a8be9a9a</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
-    <NuProjPath>$(UserProfile)\.nuget\packages\NuProj\0.11.14-beta\tools</NuProjPath>
+    <_NuGetRoot>$(UserProfile)\.nuget\packages</_NuGetRoot>
+    <_NuGetRoot Condition="'$(NUGET_PACKAGES)' != ''">$(NUGET_PACKAGES)</_NuGetRoot>
+    <NuProjPath>$(_NuGetRoot)\NuProj\0.11.14-beta\tools</NuProjPath>
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
