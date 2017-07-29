@@ -60,7 +60,7 @@ namespace GitLink
                         string someSourceFile = sourceFiles.FirstOrDefault();
                         if (someSourceFile == null)
                         {
-                            Log.Error("No source files were found in the PDB.");
+                            Log.Error("No source files were found in the PDB. If you're PDB is a native one you should use -a option.");
                             return false;
                         }
 
