@@ -23,5 +23,7 @@ namespace GitLink
         public string CommitId { get; set; }
 
         public string GitWorkingDirectory { get; set; }
+
+        public bool IndexAllDepotFiles { get; set; }
     }
 }
