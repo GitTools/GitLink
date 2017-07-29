@@ -207,7 +207,13 @@ namespace GitLink
                               where string.Equals(ext, ".cs", StringComparison.OrdinalIgnoreCase)
                                  || string.Equals(ext, ".cpp", StringComparison.OrdinalIgnoreCase)
                                  || string.Equals(ext, ".c", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".cc", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".cxx", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".c++", StringComparison.OrdinalIgnoreCase)
                                  || string.Equals(ext, ".h", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".hh", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".inl", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".hpp", StringComparison.OrdinalIgnoreCase)
                               select file;
             }
 
