@@ -80,7 +80,11 @@ There are many more parameters you can use. Display the usage doc with the follo
 
 ### Native PDBs
 
-Native PDBs (from C++ projects) are supported by using -a option. All .cpp/.c/.h files from your git depot will be indexed in the PDB.
+Native PDBs (from C++ projects) are supported by using -a option:
+
+    GitLink.exe <nativePdbfile> -a
+
+All source code files from your git depot will be indexed in the PDB.
 
 # How does it work
 
