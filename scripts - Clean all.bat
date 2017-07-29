@@ -1,7 +1,4 @@
-REM Deleting packages
-for /d %%p in (".\lib\*.*") do rmdir "%%p" /s /q
-
 REM Deleting output
-rmdir .\output /s /q
+FOR %%A in (bin obj\debug obj\release) do IF EXIST "%~dp0%%A" rd /s /q "%~dp0%%A"
 
-pause
+@pause

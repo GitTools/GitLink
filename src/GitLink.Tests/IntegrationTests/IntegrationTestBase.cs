@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IntegrationTestBase.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink.Tests.IntegrationTests
 {
@@ -55,14 +54,7 @@ namespace GitLink.Tests.IntegrationTests
         {
             PrepareTestSolution(directory, configurationName);
 
-            var context = new Context(new ProviderManager())
-            {
-                SolutionDirectory = directory,
-                TargetUrl = repositoryUrl,
-                TargetBranch = branchName
-            };
-
-            return Linker.Link(context);
+            throw new NotImplementedException();
         }
 
         protected void VerifyUpdatedPdbs(string directory, string configurationName)

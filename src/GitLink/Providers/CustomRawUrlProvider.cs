@@ -1,4 +1,10 @@
-﻿namespace GitLink.Providers
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CustomRawUrlProvider.cs" company="CatenaLogic">
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace GitLink.Providers
 {
     using System;
     using System.Text.RegularExpressions;
@@ -6,7 +12,7 @@
 
     public sealed class CustomRawUrlProvider : ProviderBase
     {
-        private readonly Regex _regex = new Regex(@"https?://.+");
+        private static readonly Regex HostingUrlPattern = new Regex(@"https?://.+");
 
         private string _rawUrl;
 
@@ -15,17 +21,11 @@
         {
         }
 
-        public override string RawGitUrl
-        {
-            get
-            {
-                return _rawUrl;
-            }
-        }
+        public override string RawGitUrl => _rawUrl;
 
         public override bool Initialize(string url)
         {
-            if (string.IsNullOrEmpty(url) || !_regex.IsMatch(url))
+            if (string.IsNullOrEmpty(url) || !HostingUrlPattern.IsMatch(url))
             {
                 return false;
             }

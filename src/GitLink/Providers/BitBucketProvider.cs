@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BitBucketProvider.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink.Providers
 {
@@ -13,21 +12,18 @@ namespace GitLink.Providers
 
     public class BitBucketProvider : ProviderBase
     {
-        private readonly Regex _bitBucketRegex = new Regex(@"(?<url>(?<companyurl>(?:https://)?bitbucket\.org/(?<company>[^/]+))/(?<project>[^/]+))");
+        private static readonly Regex HostingUrlPattern = new Regex(@"(?<url>(?<companyurl>(?:https://)?bitbucket\.org/(?<company>[^/]+))/(?<project>[^/]+))");
 
-        public BitBucketProvider() 
+        public BitBucketProvider()
             : base(new GitPreparer())
         {
         }
 
-        public override string RawGitUrl
-        {
-            get { return String.Format("https://bitbucket.org/{0}/{1}/raw", CompanyName, ProjectName); }
-        }
+        public override string RawGitUrl => $"https://bitbucket.org/{CompanyName}/{ProjectName}/raw";
 
         public override bool Initialize(string url)
         {
-            var match = _bitBucketRegex.Match(url);
+            var match = HostingUrlPattern.Match(url);
 
             if (!match.Success)
             {

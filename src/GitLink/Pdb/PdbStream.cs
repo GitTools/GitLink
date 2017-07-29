@@ -1,15 +1,15 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PdbStream.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace GitLink.Pdb
 {
-    public class PdbStream
+    internal class PdbStream
     {
-        public int ByteCount { get; set; }
-        public int[] Pages { get; set; }
+        internal int ByteCount { get; set; }
+
+        internal int[] Pages { get; set; }
     }
 }

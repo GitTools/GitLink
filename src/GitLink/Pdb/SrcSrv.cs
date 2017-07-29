@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SrcSrv.cs" company="CatenaLogic">
-//   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
+//   Copyright (c) 2014 - 2016 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace GitLink.Pdb
 {
@@ -12,14 +11,14 @@ namespace GitLink.Pdb
     using System.IO;
     using Catel;
 
-    public static class SrcSrv
+    internal static class SrcSrv
     {
         private static string CreateTarget(string rawUrl, string revision)
         {
             return string.Format(rawUrl, revision);
         }
 
-        public static byte[] Create(string rawUrl, string revision, IEnumerable<Tuple<string, string>> paths, bool downloadWithPowershell)
+        internal static byte[] Create(string rawUrl, string revision, IEnumerable<Tuple<string, string>> paths, bool downloadWithPowershell)
         {
             Argument.IsNotNullOrWhitespace(() => rawUrl);
             Argument.IsNotNullOrWhitespace(() => revision);
@@ -29,22 +28,23 @@ namespace GitLink.Pdb
                 using (var sw = new StreamWriter(ms))
                 {
                     var scheme = new Uri(rawUrl).Scheme;
-                
+
                     sw.WriteLine("SRCSRV: ini ------------------------------------------------");
                     sw.WriteLine("VERSION=2");
-                    sw.WriteLine("SRCSRV: variables ------------------------------------------");                    
+                    sw.WriteLine("SRCSRV: variables ------------------------------------------");
                     sw.WriteLine("RAWURL={0}", CreateTarget(rawUrl, revision));
-                    if(downloadWithPowershell)
+                    if (downloadWithPowershell)
                     {
                         sw.WriteLine("TRGFILE=%fnbksl%(%targ%%var2%)");
                         sw.WriteLine("SRCSRVTRG=%TRGFILE%");
-                        sw.WriteLine("SRCSRVCMD=powershell invoke-command -scriptblock {param($url='%RAWURL%', $output='%TRGFILE%'); (New-Object System.Net.WebClient).DownloadFile($url, $output)}");
+                        sw.WriteLine("SRCSRVCMD=powershell invoke-command -scriptblock {$webClient = New-Object System.Net.WebClient; $webClient.UseDefaultCredentials = $true; $webClient.DownloadFile('%RAWURL%', '%TRGFILE%');}");
                     }
                     else
                     {
                         sw.WriteLine("SRCSRVVERCTRL={0}", scheme);
                         sw.WriteLine("SRCSRVTRG=%RAWURL%");
                     }
+
                     sw.WriteLine("SRCSRV: source files ---------------------------------------");
 
                     foreach (var tuple in paths)
@@ -57,12 +57,11 @@ namespace GitLink.Pdb
                     sw.Flush();
 
                     return ms.ToArray();
-
                 }
             }
         }
 
-        public static byte[] CreateVsts(string revision, IEnumerable<Tuple<string, string>> paths, Dictionary<string, string> vstsData = null)
+        internal static byte[] CreateVsts(string revision, IEnumerable<Tuple<string, string>> paths, Dictionary<string, string> vstsData = null)
         {
             Argument.IsNotNullOrWhitespace(() => revision);
 

@@ -7,8 +7,8 @@
 
 namespace GitLink.Providers
 {
-    using GitTools.Git;
     using System.Text.RegularExpressions;
+    using GitTools.Git;
 
     /// <summary>
     /// A git provider for UNC network paths.
