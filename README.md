@@ -153,6 +153,7 @@ It is also possible to specify a custom url provider.
 
 Below is a list of projects already using GitLink (alphabetically ordered).
 
+- <a href="https://aspnetboilerplate.com" target="_blank">ASP.NET Boilerplate</a>
 - <a href="http://www.catelproject.com" target="_blank">Catel</a>
 - <a href="http://www.expandframework.com/" target="_blank">eXpand</a>
 - <a href="https://fakeiteasy.github.io/" target="_blank">FakeItEasy</a>
