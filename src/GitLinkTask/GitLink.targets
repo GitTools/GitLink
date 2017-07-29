@@ -10,6 +10,7 @@
         PdbFile="$(IntermediateOutputPath)$(TargetName).pdb"
         Method="$(GitLinkMethod)"
         SkipVerify="$(GitLinkSkipVerify)"
+        IndexAllDepotFiles="$(GitLinkIndexAllDepotFiles)"              
         GitRemoteUrl="$(GitLinkGitRemoteUrl)"
         GitWorkingDirectory="$(GitWorkingDirectory)"
         GitCommitId="$(GitCommitId)"

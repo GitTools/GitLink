@@ -21,6 +21,8 @@ namespace GitLinkTask
 
         public bool SkipVerify { get; set; }
 
+        public bool IndexAllDepotFiles { get; set; }
+
         public string GitRemoteUrl { get; set; }
 
         public string GitCommitId { get; set; }
@@ -40,6 +42,7 @@ namespace GitLinkTask
                 GitRemoteUrl = GitRemoteUrl != null ? new Uri(GitRemoteUrl, UriKind.Absolute) : null,
                 CommitId = GitCommitId,
                 GitWorkingDirectory = GitWorkingDirectory,
+                IndexAllDepotFiles = IndexAllDepotFiles,
             };
             bool success = Linker.Link(PdbFile.GetMetadata("FullPath"), options);
 

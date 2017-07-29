@@ -78,6 +78,14 @@ There are many more parameters you can use. Display the usage doc with the follo
 
     GitLink.exe -h
 
+### Native PDBs
+
+Native PDBs (from C++ projects) are supported by using -a option:
+
+    GitLink.exe <nativePdbfile> -a
+
+All source code files from your git depot will be indexed in the PDB.
+
 # How does it work
 
 The SrcSrv tool (Srcsrv.dll) enables a client to retrieve the exact version of the source files that were used to build an application. Because the source code for a module can change between versions and over the course of years, it is important to look at the source code as it existed when the version of the module in question was built.

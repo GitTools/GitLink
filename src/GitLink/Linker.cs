@@ -37,30 +37,50 @@ namespace GitLink
 
             var projectSrcSrvFile = pdbPath + ".srcsrv";
             string repositoryDirectory;
-            IReadOnlyCollection<string> sourceFiles;
+            IEnumerable<string> sourceFiles;
             IReadOnlyDictionary<string, string> repoSourceFiles;
+
             using (var pdb = new PdbFile(pdbPath))
             {
-                sourceFiles = pdb.GetFilesAndChecksums().Keys.ToList();
-
-                if (options.GitWorkingDirectory != null)
+                if (options.IndexAllDepotFiles)
                 {
-                    repositoryDirectory = Path.Combine(options.GitWorkingDirectory, ".git");
+                    repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(pdbPath));
+                    sourceFiles = GetSourceFilesFromDepot(repositoryDirectory);
                 }
                 else
                 {
-                    string someSourceFile = sourceFiles.FirstOrDefault();
-                    if (someSourceFile == null)
-                    {
-                        Log.Error("No source files were found in the PDB.");
-                        return false;
-                    }
+                    sourceFiles = pdb.GetFilesAndChecksums().Keys.ToList();
 
-                    repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(someSourceFile));
-                    if (repositoryDirectory == null)
+                    if (options.GitWorkingDirectory != null)
                     {
-                        Log.Error("No source files found that are tracked in a git repo.");
-                        return false;
+                        repositoryDirectory = Path.Combine(options.GitWorkingDirectory, ".git");
+                    }
+                    else
+                    {
+                        string someSourceFile = sourceFiles.FirstOrDefault();
+                        if (someSourceFile == null)
+                        {
+                            Log.Error("No source files were found in the PDB. If you're PDB is a native one you should use -a option.");
+                            return false;
+                        }
+
+                        repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(someSourceFile));
+                        if (repositoryDirectory == null)
+                        {
+                            Log.Error("No source files found that are tracked in a git repo.");
+                            return false;
+                        }
+
+                        if (!options.SkipVerify)
+                        {
+                            Log.Debug("Verifying pdb file");
+
+                            var missingFiles = pdb.FindMissingOrChangedSourceFiles();
+                            foreach (var missingFile in missingFiles)
+                            {
+                                Log.Warning($"File \"{missingFile}\" missing or changed since the PDB was compiled.");
+                            }
+                        }
                     }
                 }
 
@@ -107,17 +127,6 @@ namespace GitLink
                         // Normalize using file system since we can't find the git repo.
                         Log.Warning($"Unable to find git repo at \"{options.GitWorkingDirectory}\". Using file system to find canonical capitalization of file paths.");
                         repoSourceFiles = sourceFiles.ToDictionary(e => e, e => GetNormalizedPath(e, workingDirectory));
-                    }
-
-                    if (!options.SkipVerify)
-                    {
-                        Log.Debug("Verifying pdb file");
-
-                        var missingFiles = pdb.FindMissingOrChangedSourceFiles();
-                        foreach (var missingFile in missingFiles)
-                        {
-                            Log.Warning($"File \"{missingFile}\" missing or changed since the PDB was compiled.");
-                        }
                     }
 
                     string rawUrl = provider.RawGitUrl;
@@ -182,9 +191,33 @@ namespace GitLink
             Log.Debug("Created source server link file, updating pdb file \"{0}\"", Catel.IO.Path.GetRelativePath(pdbPath, repositoryDirectory));
             PdbStrHelper.Execute(PdbStrExePath, pdbPath, projectSrcSrvFile);
             var indexedFilesCount = repoSourceFiles.Values.Count(v => v != null);
-            Log.Info($"Remote git source information for {indexedFilesCount}/{sourceFiles.Count} files written to pdb: \"{pdbPath}\"");
+            Log.Info($"Remote git source information for {indexedFilesCount}/{sourceFiles.Count()} files written to pdb: \"{pdbPath}\"");
 
             return true;
+        }
+
+        private static IEnumerable<string> GetSourceFilesFromDepot(string repositoryDirectory)
+        {
+            IEnumerable<string> sourceFiles;
+            var repo = new Repository(repositoryDirectory);
+            {
+                sourceFiles = from file in Directory.GetFiles(repo.Info.WorkingDirectory, "*.*", SearchOption.AllDirectories)
+                              where !repo.Ignore.IsPathIgnored(file)
+                              let ext = Path.GetExtension(file)
+                              where string.Equals(ext, ".cs", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".cpp", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".c", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".cc", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".cxx", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".c++", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".h", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".hh", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".inl", StringComparison.OrdinalIgnoreCase)
+                                 || string.Equals(ext, ".hpp", StringComparison.OrdinalIgnoreCase)
+                              select file;
+            }
+
+            return sourceFiles;
         }
 
         private static void CreateSrcSrv(string srcsrvFile, SrcSrvContext srcSrvContext)

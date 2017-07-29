@@ -31,6 +31,7 @@ namespace GitLink
             string baseDir = null;
             string pdbPath = null;
             bool skipVerify = false;
+            bool allDepotFiles = false;
             LinkMethod method = LinkMethod.Http;
             var arguments = ArgumentSyntax.Parse(args, syntax =>
             {
@@ -39,6 +40,7 @@ namespace GitLink
                 syntax.DefineOption("commit", ref commitId, "The git ref to assume all the source code belongs to.");
                 syntax.DefineOption("baseDir", ref baseDir, "The path to the root of the git repo.");
                 syntax.DefineOption("s|skipVerify", ref skipVerify, "Verify all source files are available in source control.");
+                syntax.DefineOption("a|allDepotFiles", ref allDepotFiles, "Index all source files from depot. Add this option for native PDBs (C++).");
                 syntax.DefineParameter("pdb", ref pdbPath, "The PDB to add source indexing to.");
 
                 if (!string.IsNullOrEmpty(pdbPath) && !File.Exists(pdbPath))
@@ -65,6 +67,7 @@ namespace GitLink
                 CommitId = commitId,
                 SkipVerify = skipVerify,
                 Method = method,
+                IndexAllDepotFiles = allDepotFiles,
             };
 
             if (!Linker.Link(pdbPath, options))
