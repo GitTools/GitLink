@@ -66,7 +66,7 @@ namespace GitLink
             }
             else
             {
-                sourceFiles = GetSourceFilesFromPdb(pdbPath);
+                sourceFiles = GetSourceFilesFromPdb(pdbPath, !options.SkipVerify);
 
                 string someSourceFile = sourceFiles.FirstOrDefault();
                 if (someSourceFile == null)
@@ -197,11 +197,24 @@ namespace GitLink
             return true;
         }
 
-        private static List<string> GetSourceFilesFromPdb(string pdbPath)
+        private static List<string> GetSourceFilesFromPdb(string pdbPath, bool verifyFiles)
         {
             using (var pdb = new PdbFile(pdbPath))
             {
-                return pdb.GetFilesAndChecksums().Keys.ToList();
+                var sources = pdb.GetFilesAndChecksums().Keys.ToList();
+
+                if (verifyFiles)
+                {
+                    Log.Debug("Verifying pdb files");
+
+                    var missingFiles = pdb.FindMissingOrChangedSourceFiles();
+                    foreach (var missingFile in missingFiles)
+                    {
+                        Log.Warning($"File \"{missingFile}\" missing or changed since the PDB was compiled.");
+                    }
+                }
+
+                return sources;
             }
         }
 
