@@ -36,167 +36,189 @@ namespace GitLink
             Argument.IsNotNullOrEmpty(() => pdbPath);
 
             var projectSrcSrvFile = pdbPath + ".srcsrv";
-            string repositoryDirectory;
-            IEnumerable<string> sourceFiles;
+            string repositoryDirectory = null;
+            IReadOnlyList<string> sourceFiles;
             IReadOnlyDictionary<string, string> repoSourceFiles;
 
-            using (var pdb = new PdbFile(pdbPath))
+            if (options.GitWorkingDirectory != null)
             {
-                if (options.IndexAllDepotFiles)
+                repositoryDirectory = Path.Combine(options.GitWorkingDirectory, ".git");
+                if (!Directory.Exists(repositoryDirectory))
+                {
+                    Log.Error("Provided directory does not contain a git depot.");
+                    return false;
+                }
+            }
+
+            if (options.IndexAllDepotFiles)
+            {
+                if (repositoryDirectory == null)
                 {
                     repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(pdbPath));
-                    sourceFiles = GetSourceFilesFromDepot(repositoryDirectory);
+                    if (repositoryDirectory == null)
+                    {
+                        Log.Error("Couldn't auto detect git repo. Please use -baseDir to manually set it.");
+                        return false;
+                    }
+                }
+
+                sourceFiles = GetSourceFilesFromDepot(repositoryDirectory);
+            }
+            else
+            {
+                sourceFiles = GetSourceFilesFromPdb(pdbPath, !options.SkipVerify);
+
+                string someSourceFile = sourceFiles.FirstOrDefault();
+                if (someSourceFile == null)
+                {
+                    Log.Error("No source files were found in the PDB. If you're PDB is a native one you should use -a option.");
+                    return false;
+                }
+
+                if (repositoryDirectory == null)
+                {
+                    repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(sourceFiles.FirstOrDefault()));
+                    if (repositoryDirectory == null)
+                    {
+                        Log.Error("No source files found that are tracked in a git repo.");
+                        return false;
+                    }
+                }
+            }
+
+            string workingDirectory = Path.GetDirectoryName(repositoryDirectory);
+
+            var repository = new Lazy<Repository>(() => new Repository(repositoryDirectory));
+            try
+            {
+                string commitId = options.CommitId ?? repository.Value.Head.Commits.FirstOrDefault()?.Sha;
+                if (commitId == null)
+                {
+                    Log.Error("No commit is checked out to HEAD. Have you committed yet?");
+                    return false;
+                }
+
+                var providerManager = new Providers.ProviderManager();
+                Providers.IProvider provider;
+                if (options.GitRemoteUrl == null)
+                {
+                    var candidateProviders = from remote in repository.Value.Network.Remotes
+                                             let p = providerManager.GetProvider(remote.Url)
+                                             where p != null
+                                             select p;
+                    provider = candidateProviders.FirstOrDefault();
                 }
                 else
                 {
-                    sourceFiles = pdb.GetFilesAndChecksums().Keys.ToList();
-
-                    if (options.GitWorkingDirectory != null)
-                    {
-                        repositoryDirectory = Path.Combine(options.GitWorkingDirectory, ".git");
-                    }
-                    else
-                    {
-                        string someSourceFile = sourceFiles.FirstOrDefault();
-                        if (someSourceFile == null)
-                        {
-                            Log.Error("No source files were found in the PDB. If you're PDB is a native one you should use -a option.");
-                            return false;
-                        }
-
-                        repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(someSourceFile));
-                        if (repositoryDirectory == null)
-                        {
-                            Log.Error("No source files found that are tracked in a git repo.");
-                            return false;
-                        }
-
-                        if (!options.SkipVerify)
-                        {
-                            Log.Debug("Verifying pdb file");
-
-                            var missingFiles = pdb.FindMissingOrChangedSourceFiles();
-                            foreach (var missingFile in missingFiles)
-                            {
-                                Log.Warning($"File \"{missingFile}\" missing or changed since the PDB was compiled.");
-                            }
-                        }
-                    }
+                    provider = providerManager.GetProvider(options.GitRemoteUrl.AbsoluteUri);
                 }
 
-                string workingDirectory = Path.GetDirectoryName(repositoryDirectory);
+                if (provider == null)
+                {
+                    Log.Error("Unable to detect the remote git service.");
+                    return false;
+                }
 
-                var repository = new Lazy<Repository>(() => new Repository(repositoryDirectory));
                 try
                 {
-                    string commitId = options.CommitId ?? repository.Value.Head.Commits.FirstOrDefault()?.Sha;
-                    if (commitId == null)
-                    {
-                        Log.Error("No commit is checked out to HEAD. Have you committed yet?");
-                        return false;
-                    }
-
-                    var providerManager = new Providers.ProviderManager();
-                    Providers.IProvider provider;
-                    if (options.GitRemoteUrl == null)
-                    {
-                        var candidateProviders = from remote in repository.Value.Network.Remotes
-                                                 let p = providerManager.GetProvider(remote.Url)
-                                                 where p != null
-                                                 select p;
-                        provider = candidateProviders.FirstOrDefault();
-                    }
-                    else
-                    {
-                        provider = providerManager.GetProvider(options.GitRemoteUrl.AbsoluteUri);
-                    }
-
-                    if (provider == null)
-                    {
-                        Log.Error("Unable to detect the remote git service.");
-                        return false;
-                    }
-
-                    try
-                    {
-                        Repository repo = repository.Value;
-                        repoSourceFiles = sourceFiles.ToDictionary(e => e, e => repo.GetNormalizedPath(e));
-                    }
-                    catch (RepositoryNotFoundException)
-                    {
-                        // Normalize using file system since we can't find the git repo.
-                        Log.Warning($"Unable to find git repo at \"{options.GitWorkingDirectory}\". Using file system to find canonical capitalization of file paths.");
-                        repoSourceFiles = sourceFiles.ToDictionary(e => e, e => GetNormalizedPath(e, workingDirectory));
-                    }
-
-                    string rawUrl = provider.RawGitUrl;
-                    if (rawUrl.Contains(RevisionPlaceholder) || rawUrl.Contains(FilenamePlaceholder))
-                    {
-                        if (!rawUrl.Contains(RevisionPlaceholder) || !rawUrl.Contains(FilenamePlaceholder))
-                        {
-                            Log.Error("Supplied custom URL pattern must contain both a revision and a filename placeholder.");
-                            return false;
-                        }
-
-                        rawUrl = rawUrl
-                            .Replace(RevisionPlaceholder, "{0}")
-                            .Replace(FilenamePlaceholder, "%var2%");
-                    }
-                    else
-                    {
-                        rawUrl = $"{rawUrl}/{{0}}/%var2%";
-                    }
-
-                    Log.Info($"Using {string.Format(rawUrl, commitId)} for source server URLs.");
-                    var srcSrvContext = new SrcSrvContext
-                    {
-                        RawUrl = rawUrl,
-                        DownloadWithPowershell = options.Method == LinkMethod.Powershell,
-                        Revision = commitId,
-                    };
-                    foreach (var sourceFile in repoSourceFiles)
-                    {
-                        // Skip files that aren't tracked by source control.
-                        if (sourceFile.Value != null)
-                        {
-                            string relativePathForUrl = ReplaceSlashes(provider, sourceFile.Value);
-                            srcSrvContext.Paths.Add(Tuple.Create(sourceFile.Key, relativePathForUrl));
-                        }
-                    }
-
-                    // When using the VisualStudioTeamServicesProvider, add extra infomration to dictionary with VSTS-specific data
-                    if (provider is Providers.VisualStudioTeamServicesProvider)
-                    {
-                        srcSrvContext.VstsData["TFS_COLLECTION"] = provider.CompanyUrl;
-                        srcSrvContext.VstsData["TFS_TEAM_PROJECT"] = provider.ProjectName;
-                        srcSrvContext.VstsData["TFS_REPO"] = provider.ProjectUrl;
-                    }
-
-                    CreateSrcSrv(projectSrcSrvFile, srcSrvContext);
+                    Repository repo = repository.Value;
+                    repoSourceFiles = sourceFiles.ToDictionary(e => e, e => repo.GetNormalizedPath(e));
                 }
                 catch (RepositoryNotFoundException)
                 {
-                    Log.Error($"Unable to find git repo at \"{options.GitWorkingDirectory}\".");
-                    return false;
+                    // Normalize using file system since we can't find the git repo.
+                    Log.Warning($"Unable to find git repo at \"{options.GitWorkingDirectory}\". Using file system to find canonical capitalization of file paths.");
+                    repoSourceFiles = sourceFiles.ToDictionary(e => e, e => GetNormalizedPath(e, workingDirectory));
                 }
-                finally
+
+                string rawUrl = provider.RawGitUrl;
+                if (rawUrl.Contains(RevisionPlaceholder) || rawUrl.Contains(FilenamePlaceholder))
                 {
-                    if (repository.IsValueCreated)
+                    if (!rawUrl.Contains(RevisionPlaceholder) || !rawUrl.Contains(FilenamePlaceholder))
                     {
-                        repository.Value.Dispose();
+                        Log.Error("Supplied custom URL pattern must contain both a revision and a filename placeholder.");
+                        return false;
                     }
+
+                    rawUrl = rawUrl
+                        .Replace(RevisionPlaceholder, "{0}")
+                        .Replace(FilenamePlaceholder, "%var2%");
+                }
+                else
+                {
+                    rawUrl = $"{rawUrl}/{{0}}/%var2%";
+                }
+
+                Log.Info($"Using {string.Format(rawUrl, commitId)} for source server URLs.");
+                var srcSrvContext = new SrcSrvContext
+                {
+                    RawUrl = rawUrl,
+                    DownloadWithPowershell = options.Method == LinkMethod.Powershell,
+                    Revision = commitId,
+                };
+                foreach (var sourceFile in repoSourceFiles)
+                {
+                    // Skip files that aren't tracked by source control.
+                    if (sourceFile.Value != null)
+                    {
+                        string relativePathForUrl = ReplaceSlashes(provider, sourceFile.Value);
+                        srcSrvContext.Paths.Add(Tuple.Create(sourceFile.Key, relativePathForUrl));
+                    }
+                }
+
+                // When using the VisualStudioTeamServicesProvider, add extra infomration to dictionary with VSTS-specific data
+                if (provider is Providers.VisualStudioTeamServicesProvider)
+                {
+                    srcSrvContext.VstsData["TFS_COLLECTION"] = provider.CompanyUrl;
+                    srcSrvContext.VstsData["TFS_TEAM_PROJECT"] = provider.ProjectName;
+                    srcSrvContext.VstsData["TFS_REPO"] = provider.ProjectUrl;
+                }
+
+                CreateSrcSrv(projectSrcSrvFile, srcSrvContext);
+            }
+            catch (RepositoryNotFoundException)
+            {
+                Log.Error($"Unable to find git repo at \"{options.GitWorkingDirectory}\".");
+                return false;
+            }
+            finally
+            {
+                if (repository.IsValueCreated)
+                {
+                    repository.Value.Dispose();
                 }
             }
 
             Log.Debug("Created source server link file, updating pdb file \"{0}\"", Catel.IO.Path.GetRelativePath(pdbPath, repositoryDirectory));
             PdbStrHelper.Execute(PdbStrExePath, pdbPath, projectSrcSrvFile);
             var indexedFilesCount = repoSourceFiles.Values.Count(v => v != null);
-            Log.Info($"Remote git source information for {indexedFilesCount}/{sourceFiles.Count()} files written to pdb: \"{pdbPath}\"");
+            Log.Info($"Remote git source information for {indexedFilesCount}/{sourceFiles.Count} files written to pdb: \"{pdbPath}\"");
 
             return true;
         }
 
-        private static IEnumerable<string> GetSourceFilesFromDepot(string repositoryDirectory)
+        private static List<string> GetSourceFilesFromPdb(string pdbPath, bool verifyFiles)
+        {
+            using (var pdb = new PdbFile(pdbPath))
+            {
+                var sources = pdb.GetFilesAndChecksums().Keys.ToList();
+
+                if (verifyFiles)
+                {
+                    Log.Debug("Verifying pdb files");
+
+                    var missingFiles = pdb.FindMissingOrChangedSourceFiles();
+                    foreach (var missingFile in missingFiles)
+                    {
+                        Log.Warning($"File \"{missingFile}\" missing or changed since the PDB was compiled.");
+                    }
+                }
+
+                return sources;
+            }
+        }
+
+        private static List<string> GetSourceFilesFromDepot(string repositoryDirectory)
         {
             IEnumerable<string> sourceFiles;
             var repo = new Repository(repositoryDirectory);
@@ -217,7 +239,7 @@ namespace GitLink
                               select file;
             }
 
-            return sourceFiles;
+            return sourceFiles.ToList();
         }
 
         private static void CreateSrcSrv(string srcsrvFile, SrcSrvContext srcSrvContext)

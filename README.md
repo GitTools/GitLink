@@ -84,7 +84,7 @@ Native PDBs (from C++ projects) are supported by using -a option:
 
     GitLink.exe <nativePdbfile> -a
 
-All source code files from your git depot will be indexed in the PDB.
+All known C++ source files from your git depot will be indexed in the PDB.
 
 # How does it work
 
