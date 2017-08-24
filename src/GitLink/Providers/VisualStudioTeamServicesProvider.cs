@@ -13,7 +13,24 @@ namespace GitLink.Providers
 
     public class VisualStudioTeamServicesProvider : ProviderBase
     {
-        private static readonly Regex HostingUrlPattern = new Regex(@"(?<url>(?<companyurl>(?:https://)?(?<accountname>([a-zA-Z0-9\-\.]*)?)\.visualstudio\.com/)(?<project>[a-zA-Z0-9\-\.]*)/?_git//?(?<repo>[^/]+))");
+        // Matches the git origin URL, providing named capture groups
+        // Example match: https://user.visualstudio.com/DefaultCollection/MyFirstProject/_git/MyFirstRepo
+        private static readonly Regex HostingUrlPattern =
+            new Regex(
+                @"(?<companyurl>
+                      (?:https://)?
+                      (?<accountname>([a-zA-Z0-9\-\.]*)?)    # account name (e.g. user)
+                      \.visualstudio\.com/
+                      (
+                          [a-zA-Z0-9\-\.]+/                  # collection (optional). e.g. DefaultCollection/
+                          (?!/?_git/)                        # Negative lookahead to avoid capturing 'project' group
+                      )?
+                  )
+                  (?<project>[a-zA-Z0-9\-\.]*)               # project name. e.g. MyFirstProject
+                  (?<git>/?_git//?)
+                  (?<repo>[^/]+)                             # the repository's name. e.g. MyFirstRepo
+                ",
+                RegexOptions.IgnorePatternWhitespace);
 
         public VisualStudioTeamServicesProvider()
             : base(new GitPreparer())
