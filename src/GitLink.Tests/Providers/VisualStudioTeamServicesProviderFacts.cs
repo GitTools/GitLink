@@ -19,7 +19,7 @@ namespace GitLink.Tests.Providers
             {
                 var provider = new VisualStudioTeamServicesProvider();
                 var valid = provider.Initialize("https://my-account.visualstudio.com/_git/main-repo");
-
+ 
                 Assert.IsTrue(valid);
             }
 
