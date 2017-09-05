@@ -19,7 +19,7 @@ namespace GitLink.Tests.Providers
             {
                 var provider = new VisualStudioTeamServicesProvider();
                 var valid = provider.Initialize("https://my-account.visualstudio.com/_git/main-repo");
-
+ 
                 Assert.IsTrue(valid);
             }
 
@@ -35,60 +35,47 @@ namespace GitLink.Tests.Providers
             [TestFixture]
             public class TheVisualStudioTeamServicesProviderProperties
             {
-                [TestCase]
-                public void ReturnsValidCompany()
+                [TestCase("https://CatenaLogic.visualstudio.com/_git/main-repo", "main-repo")]
+                [TestCase("https://CatenaLogic.visualstudio.com/BigProject/_git/main-repo", "BigProject")]
+                [TestCase("https://CatenaLogic.visualstudio.com/DefaultCollection/BigProject/_git/main-repo", "BigProject")]
+                public void ReturnsValidProject(string url, string expectedProjectName)
                 {
                     var provider = new VisualStudioTeamServicesProvider();
-                    provider.Initialize("https://CatenaLogic.visualstudio.com/_git/main-repo");
+                    provider.Initialize(url);
 
-                    Assert.AreEqual("CatenaLogic", provider.CompanyName);
+                    Assert.AreEqual(expectedProjectName, provider.ProjectName);
                 }
 
-                [TestCase]
-                public void ReturnsValidCompanyUrl()
+                [TestCase("https://CatenaLogic.visualstudio.com/_git/main-repo", "CatenaLogic")]
+                public void ReturnsValidCompany(string url, string expectedCompanyName)
                 {
                     var provider = new VisualStudioTeamServicesProvider();
-                    provider.Initialize("https://CatenaLogic.visualstudio.com/_git/main-repo");
+                    provider.Initialize(url);
 
-                    Assert.AreEqual("https://CatenaLogic.visualstudio.com/", provider.CompanyUrl);
+                    Assert.AreEqual(expectedCompanyName, provider.CompanyName);
                 }
 
-                [TestCase]
-                public void ReturnsValidProject()
+                [TestCase("https://CatenaLogic.visualstudio.com/Project/_git/main-repo", "main-repo")]
+                [TestCase("https://CatenaLogic.visualstudio.com/Project/_git/main.repo", "main.repo")]
+                [TestCase("https://CatenaLogic.visualstudio.com/DefaultCollection/Project/_git/main.repo", "main.repo")]
+                public void ReturnsValidRepositoryName(string url, string expectedProjectUrl)
                 {
                     var provider = new VisualStudioTeamServicesProvider();
-                    provider.Initialize("https://CatenaLogic.visualstudio.com/_git/main-repo");
+                    provider.Initialize(url);
 
-                    Assert.AreEqual("main-repo", provider.ProjectName);
+                    Assert.AreEqual(expectedProjectUrl, provider.ProjectUrl);
                 }
 
-                [TestCase]
-                public void ReturnsValidProject2()
+                [TestCase("https://CatenaLogic.visualstudio.com/_git/main-repo", "https://CatenaLogic.visualstudio.com/")]
+                [TestCase("https://CatenaLogic.visualstudio.com/DefaultCollection/BigProject/_git/main-repo", "https://CatenaLogic.visualstudio.com/DefaultCollection/")]
+                [TestCase("https://CatenaLogic.visualstudio.com/Other.Collection/BigProject/_git/main-repo", "https://CatenaLogic.visualstudio.com/Other.Collection/")]
+                public void ReturnsValidCompanyUrl(string url, string expectedCompanyUrl)
                 {
                     var provider = new VisualStudioTeamServicesProvider();
-                    provider.Initialize("https://CatenaLogic.visualstudio.com/BigProject/_git/main-repo");
+                    provider.Initialize(url);
 
-                    Assert.AreEqual("BigProject", provider.ProjectName);
+                    Assert.AreEqual(expectedCompanyUrl, provider.CompanyUrl);
                 }
-
-                [TestCase]
-                public void ReturnsValidRepositoryName()
-                {
-                    var provider = new VisualStudioTeamServicesProvider();
-                    provider.Initialize("https://CatenaLogic.visualstudio.com/Project/_git/main-repo");
-
-                    Assert.AreEqual("main-repo", provider.ProjectUrl);
-                }
-
-                [TestCase]
-                public void ReturnsValidRepositoryNameWhenContainsPeriod()
-                {
-                    var provider = new VisualStudioTeamServicesProvider();
-                    provider.Initialize("https://CatenaLogic.visualstudio.com/Big.Project/_git/main.repo");
-
-                    Assert.AreEqual("main.repo", provider.ProjectUrl);
-                }
-
             }
         }
     }
