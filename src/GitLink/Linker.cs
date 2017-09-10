@@ -50,6 +50,12 @@ namespace GitLink
                 }
             }
 
+            if (PortablePdbHelper.IsPortablePdb(pdbPath))
+            {
+                Log.Warning("Portable PDB format is not compatible with GitLink. Please use SourceLink (https://github.com/ctaggart/SourceLink).");
+                return true;
+            }
+
             if (options.IndexAllDepotFiles)
             {
                 if (repositoryDirectory == null)
