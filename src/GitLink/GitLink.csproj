@@ -75,6 +75,7 @@
     <Compile Include="Pdb\PdbStream.cs" />
     <Compile Include="Pdb\SrcSrv.cs" />
     <Compile Include="Pdb\SrcSrvContext.cs" />
+    <Compile Include="Helpers\PortablePdbHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\BitBucketProvider.cs" />
