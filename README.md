@@ -12,7 +12,7 @@ GitLink
 
 ![GitLink](design/logo/logo_64.png)
 
-GitLink let's users step through your code hosted on GitHub! **Help make .NET open source projects more accessible by enabling this for your .NET projects, it's just a single additional step in your build**. See the list of [projects using GitLink](#projects-using-gitlink).
+GitLink lets users step through your code hosted on GitHub! **Help make .NET open source projects more accessible by enabling this for your .NET projects, it's just a single additional step in your build**. See the list of [projects using GitLink](#projects-using-gitlink).
 
 <a href="https://pledgie.com/campaigns/26957"><img alt="Click here to lend your support to: GitLink and make a donation at pledgie.com !" src="https://pledgie.com/campaigns/26957.png?skin_name=chrome" border="0" /></a>
 
@@ -77,6 +77,14 @@ The custom url will be used to fill the placeholders with the relative file path
 There are many more parameters you can use. Display the usage doc with the following command line:
 
     GitLink.exe -h
+
+### Native PDBs
+
+Native PDBs (from C++ projects) are supported by using -a option:
+
+    GitLink.exe <nativePdbfile> -a
+
+All known C++ source files from your git depot will be indexed in the PDB.
 
 # How does it work
 
@@ -145,6 +153,7 @@ It is also possible to specify a custom url provider.
 
 Below is a list of projects already using GitLink (alphabetically ordered).
 
+- <a href="https://aspnetboilerplate.com" target="_blank">ASP.NET Boilerplate</a>
 - <a href="http://www.catelproject.com" target="_blank">Catel</a>
 - <a href="http://www.expandframework.com/" target="_blank">eXpand</a>
 - <a href="https://fakeiteasy.github.io/" target="_blank">FakeItEasy</a>
