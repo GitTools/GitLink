@@ -58,6 +58,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Catel.Core" Version="4.5.3" />
+    <PackageReference Include="EnlistmentInfo" Version="1.0.4" />
+    <PackageReference Include="GitTools.Core" Version="1.0.0-unstable0021" />
+    <PackageReference Include="GitVersionTask" Version="4.0.0-beta0009" />
+    <PackageReference Include="ImpromptuInterface" Version="6.2.2" />
+    <PackageReference Include="LibGit2Sharp" Version="0.21.0.176" />
+    <PackageReference Include="NuProj.Common" Version="0.11.14-beta" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.0" />
+    <PackageReference Include="System.CommandLine" Version="0.1.0-e161008-1" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Extensions\BinaryReaderExtensions.cs" />
     <Compile Include="Extensions\PdbExtensions.cs" />
     <Compile Include="Exceptions\GitLinkException.cs" />
@@ -97,7 +108,6 @@
     <None Include="winsdk.redist.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Logo.ico" />

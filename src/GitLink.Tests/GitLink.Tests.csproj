@@ -47,6 +47,12 @@
     <Reference Include="System" />
     <Reference Include="System.Net" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ApprovalTests" Version="3.0.8" />
+    <PackageReference Include="ApprovalUtilities" Version="3.0.8" />
+    <PackageReference Include="NUnit" Version="3.5.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.4.1" />
+  </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
       <ItemGroup>
@@ -123,7 +129,7 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
