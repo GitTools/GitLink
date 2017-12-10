@@ -17,7 +17,6 @@ namespace GitLink
     using GitTools;
     using GitTools.Git;
     using LibGit2Sharp;
-    using Microsoft.Build.Evaluation;
     using Pdb;
     using Providers;
 
