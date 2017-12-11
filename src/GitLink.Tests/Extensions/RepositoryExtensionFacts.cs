@@ -39,7 +39,7 @@ namespace GitLink.Tests.Extensions
         [Theory, Pairwise]
         public void NormalizeFileOneDirDeep(bool scrambleCase, bool absolutePath, bool emptySegments, bool forwardSlashes)
         {
-            string expected = "src/EnlistmentInfo.targets";
+            string expected = "src/Directory.Build.targets";
             string input = GetPathToTest(expected, scrambleCase, absolutePath, emptySegments, forwardSlashes);
             string actual = repo.GetNormalizedPath(input);
             Assert.AreEqual(expected, actual);
