@@ -8,5 +8,5 @@
 using System.Reflection;
 
 [assembly: AssemblyTitle("GitLinkTask")]
-[assembly: AssemblyProduct("GitLinkTask")]
-[assembly: AssemblyDescription("GitLinkTask library")]
+[assembly: AssemblyProduct("GitLink")]
+[assembly: AssemblyDescription("GitLink let's users step through your code hosted on any Git hosting service! This makes symbol servers obsolete which saves you both time")]

@@ -1,4 +1,6 @@
-﻿// Copyright (c) Andrew Arnott. All rights reserved.
+﻿// <copyright file="LinkPdbToGitRemote.cs" company="Andrew Arnott">
+//   Copyright (c) 2014 - 2016 Andrew Arnott. All rights reserved.
+// </copyright>
 
 namespace GitLinkTask
 {

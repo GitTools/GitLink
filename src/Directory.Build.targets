@@ -2,7 +2,19 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)GitLink.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Catel.Core" Version="4.5.3" PrivateAssets="all" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" PrivateAssets="all" />
+    <PackageReference Include="LibGit2Sharp" Version="0.21.0.176" PrivateAssets="all" />
+    <PackageReference Include="GitTools.Core" Version="1.0.0-unstable0021" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
+  </ItemGroup>
 
   <Target Name="GetDeployableOutputs"
           DependsOnTargets="ResolveReferences;GetCopyToOutputDirectoryItems;BuiltProjectOutputGroup;SatelliteDllsProjectOutputGroup;SatelliteDllsProjectOutputGroupDependencies"
