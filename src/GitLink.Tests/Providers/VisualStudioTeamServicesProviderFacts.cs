@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GitHubProviderFacts.cs" company="CatenaLogic">
+// <copyright file="VisualStudioTeamServicesProviderFacts.cs" company="CatenaLogic">
 //   Copyright (c) 2014 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ namespace GitLink.Tests.Providers
             {
                 var provider = new VisualStudioTeamServicesProvider();
                 var valid = provider.Initialize("https://my-account.visualstudio.com/_git/main-repo");
- 
+
                 Assert.IsTrue(valid);
             }
 

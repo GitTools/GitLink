@@ -3,5 +3,9 @@
   <PropertyGroup>
     <GitLinkEnabled Condition=" '$(DesignTimeBuild)' != 'true' and '$(Configuration)' == 'Release' and '$(GitLinkEnabled)' == '' and $(BuildingForLiveUnitTesting) != 'true' ">true</GitLinkEnabled>
     <GitLinkContinueOnError>true</GitLinkContinueOnError>
+
+    <GitLinkToolsRootPath Condition=" '$(GitLinkToolsRootPath)' == '' ">$(MSBuildThisFileDirectory)</GitLinkToolsRootPath>
+    <GitLinkToolsSubPath Condition=" '$(MSBuildRuntimeType)' == 'Core' ">netstandard1.5\</GitLinkToolsSubPath>
+    <GitLinkToolsSubPath Condition=" '$(MSBuildRuntimeType)' != 'Core' ">net45\</GitLinkToolsSubPath>
   </PropertyGroup>
 </Project>

@@ -1,82 +1,40 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{38BFDD5A-8CC2-43B8-96CE-BC572E3DFEF5}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GitLinkTask</RootNamespace>
-    <AssemblyName>GitLinkTask</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFrameworks>net45</TargetFrameworks>
+    <NoWarn>$(NoWarn);CS1998</NoWarn>
+    <PackageId>GitLink</PackageId>
+    <Authors>GeertvanHorrik,AArnott</Authors>
+    <Version>$(GitVersion_NuGetVersion)</Version>
+    <PackageProjectUrl>https://github.com/GitTools/GitLink</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/GitTools/GitLink/blob/$(APPVEYOR_REPO_COMMIT)/LICENSE</PackageLicenseUrl>
+    <PackageTags>git pdb</PackageTags>
+    <PackageIconUrl>https://raw.githubusercontent.com/GitTools/GitLink/$(APPVEYOR_REPO_COMMIT)/design/logo/logo_64.png</PackageIconUrl>
+    <Description>GitLink let's users step through your code hosted on any Git hosting service! This makes symbol servers obsolete which saves you both time</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\output\debug\GitLinkTask\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1591;1998</NoWarn>
-    <DocumentationFile>..\..\bin\Debug\GitLinkTask\GitLinkTask.XML</DocumentationFile>
-    <CodeAnalysisRuleSet>GitLinkTask.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\output\release\GitLinkTask\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>1591;1998</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>..\..\bin\Release\GitLinkTask\GitLinkTask.XML</DocumentationFile>
-    <CodeAnalysisRuleSet>GitLinkTask.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LinkPdbToGitRemote.cs" />
-  </ItemGroup>
+  <!-- A project that consumes this one is a development dependency and as such, should not chain in any others. -->
+  <ItemDefinitionGroup>
+    <PackageReference>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <ProjectReference>
+      <PrivateAssets>all</PrivateAssets>
+    </ProjectReference>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <Reference Include="Catel.Core">
       <HintPath>..\..\lib\Catel.Core.4.3.0\lib\net45\Catel.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.Build.Tasks.v4.0" />
-    <Reference Include="Microsoft.Build.Utilities.v4.0" />
-    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="GitLink.props">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="GitLink.targets">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="GitLinkTask.ruleset" />
-    <None Include="project.json" />
-    <AdditionalFiles Include="stylecop.json" />
+    <PackageReference Include="GitVersionTask" Version="4.0.0-beta0009" />
+    <PackageReference Include="Nerdbank.MSBuildExtension" Version="0.1.20-beta" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GitLink\GitLink.csproj">
-      <Project>{d68add77-913f-46d2-9a4f-5cc71c4718d8}</Project>
-      <Name>GitLink</Name>
-    </ProjectReference>
+    <None Include="tools\**" Pack="true" PackagePath="tools\%(RecursiveDir)%(FileName)%(Extension)" />
+    <None Include="..\GitLink\winsdk.redist.txt" Pack="true" PackagePath="build\net45\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GitLink\GitLink.csproj">
-      <Project>{d68add77-913f-46d2-9a4f-5cc71c4718d8}</Project>
-      <Name>GitLink</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\GitLink\GitLink.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
