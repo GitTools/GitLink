@@ -10,6 +10,7 @@
     <PackageTags>git pdb</PackageTags>
     <PackageIconUrl>https://raw.githubusercontent.com/GitTools/GitLink/$(APPVEYOR_REPO_COMMIT)/design/logo/logo_64.png</PackageIconUrl>
     <Description>GitLink let's users step through your code hosted on any Git hosting service! This makes symbol servers obsolete which saves you both time</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <!-- A project that consumes this one is a development dependency and as such, should not chain in any others. -->
   <ItemDefinitionGroup>
