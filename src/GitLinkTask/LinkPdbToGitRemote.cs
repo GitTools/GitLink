@@ -5,6 +5,7 @@
 namespace GitLinkTask
 {
     using System;
+    using System.IO;
     using Catel.Logging;
     using global::GitLink;
     using Microsoft.Build.Framework;
@@ -31,6 +32,8 @@ namespace GitLinkTask
 
         public string GitWorkingDirectory { get; set; }
 
+        public string IntermediateOutputPath { get; set; }
+
         private LinkMethod MethodEnum { get; set; }
 
         public override bool Execute()
@@ -45,10 +48,18 @@ namespace GitLinkTask
                 CommitId = GitCommitId,
                 GitWorkingDirectory = GitWorkingDirectory,
                 IndexAllDepotFiles = IndexAllDepotFiles,
+                IntermediateOutputPath = Path.GetFullPath(AddTrailingSlash(IntermediateOutputPath)),
             };
             bool success = Linker.Link(PdbFile.GetMetadata("FullPath"), options);
 
             return success && !Log.HasLoggedErrors;
+        }
+
+        private static string AddTrailingSlash(string path)
+        {
+            return path.EndsWith(Path.DirectorySeparatorChar.ToString())
+                ? path
+                : path + Path.DirectorySeparatorChar;
         }
 
         private class MSBuildListener : LogListenerBase
