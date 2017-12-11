@@ -110,8 +110,9 @@ namespace GitLink
                     var candidateProviders = from remote in repository.Value.Network.Remotes
                                              let p = providerManager.GetProvider(remote.Url)
                                              where p != null
-                                             select p;
-                    provider = candidateProviders.FirstOrDefault();
+                                             select (remote.Name, Provider: p);
+                    provider = candidateProviders.FirstOrDefault(c => c.Name == "origin").Provider
+                        ?? candidateProviders.FirstOrDefault().Provider;
                 }
                 else
                 {
