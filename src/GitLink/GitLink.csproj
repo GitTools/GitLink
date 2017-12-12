@@ -7,11 +7,13 @@
     <ApplicationIcon>Logo.ico</ApplicationIcon>
     <IsPackable>false</IsPackable>
     <PackageId>GitLink_Inner</PackageId>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="GitVersionTask" Version="4.0.0-beta0009" />
     <PackageReference Include="ImpromptuInterface" Version="6.2.2" />
     <PackageReference Include="System.CommandLine" Version="0.1.0-e161008-1" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
   <ItemGroup>
     <None Include="pdbstr.exe">
