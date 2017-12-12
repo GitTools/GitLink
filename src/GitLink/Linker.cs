@@ -127,7 +127,9 @@ namespace GitLink
                 try
                 {
                     Repository repo = repository.Value;
-                    repoSourceFiles = sourceFiles.ToDictionary(e => e, e => repo.GetNormalizedPath(e));
+                    repoSourceFiles = sourceFiles
+                        .Where(f => !f.StartsWithIgnoreCase(options.IntermediateOutputPath))
+                        .ToDictionary(e => e, e => repo.GetNormalizedPath(e));
                 }
                 catch (RepositoryNotFoundException)
                 {

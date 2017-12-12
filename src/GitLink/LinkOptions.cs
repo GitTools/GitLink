@@ -25,5 +25,7 @@ namespace GitLink
         public string GitWorkingDirectory { get; set; }
 
         public bool IndexAllDepotFiles { get; set; }
+
+        public string IntermediateOutputPath { get; set; }
     }
 }

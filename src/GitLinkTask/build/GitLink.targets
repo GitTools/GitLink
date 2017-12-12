@@ -17,6 +17,7 @@
         GitRemoteUrl="$(GitLinkGitRemoteUrl)"
         GitWorkingDirectory="$(GitWorkingDirectory)"
         GitCommitId="$(GitCommitId)"
+        IntermediateOutputPath="$(IntermediateOutputPath)"
         ContinueOnError="$(GitLinkContinueOnError)" />
   </Target>
 </Project>
