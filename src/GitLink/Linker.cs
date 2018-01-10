@@ -215,10 +215,16 @@ namespace GitLink
                 {
                     Log.Debug("Verifying pdb files");
 
-                    var missingFiles = pdb.FindMissingOrChangedSourceFiles();
-                    foreach (var missingFile in missingFiles)
+                    foreach (var file in pdb.FindMissingOrChangedSourceFiles())
                     {
-                        Log.Warning($"File \"{missingFile}\" missing or changed since the PDB was compiled.");
+                        if (File.Exists(file))
+                        {
+                            Log.Warning($"File \"{file}\" changed since the PDB was compiled.");
+                        }
+                        else
+                        {
+                            Log.Warning($"File \"{file}\" missing since the PDB was compiled.");
+                        }
                     }
                 }
 
