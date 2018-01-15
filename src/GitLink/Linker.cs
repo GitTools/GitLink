@@ -49,6 +49,16 @@ namespace GitLink
                 }
             }
 
+            if (repositoryDirectory == null)
+            {
+                repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(pdbPath));
+                if (repositoryDirectory == null)
+                {
+                    Log.Error("Couldn't auto detect git repo. Please use -baseDir to manually set it.");
+                    return false;
+                }
+            }
+
             if (PortablePdbHelper.IsPortablePdb(pdbPath))
             {
                 Log.Warning("Portable PDB format is not compatible with GitLink. Please use SourceLink (https://github.com/ctaggart/SourceLink).");
@@ -57,37 +67,15 @@ namespace GitLink
 
             if (options.IndexAllDepotFiles)
             {
-                if (repositoryDirectory == null)
-                {
-                    repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(pdbPath));
-                    if (repositoryDirectory == null)
-                    {
-                        Log.Error("Couldn't auto detect git repo. Please use -baseDir to manually set it.");
-                        return false;
-                    }
-                }
-
                 sourceFiles = GetSourceFilesFromDepot(repositoryDirectory);
             }
             else
             {
                 sourceFiles = GetSourceFilesFromPdb(pdbPath, !options.SkipVerify);
-
-                string someSourceFile = sourceFiles.FirstOrDefault();
-                if (someSourceFile == null)
+                if (!sourceFiles.Any())
                 {
                     Log.Error("No source files were found in the PDB. If you're PDB is a native one you should use -a option.");
                     return false;
-                }
-
-                if (repositoryDirectory == null)
-                {
-                    repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(sourceFiles.FirstOrDefault()));
-                    if (repositoryDirectory == null)
-                    {
-                        Log.Error("No source files found that are tracked in a git repo.");
-                        return false;
-                    }
                 }
             }
 
@@ -186,7 +174,7 @@ namespace GitLink
             }
             catch (RepositoryNotFoundException)
             {
-                Log.Error($"Unable to find git repo at \"{options.GitWorkingDirectory}\".");
+                Log.Error($"Unable to find git repo at \"{repositoryDirectory}\".");
                 return false;
             }
             finally
