@@ -72,11 +72,9 @@ When working with a repository using uncommon URL you can use placeholders to sp
 
 The custom url will be used to fill the placeholders with the relative file path and the revision hash.
 
-### More options
+### Git repository location
 
-There are many more parameters you can use. Display the usage doc with the following command line:
-
-    GitLink.exe -h
+GitLink resolves the git repository based on the location of the pdb file. If the pdb file is located outside of the git repository, use the `-baseDir` parameter to point to the top-level directory of the repository.
 
 ### Native PDBs
 
@@ -85,6 +83,12 @@ Native PDBs (from C++ projects) are supported by using -a option:
     GitLink.exe <nativePdbfile> -a
 
 All known C++ source files from your git depot will be indexed in the PDB.
+
+### More options
+
+There are many more parameters you can use. Display the usage doc with the following command line:
+
+    GitLink.exe -h
 
 # How does it work
 
