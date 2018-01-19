@@ -116,7 +116,7 @@ namespace GitLink
                 try
                 {
                     Repository repo = repository.Value;
-                    
+
                     var files = string.IsNullOrEmpty(options.IntermediateOutputPath) ?
                                 sourceFiles : sourceFiles.Where(f => !f.StartsWithIgnoreCase(options.IntermediateOutputPath));
 
