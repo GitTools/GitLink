@@ -25,10 +25,12 @@ namespace GitLink
     /// </summary>
     public static class Linker
     {
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
         private static readonly string FilenamePlaceholder = Uri.EscapeUriString("{filename}");
         private static readonly string RevisionPlaceholder = Uri.EscapeUriString("{revision}");
         private static readonly string PdbStrExePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "pdbstr.exe");
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+        private static readonly string[] ExtensionsToIgnore = new string[] { ".g.cs" };
 
         public static bool Link(string pdbPath, LinkOptions options = default(LinkOptions))
         {
@@ -115,7 +117,7 @@ namespace GitLink
 
                 try
                 {
-                    Repository repo = repository.Value;
+                    var repo = repository.Value;
 
                     var files = string.IsNullOrEmpty(options.IntermediateOutputPath) ?
                                 sourceFiles : sourceFiles.Where(f => !f.StartsWithIgnoreCase(options.IntermediateOutputPath));
@@ -154,12 +156,29 @@ namespace GitLink
                     DownloadWithPowershell = options.Method == LinkMethod.Powershell,
                     Revision = commitId,
                 };
+
                 foreach (var sourceFile in repoSourceFiles)
                 {
+                    var ignore = false;
+
+                    foreach (var extensionToIgnore in ExtensionsToIgnore)
+                    {
+                        if (sourceFile.Key.EndsWithIgnoreCase(extensionToIgnore) || sourceFile.Value.EndsWithIgnoreCase(extensionToIgnore))
+                        {
+                            ignore = true;
+                            break;
+                        }
+                    }
+
+                    if (ignore)
+                    {
+                        continue;
+                    }
+
                     // Skip files that aren't tracked by source control.
                     if (sourceFile.Value != null)
                     {
-                        string relativePathForUrl = ReplaceSlashes(provider, sourceFile.Value);
+                        var relativePathForUrl = ReplaceSlashes(provider, sourceFile.Value);
                         srcSrvContext.Paths.Add(Tuple.Create(sourceFile.Key, relativePathForUrl));
                     }
                 }
