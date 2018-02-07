@@ -31,6 +31,12 @@ namespace GitLink
         private static readonly string RevisionPlaceholder = Uri.EscapeUriString("{revision}");
         private static readonly string PdbStrExePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "pdbstr.exe");
         private static readonly string[] ExtensionsToIgnore = new string[] { ".g.cs" };
+        private static IReadOnlyList<string> _sourceFilesList = null;
+
+        public static bool LinkDirectory(string pdbFolderPath, LinkOptions options = default(LinkOptions))
+        {
+            return Directory.EnumerateFiles(pdbFolderPath, "*.pdb", SearchOption.AllDirectories).All(filePath => Link(filePath, options));
+        }
 
         public static bool Link(string pdbPath, LinkOptions options = default(LinkOptions))
         {
@@ -38,7 +44,6 @@ namespace GitLink
 
             var projectSrcSrvFile = pdbPath + ".srcsrv";
             string repositoryDirectory = null;
-            IReadOnlyList<string> sourceFiles;
             IReadOnlyDictionary<string, string> repoSourceFiles;
 
             if (options.GitWorkingDirectory != null)
@@ -69,12 +74,15 @@ namespace GitLink
 
             if (options.IndexAllDepotFiles)
             {
-                sourceFiles = GetSourceFilesFromDepot(repositoryDirectory);
+                if (_sourceFilesList == null)
+                {
+                    _sourceFilesList = GetSourceFilesFromDepot(repositoryDirectory);
+                }
             }
             else
             {
-                sourceFiles = GetSourceFilesFromPdb(pdbPath, !options.SkipVerify);
-                if (!sourceFiles.Any())
+                _sourceFilesList = GetSourceFilesFromPdb(pdbPath, !options.SkipVerify);
+                if (!_sourceFilesList.Any())
                 {
                     Log.Error("No source files were found in the PDB. If you're PDB is a native one you should use -a option.");
                     return false;
@@ -120,7 +128,7 @@ namespace GitLink
                     var repo = repository.Value;
 
                     var files = string.IsNullOrEmpty(options.IntermediateOutputPath) ?
-                                sourceFiles : sourceFiles.Where(f => !f.StartsWithIgnoreCase(options.IntermediateOutputPath));
+                        _sourceFilesList : _sourceFilesList.Where(f => !f.StartsWithIgnoreCase(options.IntermediateOutputPath));
 
                     repoSourceFiles = files.ToDictionary(e => e, e => repo.GetNormalizedPath(e));
                 }
@@ -128,7 +136,7 @@ namespace GitLink
                 {
                     // Normalize using file system since we can't find the git repo.
                     Log.Warning($"Unable to find git repo at \"{options.GitWorkingDirectory}\". Using file system to find canonical capitalization of file paths.");
-                    repoSourceFiles = sourceFiles.ToDictionary(e => e, e => GetNormalizedPath(e, workingDirectory));
+                    repoSourceFiles = _sourceFilesList.ToDictionary(e => e, e => GetNormalizedPath(e, workingDirectory));
                 }
 
                 string rawUrl = provider.RawGitUrl;
@@ -209,7 +217,7 @@ namespace GitLink
             Log.Debug("Created source server link file, updating pdb file \"{0}\"", Catel.IO.Path.GetRelativePath(pdbPath, repositoryDirectory));
             PdbStrHelper.Execute(PdbStrExePath, pdbPath, projectSrcSrvFile);
             var indexedFilesCount = repoSourceFiles.Values.Count(v => v != null);
-            Log.Info($"Remote git source information for {indexedFilesCount}/{sourceFiles.Count} files written to pdb: \"{pdbPath}\"");
+            Log.Info($"Remote git source information for {indexedFilesCount}/{_sourceFilesList.Count} files written to pdb: \"{pdbPath}\"");
 
             return true;
         }
