@@ -136,6 +136,7 @@ GitLink supports the following providers out of the box (will auto-detect based 
 
 * <a href="https://bitbucket.org/" target="_blank">BitBucket</a>
 * <a href="https://github.com/" target="_blank">GitHub</a>
+* <a href="https://www.visualstudio.com/team-services/" target="_blank">Visual Studio Team Services</a>
 * Custom Provider (custom urls)
 
 Providers that could be supported with the help of the community:
