@@ -56,16 +56,6 @@ namespace GitLink
                 }
             }
 
-            if (repositoryDirectory == null)
-            {
-                repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(pdbPath));
-                if (repositoryDirectory == null)
-                {
-                    Log.Error("Couldn't auto detect git repo. Please use -baseDir to manually set it.");
-                    return false;
-                }
-            }
-
             if (PortablePdbHelper.IsPortablePdb(pdbPath))
             {
                 Log.Warning("Portable PDB format is not compatible with GitLink. Please use SourceLink (https://github.com/ctaggart/SourceLink).");
@@ -74,6 +64,12 @@ namespace GitLink
 
             if (options.IndexAllDepotFiles)
             {
+                if (repositoryDirectory == null)
+                {
+                    Log.Error($"Couldn't auto detect git repo from PDB: {pdbPath}. Please use -baseDir to manually set it.");
+                    return false;
+                }
+
                 if (_sourceFilesList == null)
                 {
                     _sourceFilesList = GetSourceFilesFromDepot(repositoryDirectory);
@@ -82,10 +78,22 @@ namespace GitLink
             else
             {
                 _sourceFilesList = GetSourceFilesFromPdb(pdbPath, !options.SkipVerify);
+
                 if (!_sourceFilesList.Any())
                 {
                     Log.Error($"No source files were found in the PDB: {pdbPath}. If you're PDB is a native one you should use -a option.");
                     return false;
+                }
+
+                if (repositoryDirectory == null)
+                {
+                    var sourceFile = _sourceFilesList.First();
+                    repositoryDirectory = GitDirFinder.TreeWalkForGitDir(_sourceFilesList.First());
+                    if (repositoryDirectory == null)
+                    {
+                        Log.Error($"Couldn't auto detect git repo from source file: {sourceFile}. Please use -baseDir to manually set it.");
+                        return false;
+                    }
                 }
             }
 
