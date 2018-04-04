@@ -33,7 +33,6 @@ namespace GitLink
             bool skipVerify = false;
             bool allDepotFiles = false;
             LinkMethod method = LinkMethod.Http;
-            bool isFile = File.Exists(pdbPath);
             var arguments = ArgumentSyntax.Parse(args, syntax =>
             {
                 syntax.DefineOption("m|method", ref method, v => (LinkMethod)Enum.Parse(typeof(LinkMethod), v, true), "The method for SRCSRV to retrieve source code. One of <" + string.Join("|", Enum.GetNames(typeof(LinkMethod))) + ">. Default is " + method + ".");
@@ -44,7 +43,7 @@ namespace GitLink
                 syntax.DefineOption("a|allDepotFiles", ref allDepotFiles, "Index all source files from depot. Add this option for native PDBs (C++).");
                 syntax.DefineParameter("pdb", ref pdbPath, "The PDB to add source indexing to.");
 
-                if (!string.IsNullOrEmpty(pdbPath) && !isFile && !Directory.Exists(pdbPath))
+                if (!string.IsNullOrEmpty(pdbPath) && !File.Exists(pdbPath) && !Directory.Exists(pdbPath))
                 {
                     syntax.ReportError($"File/Directory not found: \"{pdbPath}\"");
                 }
@@ -71,7 +70,7 @@ namespace GitLink
                 IndexAllDepotFiles = allDepotFiles,
             };
 
-            if (isFile)
+            if (File.Exists(pdbPath))
             {
                 if (!Linker.Link(pdbPath, options))
                 {
