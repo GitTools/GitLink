@@ -66,8 +66,12 @@ namespace GitLink
             {
                 if (repositoryDirectory == null)
                 {
-                    Log.Error($"Couldn't auto detect git repo from PDB: {pdbPath}. Please use -baseDir to manually set it.");
-                    return false;
+                    repositoryDirectory = GetRepositoryFromFiles(new[] { pdbPath });
+                    if (repositoryDirectory == null)
+                    {
+                        Log.Error($"Couldn't auto detect git repo from PDB: {pdbPath}. Please use -baseDir to manually set it.");
+                        return false;
+                    }
                 }
 
                 if (_sourceFilesList == null)
@@ -87,11 +91,10 @@ namespace GitLink
 
                 if (repositoryDirectory == null)
                 {
-                    var sourceFile = _sourceFilesList.First();
-                    repositoryDirectory = GitDirFinder.TreeWalkForGitDir(_sourceFilesList.First());
+                    repositoryDirectory = GetRepositoryFromFiles(new[] { pdbPath }.Union(_sourceFilesList));
                     if (repositoryDirectory == null)
                     {
-                        Log.Error($"Couldn't auto detect git repo from source file: {sourceFile}. Please use -baseDir to manually set it.");
+                        Log.Error("Couldn't auto detect git repo. Please use -baseDir to manually set it.");
                         return false;
                     }
                 }
@@ -228,6 +231,21 @@ namespace GitLink
             Log.Info($"Remote git source information for {indexedFilesCount}/{_sourceFilesList.Count} files written to pdb: \"{pdbPath}\"");
 
             return true;
+        }
+
+        private static string GetRepositoryFromFiles(IEnumerable<string> files)
+        {
+            foreach (var file in files)
+            {
+                var repositoryDirectory = GitDirFinder.TreeWalkForGitDir(Path.GetDirectoryName(file));
+                if (repositoryDirectory != null)
+                {
+                    Log.Debug($"git repo detected: {repositoryDirectory}");
+                    return repositoryDirectory;
+                }
+            }
+
+            return null;
         }
 
         private static List<string> GetSourceFilesFromPdb(string pdbPath, bool verifyFiles)
