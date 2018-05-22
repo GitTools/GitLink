@@ -37,7 +37,7 @@ namespace GitLink.Pdb
                     {
                         sw.WriteLine("TRGFILE=%fnbksl%(%targ%%var2%)");
                         sw.WriteLine("SRCSRVTRG=%TRGFILE%");
-                        sw.WriteLine("SRCSRVCMD=powershell invoke-command -scriptblock {$webClient = New-Object System.Net.WebClient; $webClient.UseDefaultCredentials = $true; $webClient.DownloadFile('%RAWURL%', '%TRGFILE%');}");
+                        sw.WriteLine("SRCSRVCMD=powershell invoke-command -scriptblock {[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls11 -bor [System.Net.SecurityProtocolType]::Tls12; $webClient = New-Object System.Net.WebClient; $webClient.UseDefaultCredentials = $true; $webClient.DownloadFile('%RAWURL%', '%TRGFILE%');}");
                     }
                     else
                     {
