@@ -85,7 +85,7 @@ namespace GitLink
 
                 if (!_sourceFilesList.Any())
                 {
-                    Log.Error($"No source files were found in the PDB: {pdbPath}. If you're PDB is a native one you should use -a option.");
+                    Log.Error($"No source files were found in the PDB: {pdbPath}. If your PDB is native you should use the -a option.");
                     return false;
                 }
 
