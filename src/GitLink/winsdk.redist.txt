@@ -14,3 +14,9 @@ pdbstr.exe
 ===================
  
 (1) You may redistribute pdbstr.exe version 6.12.2.633
+
+===================
+srctool.exe
+===================
+ 
+(1) You may redistribute srctool.exe version 6.12.2.633
