@@ -26,6 +26,8 @@ namespace GitLink
 
         public bool IndexAllDepotFiles { get; set; }
 
+        public bool IndexWithSrcTool { get; set; }
+
         public string IntermediateOutputPath { get; set; }
     }
 }
