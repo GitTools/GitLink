@@ -150,6 +150,25 @@ namespace GitLink
                     repoSourceFiles = _sourceFilesList.ToDictionary(e => e, e => GetNormalizedPath(e, workingDirectory));
                 }
 
+                if (!options.SkipVerify)
+                {
+                    // Filter to only files which are tracked by git
+                    var commit = repository.Value.Lookup<Commit>(commitId);
+                    if (commit != null)
+                    {
+                        var trackedRepoSourceFiles = repoSourceFiles.Where(file => (commit[file.Value] != null)).ToDictionary(file => file.Key, file => file.Value);
+
+                        var untrackedSourceFiles = repoSourceFiles.Keys.Except(trackedRepoSourceFiles.Keys);
+
+                        foreach (var untrackedFile in untrackedSourceFiles)
+                        {
+                            Log.Warning($"Untracked file \"{untrackedFile}\" will not be indexed");
+                        }
+
+                        repoSourceFiles = trackedRepoSourceFiles;
+                    }
+                }
+
                 string rawUrl = provider.RawGitUrl;
                 if (rawUrl.Contains(RevisionPlaceholder) || rawUrl.Contains(FilenamePlaceholder))
                 {
