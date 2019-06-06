@@ -25,6 +25,7 @@ namespace GitLink.Tests.Providers
             [TestCase("https://example.com/repo", false)]
             [TestCase("https://bitbucket.intra.company.com/projects/aaa/repos/a/browse/{filename}?raw", true)]
             [TestCase("gopher://example.com/repo", false)]
+            [TestCase("http://gitlab.com/api/v4/projects/42/repository/files/{urlencoded_filename}/raw?ref={revision}&private_token=superToken", true)]
             public void CorrectlyValidatesForUrls(string url, bool expectedValue)
             {
                 var provider = new CustomUrlProvider();
@@ -73,14 +74,16 @@ namespace GitLink.Tests.Providers
                 Assert.IsNull(provider.ProjectUrl);
             }
 
-            [TestCase]
-            public void ReturnsValidRawGitUrl()
+            [TestCase(CorrectUrl)]
+            [TestCase("http://gitlab.com/api/v4/projects/42/repository/files/{urlencoded_filename}/raw?ref={revision}&private_token=superToken")]
+            public void ReturnsValidRawGitUrl(string url)
             {
                 var provider = new CustomUrlProvider();
-                provider.Initialize(CorrectUrl);
+                provider.Initialize(url);
 
-                string correctReturnedUrl = CorrectUrl.Replace("{filename}", "%var2%");
-                correctReturnedUrl = correctReturnedUrl.Replace("{revision}", "{0}");
+                string correctReturnedUrl = url.Replace("{filename}", "%var2%")
+                    .Replace("{revision}", "{0}")
+                    .Replace("{urlencoded_filename}", "%var2%");
 
                 Assert.AreEqual(correctReturnedUrl, provider.RawGitUrl);
             }

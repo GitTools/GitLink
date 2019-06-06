@@ -70,6 +70,10 @@ When working with a repository using uncommon URL you can use placeholders to sp
 
     GitLink.exe <pdbfile> -u "https://host/projects/catel/repos/catel/browse/{filename}?at={revision}&raw"
 
+Or if you require URL encoded filename you can use `urlencoded_filename` token
+
+    GitLink.exe <pdbfile> -u "http://host/api/v4/projects/42/repository/files/{urlencoded_filename}/raw?ref={revision}"
+
 The custom url will be used to fill the placeholders with the relative file path and the revision hash.
 
 ### Git repository location

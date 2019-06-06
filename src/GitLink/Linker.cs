@@ -12,6 +12,7 @@ namespace GitLink
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Web;
     using Catel;
     using Catel.Logging;
     using GitTools;
@@ -28,6 +29,7 @@ namespace GitLink
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         private static readonly string FilenamePlaceholder = Uri.EscapeUriString("{filename}");
+        private static readonly string UrlEncodedFileNamePlaceHolder = Uri.EscapeUriString("{urlencoded_filename}");
         private static readonly string RevisionPlaceholder = Uri.EscapeUriString("{revision}");
         private static readonly string PdbStrExePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "pdbstr.exe");
         private static readonly string[] ExtensionsToIgnore = new string[] { ".g.cs" };
@@ -170,9 +172,9 @@ namespace GitLink
                 }
 
                 string rawUrl = provider.RawGitUrl;
-                if (rawUrl.Contains(RevisionPlaceholder) || rawUrl.Contains(FilenamePlaceholder))
+                if (rawUrl.Contains(RevisionPlaceholder) || rawUrl.Contains(FilenamePlaceholder) || rawUrl.Contains(UrlEncodedFileNamePlaceHolder))
                 {
-                    if (!rawUrl.Contains(RevisionPlaceholder) || !rawUrl.Contains(FilenamePlaceholder))
+                    if (!rawUrl.Contains(RevisionPlaceholder) || !(rawUrl.Contains(FilenamePlaceholder) || rawUrl.Contains(UrlEncodedFileNamePlaceHolder)))
                     {
                         Log.Error("Supplied custom URL pattern must contain both a revision and a filename placeholder.");
                         return false;
@@ -180,7 +182,8 @@ namespace GitLink
 
                     rawUrl = rawUrl
                         .Replace(RevisionPlaceholder, "{0}")
-                        .Replace(FilenamePlaceholder, "%var2%");
+                        .Replace(FilenamePlaceholder, "%var2%")
+                        .Replace(UrlEncodedFileNamePlaceHolder, "%var2%");
                 }
                 else
                 {
@@ -217,6 +220,11 @@ namespace GitLink
                     if (sourceFile.Value != null)
                     {
                         var relativePathForUrl = ReplaceSlashes(provider, sourceFile.Value);
+                        if (provider.RawGitUrl.Contains(UrlEncodedFileNamePlaceHolder))
+                        {
+                            relativePathForUrl = HttpUtility.UrlEncode(relativePathForUrl);
+                        }
+
                         srcSrvContext.Paths.Add(Tuple.Create(sourceFile.Key, relativePathForUrl));
                     }
                 }
