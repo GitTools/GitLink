@@ -26,4 +26,7 @@
   <ItemGroup>
     <Content Include="Logo.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web" />
+  </ItemGroup>
 </Project>
