@@ -1,0 +1,21 @@
+package test1
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+public class test{
+public static void main(string[] args){
+System.setProperty("webdriver.chrome.driver","D\\chromedriver_win32\\chromedriver.exe");
+WebDriver driver = new ChromeDriver();
+driver.get("https://www.google.com/");
+driver.manage().window().maximize();
+driver.findElement(By.name("q")).sendKeys("https://accounts.google.com/servicelogin/signinchooser?flowName=GlifWebSignIn&flowEntry=ServiceLogin",Keys.ENTER);
+driver.findElement(By.xpath("//h3[normalize-space()='Gmail']")).click();
+driver.findElement(By.id("txtUsername")).sendKeys("Admin123");
+driver.findElement(By.id("btnlogin")).click();
+driver.findElement(By.xpath("//button[@name='compose']")).click();
+driver.findElement(By.id("//input[@id='To']")).click();
+driver.findElement(By.id("//input[@id='Subject']")).click();
+driver.findElement(By.id("//input[@id='body']")).click();
+driver.findElement(By.id("//input[@id='Send']")).click();
+driver.quit()
+}
+}
