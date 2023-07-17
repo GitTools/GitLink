@@ -94,6 +94,15 @@ Native PDBs (from C++ projects) are supported by using -a option:
 
 All known C++ source files from your git depot will be indexed in the PDB.
 
+### Indexing with SrcTool
+
+Srctool is capable of listing the raw source file information from a .pdb file. 
+If you are dealing with a huge git repository and only need to index source files from a Native PDB that are found in git (And not the entire git depot) use the -t option:
+
+	GitLink.exe <pdbFile> -t
+
+.NET PDBs (C#) are also supported.
+
 ### More options
 
 There are many more parameters you can use. Display the usage doc with the following command line:

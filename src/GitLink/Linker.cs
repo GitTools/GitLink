@@ -32,7 +32,9 @@ namespace GitLink
         private static readonly string UrlEncodedFileNamePlaceHolder = Uri.EscapeUriString("{urlencoded_filename}");
         private static readonly string RevisionPlaceholder = Uri.EscapeUriString("{revision}");
         private static readonly string PdbStrExePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "pdbstr.exe");
+        private static readonly string SrcToolExePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "srctool.exe");
         private static readonly string[] ExtensionsToIgnore = new string[] { ".g.cs" };
+        private static readonly HashSet<string> SourceExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".cs", ".cpp", ".c", ".cc", ".cxx", ".c++", ".h", ".hh", ".inl", ".hpp" };
         private static IReadOnlyList<string> _sourceFilesList = null;
 
         public static bool LinkDirectory(string pdbFolderPath, LinkOptions options = default(LinkOptions))
@@ -83,11 +85,18 @@ namespace GitLink
             }
             else
             {
-                _sourceFilesList = GetSourceFilesFromPdb(pdbPath, !options.SkipVerify);
+                if (options.IndexWithSrcTool)
+                {
+                    _sourceFilesList = SrcToolHelper.GetSourceFiles(SrcToolExePath, pdbPath);
+                }
+                else
+                {
+                    _sourceFilesList = GetSourceFilesFromPdb(pdbPath, !options.SkipVerify);
+                }
 
                 if (!_sourceFilesList.Any())
                 {
-                    Log.Error($"No source files were found in the PDB: {pdbPath}. If your PDB is native you should use the -a option.");
+                    Log.Error($"No source files were found in the PDB: {pdbPath}. If your PDB is native you could use the -a or -t option.");
                     return false;
                 }
 
@@ -309,17 +318,7 @@ namespace GitLink
             {
                 sourceFiles = from file in Directory.GetFiles(repo.Info.WorkingDirectory, "*.*", SearchOption.AllDirectories)
                               where !repo.Ignore.IsPathIgnored(file)
-                              let ext = Path.GetExtension(file)
-                              where string.Equals(ext, ".cs", StringComparison.OrdinalIgnoreCase)
-                                 || string.Equals(ext, ".cpp", StringComparison.OrdinalIgnoreCase)
-                                 || string.Equals(ext, ".c", StringComparison.OrdinalIgnoreCase)
-                                 || string.Equals(ext, ".cc", StringComparison.OrdinalIgnoreCase)
-                                 || string.Equals(ext, ".cxx", StringComparison.OrdinalIgnoreCase)
-                                 || string.Equals(ext, ".c++", StringComparison.OrdinalIgnoreCase)
-                                 || string.Equals(ext, ".h", StringComparison.OrdinalIgnoreCase)
-                                 || string.Equals(ext, ".hh", StringComparison.OrdinalIgnoreCase)
-                                 || string.Equals(ext, ".inl", StringComparison.OrdinalIgnoreCase)
-                                 || string.Equals(ext, ".hpp", StringComparison.OrdinalIgnoreCase)
+                              where ValidExtension(file)
                               select file;
             }
 
@@ -390,6 +389,13 @@ namespace GitLink
             }
 
             return relativePathForUrl;
+        }
+
+        public static Boolean ValidExtension(string sourceFile)
+        {
+            var ext = Path.GetExtension(sourceFile);
+
+            return SourceExtensions.Contains(ext);
         }
     }
 }

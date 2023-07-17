@@ -26,6 +26,8 @@ namespace GitLinkTask
 
         public bool IndexAllDepotFiles { get; set; }
 
+        public bool IndexWithSrcTool { get; set; }
+
         public string GitRemoteUrl { get; set; }
 
         public string GitCommitId { get; set; }
@@ -48,6 +50,7 @@ namespace GitLinkTask
                 CommitId = GitCommitId,
                 GitWorkingDirectory = GitWorkingDirectory,
                 IndexAllDepotFiles = IndexAllDepotFiles,
+                IndexWithSrcTool = IndexWithSrcTool,
                 IntermediateOutputPath = Path.GetFullPath(AddTrailingSlash(IntermediateOutputPath)),
             };
             bool success = Linker.Link(PdbFile.GetMetadata("FullPath"), options);
